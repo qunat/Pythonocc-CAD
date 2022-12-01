@@ -1,5 +1,5 @@
 # QupyRibbon
-![alt tag](http://i.imgur.com/ry2SudV.png)
+![alt tag]([http://i.imgur.com/ry2SudV.png](https://img-blog.csdnimg.cn/7ac12f91150941a491949288f44eb9cb.png))
 
 This is a ribbon implementation in Python 3 using PyQt5.
 
