@@ -1,0 +1,513 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>952</width>
+    <height>693</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="../source.qrc">
+    <normaloff>:/picture/icons/gear.ico</normaloff>:/picture/icons/gear.ico</iconset>
+  </property>
+  <property name="styleSheet">
+   <string notr="true"/>
+  </property>
+  <property name="iconSize">
+   <size>
+    <width>128</width>
+    <height>128</height>
+   </size>
+  </property>
+  <property name="tabShape">
+   <enum>QTabWidget::Rounded</enum>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <property name="styleSheet">
+    <string notr="true"/>
+   </property>
+   <widget class="QStackedWidget" name="stackedWidget">
+    <property name="geometry">
+     <rect>
+      <x>1</x>
+      <y>0</y>
+      <width>801</width>
+      <height>641</height>
+     </rect>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::Panel</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Plain</enum>
+    </property>
+    <property name="currentIndex">
+     <number>0</number>
+    </property>
+    <widget class="QWidget" name="page_0">
+     <widget class="QTabWidget" name="tabWidget">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>10</y>
+        <width>781</width>
+        <height>631</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>微软雅黑</family>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <property name="focusPolicy">
+       <enum>Qt::NoFocus</enum>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color: rgb(85, 170, 127);
+</string>
+      </property>
+      <property name="tabPosition">
+       <enum>QTabWidget::North</enum>
+      </property>
+      <property name="tabShape">
+       <enum>QTabWidget::Triangular</enum>
+      </property>
+      <property name="currentIndex">
+       <number>0</number>
+      </property>
+      <widget class="QWidget" name="tab_2">
+       <attribute name="title">
+        <string>技术参数</string>
+       </attribute>
+       <widget class="QTabWidget" name="tabWidget_4">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>10</y>
+          <width>291</width>
+          <height>591</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>微软雅黑</family>
+          <pointsize>12</pointsize>
+         </font>
+        </property>
+        <property name="tabPosition">
+         <enum>QTabWidget::South</enum>
+        </property>
+        <property name="tabShape">
+         <enum>QTabWidget::Triangular</enum>
+        </property>
+        <property name="currentIndex">
+         <number>0</number>
+        </property>
+        <widget class="QWidget" name="tab_9">
+         <attribute name="title">
+          <string>选型列表</string>
+         </attribute>
+         <widget class="QTableWidget" name="tableWidget_2">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>291</width>
+            <height>561</height>
+           </rect>
+          </property>
+          <property name="focusPolicy">
+           <enum>Qt::NoFocus</enum>
+          </property>
+          <property name="frameShape">
+           <enum>QFrame::NoFrame</enum>
+          </property>
+          <property name="frameShadow">
+           <enum>QFrame::Plain</enum>
+          </property>
+          <property name="dragDropOverwriteMode">
+           <bool>true</bool>
+          </property>
+          <property name="wordWrap">
+           <bool>true</bool>
+          </property>
+          <property name="cornerButtonEnabled">
+           <bool>true</bool>
+          </property>
+          <attribute name="verticalHeaderVisible">
+           <bool>false</bool>
+          </attribute>
+          <attribute name="verticalHeaderHighlightSections">
+           <bool>true</bool>
+          </attribute>
+          <column>
+           <property name="text">
+            <string>选项</string>
+           </property>
+           <property name="font">
+            <font>
+             <family>微软雅黑</family>
+             <pointsize>11</pointsize>
+            </font>
+           </property>
+           <property name="foreground">
+            <brush brushstyle="SolidPattern">
+             <color alpha="255">
+              <red>85</red>
+              <green>85</green>
+              <blue>255</blue>
+             </color>
+            </brush>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>列表值</string>
+           </property>
+           <property name="font">
+            <font>
+             <family>微软雅黑</family>
+             <pointsize>12</pointsize>
+            </font>
+           </property>
+           <property name="foreground">
+            <brush brushstyle="SolidPattern">
+             <color alpha="255">
+              <red>255</red>
+              <green>170</green>
+              <blue>0</blue>
+             </color>
+            </brush>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>备注</string>
+           </property>
+           <property name="font">
+            <font>
+             <family>微软雅黑</family>
+             <pointsize>12</pointsize>
+            </font>
+           </property>
+           <property name="foreground">
+            <brush brushstyle="SolidPattern">
+             <color alpha="255">
+              <red>255</red>
+              <green>0</green>
+              <blue>127</blue>
+             </color>
+            </brush>
+           </property>
+          </column>
+         </widget>
+        </widget>
+        <widget class="QWidget" name="tab">
+         <attribute name="title">
+          <string>选型计算</string>
+         </attribute>
+         <widget class="QTableWidget" name="tableWidget">
+          <property name="geometry">
+           <rect>
+            <x>-10</x>
+            <y>0</y>
+            <width>301</width>
+            <height>561</height>
+           </rect>
+          </property>
+          <property name="focusPolicy">
+           <enum>Qt::NoFocus</enum>
+          </property>
+          <property name="frameShape">
+           <enum>QFrame::NoFrame</enum>
+          </property>
+          <property name="frameShadow">
+           <enum>QFrame::Plain</enum>
+          </property>
+          <property name="dragDropOverwriteMode">
+           <bool>true</bool>
+          </property>
+          <property name="wordWrap">
+           <bool>true</bool>
+          </property>
+          <property name="cornerButtonEnabled">
+           <bool>true</bool>
+          </property>
+          <attribute name="verticalHeaderVisible">
+           <bool>false</bool>
+          </attribute>
+          <attribute name="verticalHeaderHighlightSections">
+           <bool>true</bool>
+          </attribute>
+          <column>
+           <property name="text">
+            <string>属性名称</string>
+           </property>
+           <property name="font">
+            <font>
+             <family>微软雅黑</family>
+             <pointsize>11</pointsize>
+            </font>
+           </property>
+           <property name="foreground">
+            <brush brushstyle="SolidPattern">
+             <color alpha="255">
+              <red>85</red>
+              <green>85</green>
+              <blue>255</blue>
+             </color>
+            </brush>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>属性值</string>
+           </property>
+           <property name="font">
+            <font>
+             <family>微软雅黑</family>
+             <pointsize>12</pointsize>
+            </font>
+           </property>
+           <property name="foreground">
+            <brush brushstyle="SolidPattern">
+             <color alpha="255">
+              <red>255</red>
+              <green>170</green>
+              <blue>0</blue>
+             </color>
+            </brush>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>备注</string>
+           </property>
+           <property name="font">
+            <font>
+             <family>微软雅黑</family>
+             <pointsize>12</pointsize>
+            </font>
+           </property>
+           <property name="foreground">
+            <brush brushstyle="SolidPattern">
+             <color alpha="255">
+              <red>255</red>
+              <green>0</green>
+              <blue>127</blue>
+             </color>
+            </brush>
+           </property>
+          </column>
+         </widget>
+        </widget>
+       </widget>
+       <widget class="QTabWidget" name="tabWidget_5">
+        <property name="geometry">
+         <rect>
+          <x>310</x>
+          <y>10</y>
+          <width>461</width>
+          <height>581</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>微软雅黑</family>
+          <pointsize>12</pointsize>
+         </font>
+        </property>
+        <property name="focusPolicy">
+         <enum>Qt::TabFocus</enum>
+        </property>
+        <property name="tabPosition">
+         <enum>QTabWidget::South</enum>
+        </property>
+        <property name="tabShape">
+         <enum>QTabWidget::Triangular</enum>
+        </property>
+        <property name="currentIndex">
+         <number>0</number>
+        </property>
+        <widget class="QWidget" name="tab_7">
+         <attribute name="title">
+          <string>3D显示</string>
+         </attribute>
+        </widget>
+        <widget class="QWidget" name="tab_8">
+         <attribute name="title">
+          <string>技术资料(1)</string>
+         </attribute>
+        </widget>
+        <widget class="QWidget" name="tab_3">
+         <attribute name="title">
+          <string>技术资料(2)</string>
+         </attribute>
+        </widget>
+        <widget class="QWidget" name="tab_4">
+         <attribute name="title">
+          <string>技术资料(3)</string>
+         </attribute>
+        </widget>
+       </widget>
+      </widget>
+     </widget>
+    </widget>
+   </widget>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <action name="Measure_distance">
+   <property name="text">
+    <string>测量长度</string>
+   </property>
+   <property name="toolTip">
+    <string>测量长度</string>
+   </property>
+  </action>
+  <action name="Out_put_stp">
+   <property name="text">
+    <string>stp</string>
+   </property>
+   <property name="toolTip">
+    <string>导出stp</string>
+   </property>
+  </action>
+  <action name="Out_put_iges">
+   <property name="text">
+    <string>iges</string>
+   </property>
+   <property name="toolTip">
+    <string>导出iges</string>
+   </property>
+  </action>
+  <action name="Out_put_stl">
+   <property name="text">
+    <string>stl</string>
+   </property>
+   <property name="toolTip">
+    <string>导出stl</string>
+   </property>
+  </action>
+  <action name="Up_data">
+   <property name="text">
+    <string>更新功能/零件库</string>
+   </property>
+   <property name="toolTip">
+    <string>更新零件库</string>
+   </property>
+  </action>
+  <action name="Put_order">
+   <property name="text">
+    <string>官方链接</string>
+   </property>
+   <property name="toolTip">
+    <string>询价下单</string>
+   </property>
+  </action>
+  <action name="Quit">
+   <property name="text">
+    <string>关闭退出</string>
+   </property>
+   <property name="toolTip">
+    <string>关闭退出</string>
+   </property>
+  </action>
+  <action name="actionView_Right">
+   <property name="text">
+    <string>右视图</string>
+   </property>
+   <property name="toolTip">
+    <string>右视图</string>
+   </property>
+  </action>
+  <action name="actionView_Left">
+   <property name="text">
+    <string>左视图</string>
+   </property>
+   <property name="toolTip">
+    <string>左视图</string>
+   </property>
+  </action>
+  <action name="actionView_Top">
+   <property name="text">
+    <string>顶视图</string>
+   </property>
+   <property name="toolTip">
+    <string>顶视图</string>
+   </property>
+  </action>
+  <action name="actionView_Bottom">
+   <property name="text">
+    <string>底视图</string>
+   </property>
+  </action>
+  <action name="actionView_Front">
+   <property name="text">
+    <string>前视图</string>
+   </property>
+   <property name="toolTip">
+    <string>前视图</string>
+   </property>
+  </action>
+  <action name="actionView_Back">
+   <property name="text">
+    <string>后视图</string>
+   </property>
+   <property name="toolTip">
+    <string>后视图</string>
+   </property>
+  </action>
+  <action name="actionView_Iso">
+   <property name="text">
+    <string>轴侧图</string>
+   </property>
+   <property name="toolTip">
+    <string>轴侧图</string>
+   </property>
+  </action>
+  <action name="action_Fitall">
+   <property name="text">
+    <string>全部显示</string>
+   </property>
+   <property name="toolTip">
+    <string>全部显示</string>
+   </property>
+  </action>
+  <action name="AboutDownload">
+   <property name="text">
+    <string>关于下载</string>
+   </property>
+   <property name="toolTip">
+    <string>关于下载</string>
+   </property>
+  </action>
+  <action name="Measure_diameter">
+   <property name="text">
+    <string>测量孔径</string>
+   </property>
+   <property name="toolTip">
+    <string>测量孔径</string>
+   </property>
+  </action>
+  <action name="AboutVision">
+   <property name="text">
+    <string>关于版本</string>
+   </property>
+   <property name="toolTip">
+    <string>关于版本</string>
+   </property>
+  </action>
+ </widget>
+ <resources>
+  <include location="../source.qrc"/>
+ </resources>
+ <connections/>
+</ui>
