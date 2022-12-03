@@ -13,7 +13,19 @@ This framework can basically meet the needs of graduation design of college stud
 ![alt tag](http://cad-upyun.test.upcdn.net/pythonocc-CAD/pythonocc-CAD-4.png)
 
 # pythonocc
-![alt tag](http://cad-upyun.test.upcdn.net/pythonocc-CAD/setup_pic.png)
+# ABOUT
+pythonocc provides 3D modeling and dataexchange features. It is intended to CAD/PDM/PLM and BIM related development.
+
+Latest release : pythonocc-core 7.6.2 (August 2022)
+#Features
+pythonocc provides the following features:
+
+a full access from Python to almost all af the thousand OpenCascade C++ classes. Classes and methods/functions share the same names, and, as possible as it can be, the same signature
+3D visualization from the most famous Python Gui (pyQt, PySide1 and 2, wxPython)
+3D visualization in a web browser using WebGl and/or x3dom renderers
+3D visualization and work within a jupyter notebook
+Various utility Python classes/methods for DataExchange, Topology operations, inertia computations etc.
+
 # first create an environment
 ```
 conda create --name=pyoccenv python=3.7
