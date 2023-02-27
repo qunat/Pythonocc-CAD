@@ -48,5 +48,6 @@ if __name__ == '__main__':
 	win.Displayshape_core.canve._display.set_bg_gradient_color(background_gradient_color1,
 															   background_gradient_color2)
 	# make the application float to the top
+	splash.finish(win)
 	win.raise_()
 	app.exec_()
