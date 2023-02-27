@@ -26,7 +26,6 @@ class Ui_MainWindow(MainGui.Ui_MainWindow):
         self.setupUi(self)
         self.Displayshape_core=DisplayManager.DisplayManager(self)
         self.modeltree=ModelTree.ModelTree()
-        self.centerOnScreen()
         self.setCentralWidget(self.Displayshape_core.canve)
 
         # -------------------------------------------------------------------------------------右键单击菜单
