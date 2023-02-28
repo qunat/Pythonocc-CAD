@@ -146,6 +146,7 @@ def read_step_file_with_names_colors(filename):
     shape_tool = XCAFDoc_DocumentTool_ShapeTool(doc.Main())
     color_tool = XCAFDoc_DocumentTool_ColorTool(doc.Main())
     layer_tool = XCAFDoc_DocumentTool_LayerTool(doc.Main())
+	
     #mat_tool = XCAFDoc_DocumentTool_MaterialTool(doc.Main())
 
     step_reader = STEPCAFControl_Reader()
@@ -160,7 +161,7 @@ def read_step_file_with_names_colors(filename):
         step_reader.Transfer(doc)
     locs = []
     DumpToString = shape_tool.DumpToString()
-    print(DumpToString)
+    #print(99999,DumpToString)
 
     def _get_sub_shapes(lab, loc):
         name = lab.GetLabelName()
@@ -206,7 +207,7 @@ def read_step_file_with_names_colors(filename):
             shape_tool.GetComponents(lab, l_c)
             level+=1
             for i in range(l_c.Length()):
-                print("loc",i)
+                #print("loc",i)
                 label = l_c.Value(i+1)
                 if shape_tool.IsReference(label):
                     #print("\n########  reference label :", label)
