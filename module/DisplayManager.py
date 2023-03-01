@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+from typing import List
+
 from OCC.Core.BRep import BRep_Builder
 from OCC.Core.BRepTools import breptools_Write, breptools_Read, breptools_Triangulation
 from OCC.Core.Quantity import Quantity_Color, Quantity_TOC_RGB
@@ -7,6 +9,49 @@ from PyQt5.QtWidgets import QFileDialog
 from module import qtDisplay
 from OCC.Extend.DataExchange import read_step_file,read_iges_file,read_stl_file
 from module import assemble
+
+class AssembleNode(object):
+	
+	
+	def __init__(self,DumpToString):
+		self.root_dict = {}  # {}
+		self.part_dict = {}  # {name:order}
+		self.assembly_dict = {}  # {name:order}
+		self.prerocess(DumpToString)
+		
+		
+		
+	def prerocess(self,DumpToString):
+		__DumpToStringstr = str(DumpToString).split("\n")
+		#print(__DumpToStringstr)
+		self.DumpToString=[]
+		for compenant in __DumpToStringstr:
+			if compenant=="" or __DumpToStringstr.index(compenant)==0:
+				continue
+			if "\t" in compenant:
+				compenant=compenant.replace("\t","")
+			compenant=compenant.split(" ")
+			
+			self.DumpToString.append(compenant)
+		for compenant in range(len(self.DumpToString)):
+			pass
+			print(self.DumpToString[compenant])
+			if self.DumpToString[compenant][0]=="ASSEMBLY" and self.DumpToString[compenant+1][0]=="INSTANCE":
+				self.root_dict[self.DumpToString[compenant][2]]=["father",self.DumpToString[compenant][3]]
+			elif self.DumpToString[compenant][0]=="INSTANCE":
+				try:
+					if not "(refers" in self.root_dict[compenant][3]:
+						self.root_dict[self.DumpToString[compenant][2]] =["children","REFER",self.DumpToString[compenant][5]]
+					else:
+						self.root_dict[self.DumpToString[compenant][2]] = ["children",self.DumpToString[compenant][3]]
+				except Exception as e:
+					print(e)
+			if self.DumpToString[compenant][0]=="ASSEMBLY" and compenant!=0:
+				pass
+		print(self.root_dict)
+		
+				
+				
 
 
 class DisplayManager(object):
@@ -26,16 +71,7 @@ class DisplayManager(object):
 			end_with = str(filepath).lower()
 			if end_with.endswith(".step") or end_with.endswith("stp"):
 				self.import_shape,assemble_relation_list,DumpToString =assemble.read_step_file_with_names_colors(filepath)
-				__DumpToStringstr=str(DumpToString).split("\n")
-				Assemble_dict={}
-				for compenant in __DumpToStringstr:
-					print(compenant.strip())
-					compenant=(compenant.strip("/")).split(" ")
-					if compenant[0]=="":
-						continue
-					if compenant[0]=="ASSEMBLY":
-						name=compenant[len(compenant)-2].replace("\"","")
-						Assemble_dict[name]=compenant[2]
+				AssembleNode(DumpToString)
 						
 				
 				for shpt_lbl_color in self.import_shape:
