@@ -75,9 +75,9 @@ class Ui_MainWindow(MainGui.Ui_MainWindow):
 
     def on_open_file(self):
         pass
-        list=self.Displayshape_core.Open_part()
+        root_dict=self.Displayshape_core.Open_part()
         try:
-            self.modeltree.Create_ModelTree(list=list)
+            self.modeltree.Create_ModelTree(dict=root_dict)
         except Exception as e:
             print(e)
 

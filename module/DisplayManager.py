@@ -11,45 +11,58 @@ from OCC.Extend.DataExchange import read_step_file,read_iges_file,read_stl_file
 from module import assemble
 
 class AssembleNode(object):
-	
-	
+	def __init__(self,DumpToString):
+		pass
+		self.DumpToString=DumpToString
+		self.struct=None
+		self.kind=None
+		self.order=None
+		self.name=None
+		self.refer=None
+		self.Process()
+	def Process(self):
+		DumpToString_list=self.DumpToString.split(" ")
+		self.struct=DumpToString_list[0]
+		self.kind=DumpToString_list[1]
+		self.order=DumpToString_list[2]
+		if "(refers" in DumpToString_list[3]:
+			self.refer=DumpToString_list[5][0:-1]
+			self.name=DumpToString_list[6][1:-3]
+		else:
+			self.name = DumpToString_list[3].replace('"',"")
+			self.refer=DumpToString_list[2]
+		print(self.struct,self.kind,self.order,self.name,self.refer)
+			
+		
+class DumpProcess(object):
 	def __init__(self,DumpToString):
 		self.root_dict = {}  # {}
 		self.part_dict = {}  # {name:order}
-		self.assembly_dict = {}  # {name:order}
+		self.assembly = []  # {name:order}
 		self.prerocess(DumpToString)
-		
 		
 		
 	def prerocess(self,DumpToString):
 		__DumpToStringstr = str(DumpToString).split("\n")
+		__DumpToStringstr=__DumpToStringstr[2:-1]
 		#print(__DumpToStringstr)
 		self.DumpToString=[]
 		for compenant in __DumpToStringstr:
-			if compenant=="" or __DumpToStringstr.index(compenant)==0:
+			if compenant=="":
+				self.assembly.append(self.DumpToString)
+				self.DumpToString = []
 				continue
 			if "\t" in compenant:
 				compenant=compenant.replace("\t","")
-			compenant=compenant.split(" ")
-			
 			self.DumpToString.append(compenant)
-		for compenant in range(len(self.DumpToString)):
-			pass
-			print(self.DumpToString[compenant])
-			if self.DumpToString[compenant][0]=="ASSEMBLY" and self.DumpToString[compenant+1][0]=="INSTANCE":
-				self.root_dict[self.DumpToString[compenant][2]]=["father",self.DumpToString[compenant][3]]
-			elif self.DumpToString[compenant][0]=="INSTANCE":
-				try:
-					if not "(refers" in self.root_dict[compenant][3]:
-						self.root_dict[self.DumpToString[compenant][2]] =["children","REFER",self.DumpToString[compenant][5]]
-					else:
-						self.root_dict[self.DumpToString[compenant][2]] = ["children",self.DumpToString[compenant][3]]
-				except Exception as e:
-					print(e)
-			if self.DumpToString[compenant][0]=="ASSEMBLY" and compenant!=0:
-				pass
-		print(self.root_dict)
-		
+		for i in self.assembly:
+			for j in i:
+				a=AssembleNode(j)
+				self.root_dict[a.order]=(a)
+				
+			
+			
+	
 				
 				
 
@@ -59,6 +72,7 @@ class DisplayManager(object):
 		self.canve=qtDisplay.qtViewer3d(widget)
 		self.widget=widget
 		self.part_maneger_core_dict={}
+		
 	def Dispalyshape(self):
 		self.canve._display.DisplayColoredShape()
 
@@ -71,7 +85,7 @@ class DisplayManager(object):
 			end_with = str(filepath).lower()
 			if end_with.endswith(".step") or end_with.endswith("stp"):
 				self.import_shape,assemble_relation_list,DumpToString =assemble.read_step_file_with_names_colors(filepath)
-				AssembleNode(DumpToString)
+				root_dict=DumpProcess(DumpToString).root_dict
 						
 				
 				for shpt_lbl_color in self.import_shape:
@@ -86,7 +100,7 @@ class DisplayManager(object):
 					self.part_maneger_core_dict[label]=return_shape
 				self.widget.statusbar.showMessage("状态：打开成功")  ###
 				self.widget.statusBar().showMessage('状态：软件运行正常')
-				return assemble_relation_list
+				return root_dict
 			elif end_with.endswith(".iges") or end_with.endswith(".igs"):
 				self.import_shape = read_iges_file(filepath)
 				self.widget.statusbar.showMessage("状态：打开成功")  ###
