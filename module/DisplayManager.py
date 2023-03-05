@@ -30,7 +30,7 @@ class AssembleNode(object):
 			self.name=DumpToString_list[6][1:-3]
 		else:
 			self.name = DumpToString_list[3].replace('"',"")
-			self.refer=DumpToString_list[2]
+			
 		print(self.struct,self.kind,self.order,self.name,self.refer)
 			
 		

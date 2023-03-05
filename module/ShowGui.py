@@ -77,7 +77,7 @@ class Ui_MainWindow(MainGui.Ui_MainWindow):
         pass
         root_dict=self.Displayshape_core.Open_part()
         try:
-            self.modeltree.Create_ModelTree(dict=root_dict)
+            self.modeltree.Create_tree_NodeList(root_dict=root_dict)
         except Exception as e:
             print(e)
 
