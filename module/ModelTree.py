@@ -63,9 +63,16 @@ class ModelTree(QtWidgets.QWidget):
 		print("start")
 		if Nodelist[2]=="0:1:1:1":
 			self.tree_root_dict[Nodelist[1]] = QTreeWidgetItem(self.history_model_root)
+			self.tree_root_dict[Nodelist[1]].setText(0, Nodelist[1])
+			self.tree_root_dict[Nodelist[1]].setText(1, 'part')
+			self.tree_root_dict[Nodelist[1]].setIcon(0, QIcon('screenruler.ico'))
+			
 		else:
 			
 			self.tree_root_dict[Nodelist[1]] = QTreeWidgetItem(self.tree_root_dict[Nodelist[0]])
+			self.tree_root_dict[Nodelist[1]].setText(0, Nodelist[1])
+			self.tree_root_dict[Nodelist[1]].setText(1, 'part')
+			self.tree_root_dict[Nodelist[1]].setIcon(0, QIcon('screenruler.ico'))
 		father_root=Nodelist[1]
 		print("enter")
 		#设置子节点
@@ -106,11 +113,10 @@ class ModelTree(QtWidgets.QWidget):
 					self.tree_root_child_dict[self.root_dict[order].name].setIcon(0, QIcon('screenruler.ico'))
 					print(Nodelist)
 					if self.root_dict[order].struct=="PART" and Nodelist.index(old_order)==len(Nodelist)-1:
-						print("跳出递归")
 						break
 			# todo 优化1 设置节点的状态
 			# self.tree_root_child_dict[part_property["name"]].setCheckState(0, Qt.Checked)
-			
+		print(self.tree_root_dict)
 			
 
 					
