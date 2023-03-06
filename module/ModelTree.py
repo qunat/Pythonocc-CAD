@@ -54,13 +54,13 @@ class ModelTree(QtWidgets.QWidget):
 				self.node_dict[root_order] = NodeList
 				
 		self.root_dict=root_dict
-		print(self.node_dict)
-		print(self.node_dict["0:1:1:1"])
+		#print(self.node_dict)
+		#print(self.node_dict["0:1:1:1"])
 		self.Create_ModelTree(self.node_dict["0:1:1:1"])
 				
 	def Create_ModelTree(self,Nodelist=[]):
 		# 设置总装配体根节点/子装配体根节点
-		print("start")
+		#print("start")
 		if Nodelist[2]=="0:1:1:1":
 			self.tree_root_dict[Nodelist[1]] = QTreeWidgetItem(self.history_model_root)
 			self.tree_root_dict[Nodelist[1]].setText(0, Nodelist[1])
@@ -74,10 +74,10 @@ class ModelTree(QtWidgets.QWidget):
 			self.tree_root_dict[Nodelist[1]].setText(1, 'part')
 			self.tree_root_dict[Nodelist[1]].setIcon(0, QIcon('screenruler.ico'))
 		father_root=Nodelist[1]
-		print("enter")
+		#print("enter",Nodelist[3:len(Nodelist)])
 		#设置子节点
-		for order in Nodelist[3:-1]:
-			print(order,"ok")
+		for order in Nodelist[3:len(Nodelist)]:
+			#print(order,"ok")
 			if self.root_dict[order].refer == None:
 				if self.root_dict[order].struct == "ASSEMBLY":
 						nodelist=self.node_dict[order]
@@ -90,29 +90,26 @@ class ModelTree(QtWidgets.QWidget):
 						self.tree_root_child_dict[self.root_dict[order].name].setText(0, self.root_dict[order].name)
 						self.tree_root_child_dict[self.root_dict[order].name].setText(1, 'part')
 						self.tree_root_child_dict[self.root_dict[order].name].setIcon(0, QIcon('screenruler.ico'))
-						if self.root_dict[order].struct == "PART" and Nodelist.index(order) == len(Nodelist):
+						if self.root_dict[order].struct == "PART" and Nodelist.index(order) == len(Nodelist)-1:
 							break
 						# todo 优化1 设置节点的状态
 						# self.tree_root_child_dict[part_property["name"]].setCheckState(0, Qt.Checked)
 			else:
 				old_order=order
 				order = self.root_dict[order].refer
-				print(order,0000000000,self.root_dict[order].struct)
 				if self.root_dict[order].struct == "ASSEMBLY":
 					nodelist = self.node_dict[order]
-					print(99999999,nodelist)
 					nodelist[0] = father_root
-					print(88888888,self.node_dict[order])
 					self.Create_ModelTree(self.node_dict[order])
 				else:
 					# 设置子节点1
-					self.tree_root_child_dict[self.root_dict[order].name] = QTreeWidgetItem(
-						self.tree_root_dict[Nodelist[1]])
+					self.tree_root_child_dict[self.root_dict[order].name] = QTreeWidgetItem(self.tree_root_dict[Nodelist[1]])
 					self.tree_root_child_dict[self.root_dict[order].name].setText(0, self.root_dict[order].name)
 					self.tree_root_child_dict[self.root_dict[order].name].setText(1, 'part')
 					self.tree_root_child_dict[self.root_dict[order].name].setIcon(0, QIcon('screenruler.ico'))
-					print(Nodelist)
+					#print(self.root_dict[order].name)
 					if self.root_dict[order].struct=="PART" and Nodelist.index(old_order)==len(Nodelist)-1:
+						#print(114,Nodelist.index(old_order))
 						break
 			# todo 优化1 设置节点的状态
 			# self.tree_root_child_dict[part_property["name"]].setCheckState(0, Qt.Checked)
