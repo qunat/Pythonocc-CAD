@@ -16,7 +16,7 @@ class Mywindown(QtWidgets.QMainWindow, ShowGui.Ui_MainWindow,MainGui.Ui_MainWind
 	def __init__(self, parent=None):
 		super(Mywindown, self).__init__(parent)
 		# 3D显示设置
-		self.setWindowTitle("pythonocc-CAD")
+		self.setWindowTitle("BrepCAD")
 
 	def centerOnScreen(self):
 		'''Centers the window on the screen.'''

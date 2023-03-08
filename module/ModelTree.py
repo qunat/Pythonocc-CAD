@@ -42,7 +42,10 @@ class ModelTree(QtWidgets.QWidget):
 		# self.tree.addTopLevelItem(root)
 
 	def Create_tree_NodeList(self,root_dict={}):
+
 		for part_property in root_dict.values():
+			if part_property.struct=="None":
+				continue
 			if  part_property.struct=="ASSEMBLY":
 				root_order=part_property.order
 				root_name=part_property.name
@@ -54,8 +57,8 @@ class ModelTree(QtWidgets.QWidget):
 				self.node_dict[root_order] = NodeList
 				
 		self.root_dict=root_dict
-		#print(self.node_dict)
-		#print(self.node_dict["0:1:1:1"])
+		
+		
 		self.Create_ModelTree(self.node_dict["0:1:1:1"])
 				
 	def Create_ModelTree(self,Nodelist=[]):
@@ -113,7 +116,7 @@ class ModelTree(QtWidgets.QWidget):
 						break
 			# todo 优化1 设置节点的状态
 			# self.tree_root_child_dict[part_property["name"]].setCheckState(0, Qt.Checked)
-		print(self.tree_root_dict)
+		#print(self.tree_root_dict)
 			
 
 					

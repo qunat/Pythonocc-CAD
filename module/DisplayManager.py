@@ -22,14 +22,22 @@ class AssembleNode(object):
 		self.Process()
 	def Process(self):
 		DumpToString_list=self.DumpToString.split(" ")
-		self.struct=DumpToString_list[0]
-		self.kind=DumpToString_list[1]
-		self.order=DumpToString_list[2]
-		if "(refers" in DumpToString_list[3]:
-			self.refer=DumpToString_list[5][0:-1]
-			self.name=DumpToString_list[6][1:-3]
+		if DumpToString_list[0]=="EDGE":
+			pass
+		elif DumpToString_list[0]=="Free":
+			pass
 		else:
-			self.name = DumpToString_list[3].replace('"',"")
+			self.struct=DumpToString_list[0]
+			self.kind=DumpToString_list[1]
+			self.order=DumpToString_list[2]
+			if "(refers" in DumpToString_list[3]:
+				self.refer=DumpToString_list[5][0:-1]
+				if "=>[" in DumpToString_list[6]:
+					self.name=DumpToString_list[6]
+				else:
+					self.name=DumpToString_list[6]
+			else:
+				self.name = DumpToString_list[3].replace('"',"")
 			
 		print(self.struct,self.kind,self.order,self.name,self.refer)
 			
@@ -58,6 +66,8 @@ class DumpProcess(object):
 		for i in self.assembly:
 			for j in i:
 				a=AssembleNode(j)
+				if a.struct=="None":
+					continue
 				self.root_dict[a.order]=(a)
 				
 			
@@ -85,6 +95,7 @@ class DisplayManager(object):
 			end_with = str(filepath).lower()
 			if end_with.endswith(".step") or end_with.endswith("stp"):
 				self.import_shape,assemble_relation_list,DumpToString =assemble.read_step_file_with_names_colors(filepath)
+				print(DumpToString)
 				root_dict=DumpProcess(DumpToString).root_dict
 						
 				

@@ -161,11 +161,11 @@ def read_step_file_with_names_colors(filename):
         step_reader.Transfer(doc)
     locs = []
     DumpToString = shape_tool.DumpToString()
-    #print(99999,DumpToString)
+    
 
     def _get_sub_shapes(lab, loc):
         name = lab.GetLabelName()
-        print(name)
+        #print(name)
         #layer_tool
         #global cnt, lvl
         #cnt += 1
@@ -328,7 +328,7 @@ def read_step_file_with_names_colors(filename):
         #global cnt
         #cnt += 1
 
-        print("Number of shapes at root :", labels.Length())
+        #print("Number of shapes at root :", labels.Length())
         for i in range(labels.Length()):
             root_item = labels.Value(i+1)
             #print(root_item)
