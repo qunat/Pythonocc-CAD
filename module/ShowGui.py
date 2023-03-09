@@ -9,7 +9,6 @@
 from OCC.Display.qtDisplay import qtViewer3d
 from PyQt5 import QtCore, QtGui, QtWidgets
 from ui import MainGui
-
 from PyQt5.QtWidgets import (QWidget, QTableWidget, QHBoxLayout, QApplication, QTableWidgetItem, QAbstractItemView,
 							 QComboBox, QPushButton, QDockWidget, QListWidget)
 from PyQt5.QtGui import QKeySequence as QKSec
@@ -21,6 +20,52 @@ from GUI.RibbonWidget import *
 from PyQt5.QtCore import  Qt
 from module import DisplayManager,ModelTree
 
+
+class Auto_create_ribbon(object):
+	def __init__(self,parent=None,table_name=""):
+		self.parent=parent
+		self.tab = self.parent._ribbon.add_ribbon_tab(table_name)  # table 选项
+		self.Read_ribbon_ini()
+	def Read_ribbon_ini(self):
+		self.ribbon_list=[]
+		with open("./GUI/RibbonIni.ini","r",encoding="utf-8") as f:
+			inner=f.readlines()
+			for i in inner:
+				if i=="\t":
+					continue
+				else:
+					i=i.replace("\n","")
+					self.ribbon_list.append(i)
+			for i in self.ribbon_list:
+				print(i)
+	def Create_ribbon(self):
+		pass
+	
+	def Set_font(self):
+		font = QtGui.QFont()
+		font.setFamily("微软雅黑")
+		font.setPointSize(12)
+		#home_tab.setFont(font)
+	
+	def add_action(self, caption, icon_name, status_tip, icon_visible, connection, shortcut=None):
+		action = QAction(get_icon(icon_name), caption, self)
+		action.setStatusTip(status_tip)
+		action.triggered.connect(connection)
+		action.setIconVisibleInMenu(icon_visible)
+		if shortcut is not None:
+			action.setShortcuts(shortcut)
+		self.addAction(action)
+		return action
+	
+	def Add_action_function(self,caption="",icon_name="",fuction=None):
+		self._action = self.add_action(caption, icon_name, "Open file", True, fuction, QKSec.Open)
+		
+	def Add_panel(self,panel_name):
+		self.Add_action_function()
+		self.file_pane = self.tab.add_ribbon_pane(panel_name)  # 选项下的菜单
+		self.file_pane.add_ribbon_widget(RibbonButton(self, self._action, True))
+		self.file_pane.add_ribbon_widget(RibbonButton(self, self._action, True))
+		#
 class Ui_MainWindow(MainGui.Ui_MainWindow):
 	def __init__(self):
 		self.setupUi(self)
@@ -125,6 +170,8 @@ class Ui_MainWindow(MainGui.Ui_MainWindow):
 		return action
 
 	def init_ribbon(self):
+		
+		
 		#------文件选项----------------------------------
 		home_tab = self._ribbon.add_ribbon_tab("文件(F)")#table 选项
 		font = QtGui.QFont()
@@ -146,6 +193,9 @@ class Ui_MainWindow(MainGui.Ui_MainWindow):
 		grid.addWidget(self._text_box1, 1, 2)
 		grid.addWidget(self._text_box2, 2, 2)
 		grid.addWidget(self._text_box3, 3, 2)
+		# test----------------------------------------------
+		tab=Auto_create_ribbon(parent=self, table_name="选型")
+		#tab.Add_panel("打开",None)
 
 		# ------View选项----------------------------------
 		view_panel = home_tab.add_ribbon_pane("View")#选项下的菜单
