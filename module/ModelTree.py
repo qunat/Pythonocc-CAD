@@ -12,14 +12,14 @@ class ModelTree(QtWidgets.QWidget):
 		self.tree = QTreeWidget()
 		self.tree.expandAll()# 节点全部展开
 		self.tree.setStyle(QtWidgets.QStyleFactory.create('windows'))#有加号
-		self.tree.setColumnCount(1)# 设置列数
-		self.tree.setHeaderLabels(['控件', '值'])# 设置树形控件头部的标题
+		self.tree.setColumnCount(2)# 设置列数
+		self.tree.setHeaderLabels(['名称', '附件',"最新"])# 设置树形控件头部的标题
+		#self.tree.setAlternatingRowColors(True)
 		self.tree_root_dict={}
 		self.tree_root_child_dict = {}
 		self.tree_Node_dict={}
 		self.root_dict={}
 		self.node_dict={}
-
 		# 设置根节点
 		self.history_model_root = QTreeWidgetItem(self.tree)
 		self.history_model_root.setText(0, '历史模型记录')
@@ -33,7 +33,7 @@ class ModelTree(QtWidgets.QWidget):
 
 		# todo 优化2 设置根节点的背景颜色
 		#brush_red = QBrush(Qt.red)
-		#root.setBackground(0, brush_red)
+		#self.history_model_root.setBackground(0, brush_red)
 		#brush_blue = QBrush(Qt.blue)
 		#root.setBackground(1, brush_blue)
 		# 设置树形控件的列的宽度
@@ -57,9 +57,8 @@ class ModelTree(QtWidgets.QWidget):
 				self.node_dict[root_order] = NodeList
 				
 		self.root_dict=root_dict
-		
-		
 		self.Create_ModelTree(self.node_dict["0:1:1:1"])
+		self.tree.expandAll()  # 节点全部展开
 				
 	def Create_ModelTree(self,Nodelist=[]):
 		# 设置总装配体根节点/子装配体根节点
@@ -67,15 +66,15 @@ class ModelTree(QtWidgets.QWidget):
 		if Nodelist[2]=="0:1:1:1":
 			self.tree_root_dict[Nodelist[1]] = QTreeWidgetItem(self.history_model_root)
 			self.tree_root_dict[Nodelist[1]].setText(0, Nodelist[1])
-			self.tree_root_dict[Nodelist[1]].setText(1, 'part')
 			self.tree_root_dict[Nodelist[1]].setIcon(0, QIcon('screenruler.ico'))
+			self.tree_root_dict[Nodelist[1]].setCheckState(0, Qt.Checked)
 			
 		else:
 			
 			self.tree_root_dict[Nodelist[1]] = QTreeWidgetItem(self.tree_root_dict[Nodelist[0]])
 			self.tree_root_dict[Nodelist[1]].setText(0, Nodelist[1])
-			self.tree_root_dict[Nodelist[1]].setText(1, 'part')
 			self.tree_root_dict[Nodelist[1]].setIcon(0, QIcon('screenruler.ico'))
+			self.tree_root_dict[Nodelist[1]].setCheckState(0, Qt.Checked)
 		father_root=Nodelist[1]
 		#print("enter",Nodelist[3:len(Nodelist)])
 		#设置子节点
@@ -91,8 +90,8 @@ class ModelTree(QtWidgets.QWidget):
 						self.tree_root_child_dict[self.root_dict[order].name] = QTreeWidgetItem(
 							self.tree_root_dict[Nodelist[1]])
 						self.tree_root_child_dict[self.root_dict[order].name].setText(0, self.root_dict[order].name)
-						self.tree_root_child_dict[self.root_dict[order].name].setText(1, 'part')
 						self.tree_root_child_dict[self.root_dict[order].name].setIcon(0, QIcon('screenruler.ico'))
+						self.tree_root_child_dict[self.root_dict[order].name].setCheckState(0, Qt.Checked)
 						if self.root_dict[order].struct == "PART" and Nodelist.index(order) == len(Nodelist)-1:
 							break
 						# todo 优化1 设置节点的状态
@@ -108,8 +107,8 @@ class ModelTree(QtWidgets.QWidget):
 					# 设置子节点1
 					self.tree_root_child_dict[self.root_dict[order].name] = QTreeWidgetItem(self.tree_root_dict[Nodelist[1]])
 					self.tree_root_child_dict[self.root_dict[order].name].setText(0, self.root_dict[order].name)
-					self.tree_root_child_dict[self.root_dict[order].name].setText(1, 'part')
 					self.tree_root_child_dict[self.root_dict[order].name].setIcon(0, QIcon('screenruler.ico'))
+					self.tree_root_child_dict[self.root_dict[order].name].setCheckState(0, Qt.Checked)
 					#print(self.root_dict[order].name)
 					if self.root_dict[order].struct=="PART" and Nodelist.index(old_order)==len(Nodelist)-1:
 						#print(114,Nodelist.index(old_order))

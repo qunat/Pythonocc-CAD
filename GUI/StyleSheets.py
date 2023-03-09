@@ -20,7 +20,7 @@ class Stylesheets(object):
         self.make_stylesheet("ribbonSmallButton", "stylesheets/ribbonSmallButton.css")
 
     def make_stylesheet(self, name, path):
-        with open(path) as data_file:
+        with open(path,encoding="utf-8") as data_file:
             stylesheet = data_file.read()
 
         self._stylesheets[name] = stylesheet
