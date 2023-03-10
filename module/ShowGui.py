@@ -22,12 +22,15 @@ from module import DisplayManager,ModelTree
 
 
 class Auto_create_ribbon(object):
-	def __init__(self,parent=None,table_name=""):
+	def __init__(self,parent=None):
 		self.parent=parent
-		self.tab = self.parent._ribbon.add_ribbon_tab(table_name)  # table 选项
-		self.Read_ribbon_ini()
-	def Read_ribbon_ini(self):
-		self.ribbon_list=[]
+		self.ribbon_table={}  # table 选项
+		self._action_dict = {}
+		self.ribbon_list = []
+		self.panel_dict = {}
+		self.Read_ribbon_init()
+		self.Create_ribbon()
+	def Read_ribbon_init(self):
 		with open("./GUI/RibbonIni.ini","r",encoding="utf-8") as f:
 			inner=f.readlines()
 			for i in inner:
@@ -36,10 +39,25 @@ class Auto_create_ribbon(object):
 				else:
 					i=i.replace("\n","")
 					self.ribbon_list.append(i)
-			for i in self.ribbon_list:
-				print(i)
 	def Create_ribbon(self):
-		pass
+		for ribbon in self.ribbon_list:
+			ribbon_list=ribbon.split(" ")
+			table_name=ribbon_list[0].split("=")[1]
+			panel_name = ribbon_list[1].split("=")[1]
+			action_name = ribbon_list[2].split("=")[1]
+			icon_name = ribbon_list[3].split("=")[1]
+			status_tip = ribbon_list[4].split("=")[1]
+			icon_visible = ribbon_list[5].split("=")[1]
+			connection = ribbon_list[6].split("=")[1]
+			shortcut = ribbon_list[7].split("=")[1]
+			if not table_name in self.ribbon_table.keys():
+				self.ribbon_table[table_name]=self.parent._ribbon.add_ribbon_tab(table_name) #创建table
+			self._action_dict[action_name]=self.add_action(action_name, icon_name, status_tip, True, eval(connection), None)#创建action
+			if not panel_name in self.panel_dict.keys():
+				self.panel_dict[panel_name]=self.ribbon_table[table_name].add_ribbon_pane(panel_name)#创建panel
+			self.panel_dict[panel_name].add_ribbon_widget(RibbonButton(self.parent, self._action_dict[action_name], True))
+			
+			
 	
 	def Set_font(self):
 		font = QtGui.QFont()
@@ -48,24 +66,20 @@ class Auto_create_ribbon(object):
 		#home_tab.setFont(font)
 	
 	def add_action(self, caption, icon_name, status_tip, icon_visible, connection, shortcut=None):
-		action = QAction(get_icon(icon_name), caption, self)
+		action = QAction(get_icon(icon_name), caption, self.parent)
 		action.setStatusTip(status_tip)
 		action.triggered.connect(connection)
 		action.setIconVisibleInMenu(icon_visible)
 		if shortcut is not None:
 			action.setShortcuts(shortcut)
-		self.addAction(action)
+		#self.addAction(action)
 		return action
 	
-	def Add_action_function(self,caption="",icon_name="",fuction=None):
-		self._action = self.add_action(caption, icon_name, "Open file", True, fuction, QKSec.Open)
-		
-	def Add_panel(self,panel_name):
-		self.Add_action_function()
-		self.file_pane = self.tab.add_ribbon_pane(panel_name)  # 选项下的菜单
-		self.file_pane.add_ribbon_widget(RibbonButton(self, self._action, True))
-		self.file_pane.add_ribbon_widget(RibbonButton(self, self._action, True))
-		#
+	
+	
+	
+	
+	
 class Ui_MainWindow(MainGui.Ui_MainWindow):
 	def __init__(self):
 		self.setupUi(self)
@@ -194,7 +208,7 @@ class Ui_MainWindow(MainGui.Ui_MainWindow):
 		grid.addWidget(self._text_box2, 2, 2)
 		grid.addWidget(self._text_box3, 3, 2)
 		# test----------------------------------------------
-		tab=Auto_create_ribbon(parent=self, table_name="选型")
+		tab=Auto_create_ribbon(parent=self)
 		#tab.Add_panel("打开",None)
 
 		# ------View选项----------------------------------
