@@ -92,7 +92,7 @@ class DisplayManager(object):
 			# 判断文件类型 选择对应的导入函数
 			end_with = str(filepath).lower()
 			if end_with.endswith(".step") or end_with.endswith("stp"):
-				self.import_shape,assemble_relation_list,DumpToString =assemble.read_step_file_with_names_colors(filepath)
+				self.import_shape,assemble_relation_list,DumpToString =Assemble.read_step_file_with_names_colors(filepath)
 				print(DumpToString)
 				root_dict=DumpProcess(DumpToString).root_dict
 						
@@ -136,7 +136,7 @@ class DisplayManager(object):
 			# 判断文件类型 选择对应的导入函数
 			end_with = str(filepath).lower()
 			if end_with.endswith(".step") or end_with.endswith("stp"):
-				self.import_shape,assemble_relation_list =assemble.read_step_file_with_names_colors(filepath)
+				self.import_shape,assemble_relation_list =Assemble.read_step_file_with_names_colors(filepath)
 				for shpt_lbl_color in self.import_shape:
 					label, c,property= self.import_shape[shpt_lbl_color]
 					#color=Quantity_Color(c.Red(),c.Green(), c.Blue(),Quantity_TOC_RGB)

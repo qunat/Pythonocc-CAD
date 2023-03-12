@@ -29,7 +29,6 @@ class Mywindown(QtWidgets.QMainWindow, ShowGui.Ui_MainWindow,MainGui.Ui_MainWind
 if __name__ == '__main__':
 	# checks if QApplication already exists
 	app = QtWidgets.QApplication.instance()
-	# create QApplication if it doesnt exist
 	if not app:
 		app = QtWidgets.QApplication(sys.argv)
 	# 启动界面
