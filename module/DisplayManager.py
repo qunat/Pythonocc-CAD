@@ -69,12 +69,6 @@ class DumpProcess(object):
 				self.root_dict[a.order]=(a)
 				
 			
-			
-	
-				
-				
-
-
 class DisplayManager(object):
 	def __init__(self,parent=None):
 		self.canve=qtDisplay.qtViewer3d(parent)
