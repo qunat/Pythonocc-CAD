@@ -16,7 +16,7 @@ class Ui_MainWindow(object):
 		MainWindow.setObjectName("MainWindow")
 		MainWindow.resize(952, 693)
 		icon = QtGui.QIcon()
-		icon.addPixmap(QtGui.QPixmap("./icons/logo-color.ico"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+		icon.addPixmap(QtGui.QPixmap("./icons/logo.ico"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
 		MainWindow.setWindowIcon(icon)
 		MainWindow.setStyleSheet("")
 		MainWindow.setIconSize(QtCore.QSize(160, 128))
@@ -25,6 +25,7 @@ class Ui_MainWindow(object):
 		self.centralwidget.setStyleSheet("")
 		self.centralwidget.setObjectName("centralwidget")
 		MainWindow.setCentralWidget(self.centralwidget)
+		
 		self.statusbar = QtWidgets.QStatusBar(MainWindow)
 		self.statusbar.setObjectName("statusbar")
 		MainWindow.setStatusBar(self.statusbar)

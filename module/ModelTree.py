@@ -14,7 +14,8 @@ class ModelTree(QtWidgets.QWidget):
 		self.tree.setStyle(QtWidgets.QStyleFactory.create('windows'))#有加号
 		self.tree.setColumnCount(2)# 设置列数
 		self.tree.setHeaderLabels(['名称', '附件',"最新"])# 设置树形控件头部的标题
-		#self.tree.setAlternatingRowColors(True)
+		self.tree.setAlternatingRowColors(True)
+		#self.tree.setRootIsDecorated(False)
 		self.tree_root_dict={}
 		self.tree_root_child_dict = {}
 		self.tree_Node_dict={}
@@ -25,6 +26,7 @@ class ModelTree(QtWidgets.QWidget):
 		self.history_model_root.setText(0, '历史模型记录')
 		self.history_model_root.setIcon(0, QIcon('sync.ico'))
 		self.history_model_root.setCheckState(0, Qt.Checked)
+		
 
 		self.wcs_root = QTreeWidgetItem(self.history_model_root)
 		self.wcs_root.setText(0, '坐标系')
@@ -37,16 +39,15 @@ class ModelTree(QtWidgets.QWidget):
 		#brush_blue = QBrush(Qt.blue)
 		#root.setBackground(1, brush_blue)
 		# 设置树形控件的列的宽度
-		self.tree.setColumnWidth(0, 150)
+		self.tree.setColumnWidth(0, 250)
 		# 加载根节点的所有属性与子控件
 		# self.tree.addTopLevelItem(root)
 
 	def Create_tree_NodeList(self,root_dict={}):
-
 		for part_property in root_dict.values():
-			if part_property.struct=="None":
+			if part_property.name==None:
 				continue
-			if  part_property.struct=="ASSEMBLY":
+			elif  part_property.struct=="ASSEMBLY":
 				root_order=part_property.order
 				root_name=part_property.name
 				NodeList = ["father_root"]

@@ -13,12 +13,13 @@ QTabWidget:pane {
     top: -1;
 }
 QTabWidget{
-        font: 10pt "黑体";
+        font: 10pt "微软雅黑";
+        background-color:#00001
 
 }
 
 QTabWidget::tab-bar {
-    left: 2px;
+    left: 5px;
 }
 
 QTabBar::tab {
@@ -30,6 +31,8 @@ QTabBar::tab {
     border-top-right-radius: 3px;
     margin-right:5px;
     color:#2A2A2A;
+    background-color:#00001
+
  }
 
 QTabBar::tab:hover {

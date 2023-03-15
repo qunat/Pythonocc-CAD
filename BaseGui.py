@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 from OCC.Display.backend import load_backend
 from PyQt5 import QtWidgets,QtGui
+from PyQt5.QtWidgets import QApplication, QStyleFactory
+
 from ui import MainGui
 # ------------------------------------------------------------开始初始化环境
 backend_str = None
@@ -28,6 +30,7 @@ class Mywindown(QtWidgets.QMainWindow, ShowGui.Ui_MainWindow,MainGui.Ui_MainWind
 
 if __name__ == '__main__':
 	# checks if QApplication already exists
+	QApplication.setStyle(QStyleFactory.create('Fusion'))
 	app = QtWidgets.QApplication.instance()
 	if not app:
 		app = QtWidgets.QApplication(sys.argv)

@@ -78,28 +78,32 @@ class Auto_create_ribbon(object):
 		return action
 	def void_funtion(self):
 		pass
+	
+	
+	
 class Ui_MainWindow(MainGui.Ui_MainWindow):
 	def __init__(self):
 		self.setupUi(self)
+		#self.setWindowFlags(Qt.FramelessWindowHint)
 		self.Displayshape_core=DisplayManager.DisplayManager(self)
 		self.OCAF=OCAFModule.OCAF(parent=self)
 		self.modeltree=ModelTree.ModelTree()
 		self.setCentralWidget(self.Displayshape_core.canve)
-		# Ribbon
+		# Create Ribbon
 		self._ribbon = RibbonWidget(self)
 		self.addToolBar(self._ribbon)
 		self.init_ribbon()
-		#ToolBar
+		#Create ToolBar
 		self.addToolBar(QtCore.Qt.TopToolBarArea, self.toolBar)
 		self.insertToolBarBreak(self.toolBar)
 	
 		#self.Displayshape_core.canve.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
 		#self.Displayshape_core.canve.customContextMenuRequested['QPoint'].connect(self.rightMenuShow)
 		
-		#左侧模型树
+		#Create ModelTree
 		self.items = QDockWidget('组合浏览器', self)  # 新建QDockWidget
 		self.addDockWidget(Qt.LeftDockWidgetArea, self.items)  # 在主显示区域右侧显示
-		self.items.setMaximumWidth(400)  # 设置最小大小
+		self.items.setMinimumWidth(350)# 设置最小大小
 		self.items.setWidget(self.modeltree.tree)
 
 	def closeEvent(self, close_event):
