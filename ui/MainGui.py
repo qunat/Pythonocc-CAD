@@ -9,6 +9,8 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtGui import QIcon
+from PyQt5.QtWidgets import QAction
 
 
 class Ui_MainWindow(object):
@@ -30,10 +32,12 @@ class Ui_MainWindow(object):
 		self.statusbar.setObjectName("statusbar")
 		MainWindow.setStatusBar(self.statusbar)
 		
-		self.toolBar = QtWidgets.QToolBar(MainWindow)
+		#exitAct = QAction(QIcon('./icons/copy.png'), 'Exit', self)
+		self.toolBar = QtWidgets.QToolBar("工具栏",MainWindow)
 		self.toolBar.setObjectName("toolBar")
 		self.toolBar.addSeparator()
-		self.toolBar.setIconSize(QtCore.QSize(128, 128))
+		self.toolBar.setIconSize(QtCore.QSize(20, 20))
+		#self.toolBar.addAction(exitAct)
 		#MainWindow.addToolBar(QtCore.Qt.TopToolBarArea, self.toolBar)
 		
 	

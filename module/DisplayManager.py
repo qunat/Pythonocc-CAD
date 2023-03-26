@@ -73,12 +73,12 @@ class DumpProcess(object):
 			
 class DisplayManager(object):
 	def __init__(self,parent=None):
-		self.canve=qtDisplay.qtViewer3d(parent)
+		self.canva=qtDisplay.qtViewer3d(parent)
 		self.parent=parent
 		self.part_maneger_core_dict={}
 		
 	def Dispalyshape(self):
-		self.canve._display.DisplayColoredShape()
+		self.canva._display.DisplayColoredShape()
 
 	
 

@@ -88,7 +88,7 @@ class Ui_MainWindow(MainGui.Ui_MainWindow):
 		self.Displayshape_core=DisplayManager.DisplayManager(self)
 		self.OCAF=OCAFModule.OCAF(parent=self)
 		self.modeltree=ModelTree.ModelTree()
-		self.setCentralWidget(self.Displayshape_core.canve)
+		self.setCentralWidget(self.Displayshape_core.canva)
 		# Create Ribbon
 		self._ribbon = RibbonWidget(self)
 		self.addToolBar(self._ribbon)
@@ -96,9 +96,17 @@ class Ui_MainWindow(MainGui.Ui_MainWindow):
 		#Create ToolBar
 		self.addToolBar(QtCore.Qt.TopToolBarArea, self.toolBar)
 		self.insertToolBarBreak(self.toolBar)
-	
-		#self.Displayshape_core.canve.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
-		#self.Displayshape_core.canve.customContextMenuRequested['QPoint'].connect(self.rightMenuShow)
+		exitAct = QAction(QIcon('./icons/copy.png'), 'Exit', self)
+		self.toolBar.addAction(exitAct)
+		
+		#右键单击弹出界面
+		self.menuBar = QtWidgets.QMenuBar()
+		self.menuBar.setGeometry(QtCore.QRect(0, 0, 606 , 26))
+		self.menuBar.setObjectName("menuBar")
+		self.Displayshape_core.canva.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
+		self.Displayshape_core.canva.customContextMenuRequested['QPoint'].connect(self.rightMenuShow)
+		#self.Displayshape_core.canva.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
+		#self.Displayshape_core.canva.customContextMenuRequested['QPoint'].connect(self.rightMenuShow)
 		
 		#Create ModelTree
 		self.items = QDockWidget('组合浏览器', self)  # 新建QDockWidget
@@ -116,20 +124,30 @@ class Ui_MainWindow(MainGui.Ui_MainWindow):
 		try:
 			if True:
 				rightMenu = QtWidgets.QMenu(self.menuBar)
-				self.actionreboot = QtWidgets.QAction(self.canva)
-				self.actionreboot.setObjectName("actionreboot")
-				self.actionreboot.setText(QtCore.QCoreApplication.translate("MainWindow", "距离测量"))
-
-				self.actionreboot_1 = QtWidgets.QAction(self.canva)
+				self.actionreboot_1 = QtWidgets.QAction(self.Displayshape_core.canva)
 				self.actionreboot_1.setObjectName("actionreboot_1")
-				self.actionreboot_1.setText(QtCore.QCoreApplication.translate("MainWindow", "孔径测量"))
+				self.actionreboot_1.setText(QtCore.QCoreApplication.translate("MainWindow", "从列表中选择"))
+				
+				self.actionreboot_2 = QtWidgets.QAction(self.Displayshape_core.canva)
+				self.actionreboot_2.setObjectName("actionreboot_2")
+				self.actionreboot_2.setText(QtCore.QCoreApplication.translate("MainWindow", "隐藏"))
+				
+				self.actionreboot_3 = QtWidgets.QAction(self.Displayshape_core.canva)
+				self.actionreboot_3.setObjectName("actionreboot_2")
+				self.actionreboot_3.setText(QtCore.QCoreApplication.translate("MainWindow", "删除"))
 
-				rightMenu.addAction(self.actionreboot)
+				self.actionreboot_4 = QtWidgets.QAction(self.Displayshape_core.canva)
+				self.actionreboot_4.setObjectName("actionreboot_4")
+				self.actionreboot_4.setText(QtCore.QCoreApplication.translate("MainWindow", "属性"))
+
+				
 				rightMenu.addAction(self.actionreboot_1)
+				rightMenu.addAction(self.actionreboot_2)
+				rightMenu.addAction(self.actionreboot_3)
+				rightMenu.addAction(self.actionreboot_4)
 
-				self.actionreboot.triggered.connect(self.Measure_distance_fun)
-				self.actionreboot_1.triggered.connect(self.Measure_diameter_fun)
-
+				#self.actionreboot.triggered.connect(self.Measure_distance_fun)
+				#self.actionreboot_1.triggered.connect(self.Measure_diameter_fun)
 				rightMenu.exec_(QtGui.QCursor.pos())
 
 		except Exception as e:
