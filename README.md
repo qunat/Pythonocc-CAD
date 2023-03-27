@@ -1,5 +1,5 @@
-# BrepCAD
-The BrepCAD open source framework is adapted from the SimpleGui in pythonocc. It incorporates the beautiful ribbon style, which also uses the open source library QupyRibbon in Github.
+# pythonocc-CAD
+The pythonocc CAD open source framework is adapted from the SimpleGui in pythonocc. It incorporates the beautiful ribbon style, which also uses the open source library QupyRibbon in Github.
 
 This framework can basically meet the needs of graduation design of college students and enterprise level lightweight CAD software development. Because it is based on the python language, the running efficiency cannot be compared with that of the c++version. But there is no bad language in the world. Only the less excellent programmers can write software with good performance as long as they continue to optimize the algorithm.
 
@@ -48,9 +48,9 @@ conda install -c conda-forge pythonocc-core=7.4
 
 #Run it 
 ```
-git clone https://github.com/qunat/BrepCAD.git
+git clone https://github.com/qunat/Pythonocc-CAD.git
 conda activate your environment
-cd BrepCAD
+cd pythonocc-CAD
 python BaseGui.py
 ```
 
