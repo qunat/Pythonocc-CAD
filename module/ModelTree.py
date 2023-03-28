@@ -45,6 +45,7 @@ class ModelTree(QtWidgets.QWidget):
 
 	def Create_tree_NodeList(self,root_dict={}):
 		for part_property in root_dict.values():
+			
 			if part_property.name==None:
 				continue
 			elif  part_property.struct=="ASSEMBLY":
@@ -53,7 +54,8 @@ class ModelTree(QtWidgets.QWidget):
 				NodeList = ["father_root"]
 				NodeList.append(root_name)
 				NodeList.append(part_property.order)
-			elif part_property.order[0:len(part_property.order)-2]==root_order:
+				
+			elif part_property.order[0:part_property.order.rfind(":")]==root_order:
 				NodeList.append(part_property.order)
 				self.node_dict[root_order] = NodeList
 				
@@ -79,6 +81,7 @@ class ModelTree(QtWidgets.QWidget):
 		father_root=Nodelist[1]
 		#print("enter",Nodelist[3:len(Nodelist)])
 		#设置子节点
+		print(Nodelist)
 		for order in Nodelist[3:len(Nodelist)]:
 			#print(order,"ok")
 			if self.root_dict[order].refer == None:

@@ -9,7 +9,7 @@ from PyQt5.QtWidgets import QFileDialog
 from module import qtDisplay
 from OCC.Extend.DataExchange import read_step_file,read_iges_file,read_stl_file
 from module import Assemble,Process_message_word
-from module.DisplayManager import DumpProcess
+from module.DisplayManager import DumpProcess,NoDumpProcess
 
 
 def Thread_derocate(fun):
@@ -34,16 +34,17 @@ class OCAF(object):
 			if end_with.endswith(".step") or end_with.endswith("stp"):
 				self.import_shape, assemble_relation_list, DumpToString = Assemble.read_step_file_with_names_colors(
 					filepath)
-				print(DumpToString)
-				
+				#print(DumpToString)
+				#print(self.import_shape)
 				# 判断是否为标准的装配体结构
 				try:
 					root_dict = DumpProcess(DumpToString).root_dict
 				except:
-					root_dict=None
+					root_dict=NoDumpProcess(self.import_shape.keys()).root_dict
 					pass
 				
 				for shpt_lbl_color in self.import_shape:
+				
 					label, c, property = self.import_shape[shpt_lbl_color]
 					# color=Quantity_Color(c.Red(),c.Green(), c.Blue(),Quantity_TOC_RGB)
 					if not isinstance(shpt_lbl_color, TopoDS_Solid):  # 排除非solid
@@ -62,7 +63,6 @@ class OCAF(object):
 				self.parent.statusBar().showMessage('状态：软件运行正常')
 				
 				# 建立模型树
-				root_dict = root_dict
 				if root_dict!=None:
 					self.parent.modeltree.Create_tree_NodeList(root_dict=root_dict)
 				else:

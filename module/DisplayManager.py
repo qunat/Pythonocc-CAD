@@ -43,7 +43,7 @@ class AssembleNode(object):
 			else:
 				self.name = DumpToString_list[3].replace('"',"")
 			
-		print(self.struct,self.kind,self.order,self.name,self.refer)
+		#print(self.struct,self.kind,self.order,self.name,self.refer)
 			
 		
 class DumpProcess(object):
@@ -70,6 +70,38 @@ class DumpProcess(object):
 					continue
 				self.root_dict[a.order]=(a)
 				
+				
+class NoDumpProcess(object):
+	def __init__(self,import_shape=[],name="asm"):
+		self.root_dict = {}  # {order:AssembleNode}
+		self.DumpToString_list=[]
+		self.Create_DumpToString(import_shape,name)
+		self.Process()
+	def Create_DumpToString(self,import_shape,name):
+		DumpToString="ASSEMBLY COMPOUND 0:1:1:1 \"{}\" ".format(name)
+		self.DumpToString_list.append(DumpToString)
+		code=1
+		for i in import_shape:
+			if not isinstance(i, TopoDS_Solid):  # 排除非solid
+				continue
+			DumpToString = "PART SOLID 0:1:1:1:{} \"{}\" ".format(code,"SOLID")
+			self.DumpToString_list.append(DumpToString)
+			code+=1
+		print(self.DumpToString_list)
+		
+	def Process(self):
+		for j in self.DumpToString_list:
+			print(j)
+			a=AssembleNode(j)
+			if a.struct=="None":
+				continue
+			self.root_dict[a.order]=(a)
+		
+			
+		
+		
+	
+		
 			
 class DisplayManager(object):
 	def __init__(self,parent=None):

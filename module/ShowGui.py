@@ -116,6 +116,7 @@ class Ui_MainWindow(MainGui.Ui_MainWindow):
 		self.items.setMinimumWidth(350)# 设置最小大小
 		self.items.setWidget(self.modeltree.tree)
 		
+		# Create PythonConsole
 		self.ipython = Ipython.ConsoleWidget(customBanner=None)
 		self.items_ipython = QDockWidget('PythonConsole', self)  # 新建QDockWidget
 		self.addDockWidget(Qt.BottomDockWidgetArea, self.items_ipython)  # 在主显示区域右侧显示
