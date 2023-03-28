@@ -14,8 +14,9 @@ from GUI.Icons import get_icon
 from GUI.RibbonTextbox import RibbonTextbox
 from GUI.RibbonWidget import *
 from PyQt5.QtCore import  Qt
-from module import DisplayManager,ModelTree,OCAFModule
+from module import DisplayManager,ModelTree,OCAFModule,Ipython
 
+from PyQt5 import QtGui,QtWidgets
 
 class Auto_create_ribbon(object):
 	def __init__(self,parent=None):
@@ -99,6 +100,7 @@ class Ui_MainWindow(MainGui.Ui_MainWindow):
 		exitAct = QAction(QIcon('./icons/copy.png'), 'Exit', self)
 		self.toolBar.addAction(exitAct)
 		
+		
 		#右键单击弹出界面
 		self.menuBar = QtWidgets.QMenuBar()
 		self.menuBar.setGeometry(QtCore.QRect(0, 0, 606 , 26))
@@ -113,6 +115,13 @@ class Ui_MainWindow(MainGui.Ui_MainWindow):
 		self.addDockWidget(Qt.LeftDockWidgetArea, self.items)  # 在主显示区域右侧显示
 		self.items.setMinimumWidth(350)# 设置最小大小
 		self.items.setWidget(self.modeltree.tree)
+		
+		self.ipython = Ipython.ConsoleWidget(customBanner=None)
+		self.items_ipython = QDockWidget('PythonConsole', self)  # 新建QDockWidget
+		self.addDockWidget(Qt.BottomDockWidgetArea, self.items_ipython)  # 在主显示区域右侧显示
+		self.items_ipython.setMaximumHeight(150)  # 设置最小大小
+		self.items_ipython.setWidget(self.ipython)
+		
 
 	def closeEvent(self, close_event):
 		pass
