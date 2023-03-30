@@ -72,12 +72,18 @@ class DumpProcess(object):
 				
 				
 class NoDumpProcess(object):
-	def __init__(self,import_shape=[],name="asm"):
+	def __init__(self,import_shape=[],file="asm"):
 		self.root_dict = {}  # {order:AssembleNode}
 		self.DumpToString_list=[]
-		self.Create_DumpToString(import_shape,name)
+		self.Create_DumpToString(import_shape,file)
 		self.Process()
-	def Create_DumpToString(self,import_shape,name):
+	def Create_DumpToString(self,import_shape,file):
+		try:
+			name=file.split("/")[-1].split(".")[0]
+
+		except:
+			name = file.split("\\")[-1].split(".")[0]
+			
 		DumpToString="ASSEMBLY COMPOUND 0:1:1:1 \"{}\" ".format(name)
 		self.DumpToString_list.append(DumpToString)
 		code=1
@@ -87,11 +93,11 @@ class NoDumpProcess(object):
 			DumpToString = "PART SOLID 0:1:1:1:{} \"{}\" ".format(code,"SOLID")
 			self.DumpToString_list.append(DumpToString)
 			code+=1
-		print(self.DumpToString_list)
+		#print(self.DumpToString_list)
 		
 	def Process(self):
 		for j in self.DumpToString_list:
-			print(j)
+			#print(j)
 			a=AssembleNode(j)
 			if a.struct=="None":
 				continue

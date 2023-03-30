@@ -13,6 +13,7 @@ from GUI.RibbonScrollarea import RibbonScrollarea
 from GUI.Icons import get_icon
 from GUI.RibbonTextbox import RibbonTextbox
 from GUI.RibbonWidget import *
+from GUI.TittleBarWidget import *
 from PyQt5.QtCore import  Qt
 from module import DisplayManager,ModelTree,OCAFModule,Ipython
 
@@ -85,14 +86,19 @@ class Auto_create_ribbon(object):
 class Ui_MainWindow(MainGui.Ui_MainWindow):
 	def __init__(self):
 		self.setupUi(self)
-		#self.setWindowFlags(Qt.FramelessWindowHint)
+		self.setWindowFlags(Qt.FramelessWindowHint)
 		self.Displayshape_core=DisplayManager.DisplayManager(self)
 		self.OCAF=OCAFModule.OCAF(parent=self)
 		self.modeltree=ModelTree.ModelTree()
 		self.setCentralWidget(self.Displayshape_core.canva)
+		# Create TittleBar
+		self.TittleBar = TittleBarWidget(self)
+		self.addToolBar(self.TittleBar)
+		#self.init_ribbon()
 		# Create Ribbon
 		self._ribbon = RibbonWidget(self)
 		self.addToolBar(self._ribbon)
+		self.insertToolBarBreak(self._ribbon)
 		self.init_ribbon()
 		#Create ToolBar
 		self.addToolBar(QtCore.Qt.TopToolBarArea, self.toolBar)

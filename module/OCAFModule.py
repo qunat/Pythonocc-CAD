@@ -40,7 +40,7 @@ class OCAF(object):
 				try:
 					root_dict = DumpProcess(DumpToString).root_dict
 				except:
-					root_dict=NoDumpProcess(self.import_shape.keys()).root_dict
+					root_dict=NoDumpProcess(self.import_shape.keys(),file=filepath).root_dict
 					pass
 				
 				for shpt_lbl_color in self.import_shape:
