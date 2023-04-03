@@ -86,7 +86,7 @@ class Auto_create_ribbon(object):
 class Ui_MainWindow(MainGui.Ui_MainWindow):
 	def __init__(self):
 		self.setupUi(self)
-		#self.setWindowFlags(Qt.FramelessWindowHint)
+		self.setWindowFlags(Qt.FramelessWindowHint)
 		self.Displayshape_core=DisplayManager.DisplayManager(self)
 		self.OCAF=OCAFModule.OCAF(parent=self)
 		self.modeltree=ModelTree.ModelTree()

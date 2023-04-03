@@ -39,8 +39,8 @@ class TittleBarWidget(QToolBar):
 		self.logo_pushButton.setIcon(icon)
 		self.logo_pushButton.setIconSize(QtCore.QSize(32, 32))
 		HBOX_Left.addWidget(self.logo_pushButton,0,QtCore.Qt.AlignLeft)
-		
-		
+
+
 		self.undo_pushButton = QtWidgets.QPushButton(self._Tittle_widget)
 		self.undo_pushButton.setObjectName("undo_pushButton")
 		self.undo_pushButton.setFlat(True)
@@ -49,7 +49,7 @@ class TittleBarWidget(QToolBar):
 		self.undo_pushButton.setIcon(icon)
 		self.undo_pushButton.setIconSize(QtCore.QSize(20, 20))
 		HBOX_Left.addWidget(self.undo_pushButton,0)
-		
+
 		self.redo_pushButton = QtWidgets.QPushButton(self._Tittle_widget)
 		self.redo_pushButton.setObjectName("redo_pushButton")
 		self.redo_pushButton.setFlat(True)
@@ -59,7 +59,7 @@ class TittleBarWidget(QToolBar):
 		self.redo_pushButton.setIconSize(QtCore.QSize(20, 20))
 		HBOX_Left.addWidget(self.redo_pushButton, 0)
 		HBOX_Left.setSpacing(0)
-		
+
 		self.save_pushButton = QtWidgets.QPushButton(self._Tittle_widget)
 		self.save_pushButton.setObjectName("save_pushButton")
 		self.save_pushButton.setFlat(True)
@@ -68,16 +68,33 @@ class TittleBarWidget(QToolBar):
 		self.save_pushButton.setIcon(icon)
 		self.save_pushButton.setIconSize(QtCore.QSize(20, 20))
 		HBOX_Left.addWidget(self.save_pushButton, 0)
-		
-		
+
+
 		self.exit_pushButton_5 = QtWidgets.QPushButton(self._Tittle_widget)
-		
 		self.exit_pushButton_5.setObjectName("exit_pushButton_5")
 		self.exit_pushButton_5.setFlat(True)
 		icon = QtGui.QIcon()
-		icon.addPixmap(QtGui.QPixmap("icons/exit.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+		icon.addPixmap(QtGui.QPixmap("icons/windowclose.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
 		self.exit_pushButton_5.setIcon(icon)
-		self.exit_pushButton_5.setIconSize(QtCore.QSize(30, 30))
+		self.exit_pushButton_5.setIconSize(QtCore.QSize(10, 10))
+		HBOX_Right.addWidget(self.exit_pushButton_5, 0, QtCore.Qt.AlignRight)
+
+		self.exit_pushButton_5 = QtWidgets.QPushButton(self._Tittle_widget)
+		self.exit_pushButton_5.setObjectName("exit_pushButton_5")
+		self.exit_pushButton_5.setFlat(True)
+		icon = QtGui.QIcon()
+		icon.addPixmap(QtGui.QPixmap("icons/windownre.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+		self.exit_pushButton_5.setIcon(icon)
+		self.exit_pushButton_5.setIconSize(QtCore.QSize(10, 10))
+		HBOX_Right.addWidget(self.exit_pushButton_5, 0, QtCore.Qt.AlignRight)
+
+		self.exit_pushButton_5 = QtWidgets.QPushButton(self._Tittle_widget)
+		self.exit_pushButton_5.setObjectName("exit_pushButton_5")
+		self.exit_pushButton_5.setFlat(True)
+		icon = QtGui.QIcon()
+		icon.addPixmap(QtGui.QPixmap("icons/winwownminimizing.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+		self.exit_pushButton_5.setIcon(icon)
+		self.exit_pushButton_5.setIconSize(QtCore.QSize(10, 10))
 		HBOX_Right.addWidget(self.exit_pushButton_5, 0, QtCore.Qt.AlignRight)
 		
 		
