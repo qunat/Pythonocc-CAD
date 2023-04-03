@@ -52,4 +52,5 @@ if __name__ == '__main__':
 	# make the application float to the top
 	splash.finish(win)
 	win.raise_()
+	#win.showMaximized()
 	app.exec_()
