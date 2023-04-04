@@ -7,7 +7,7 @@ from PyQt5 import  QtWidgets,QtCore,QtGui,Qt
 
 __author__ = 'loujiand'
 
-from GUI.TittleBarButton import TittleBarButton
+from GUI.TittleBarButton import TittleBarButton,TittleBarButton_windown
 
 Stylesheet = """
 #MainWindow {
@@ -40,7 +40,7 @@ class TittleBarWidget(QToolBar):
 		self._Tittle_widget.setMinimumHeight(35*gui_scale())
 		self.setMovable(False)
 		self.addWidget(self._Tittle_widget)
-		#self.setStyleSheet(Stylesheet)
+		self.setStyleSheet("background-color: rgb(14, 162, 185);")
 		
 		HBOX=QHBoxLayout()
 		HBOX_Left=QHBoxLayout()
@@ -52,18 +52,17 @@ class TittleBarWidget(QToolBar):
 		HBOX.addLayout(HBOX_Right,0)
 		#HBOX.setSpacing(500)
 		
-		
-		self.logo_pushButton = TittleBarButton()
-		self.logo_pushButton.setObjectName("closeButton")
+		#add logo-------------------------------------------------------------------------------------
+		self.logo_pushButton = QtWidgets.QPushButton(self._Tittle_widget)
+		self.logo_pushButton.setObjectName("logo_pushButton")
 		self.logo_pushButton.setFlat(True)
 		icon = QtGui.QIcon()
 		icon.addPixmap(QtGui.QPixmap("icons/logo-no-background.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
 		self.logo_pushButton.setIcon(icon)
-		self.logo_pushButton.setIconSize(QtCore.QSize(30, 30))
+		self.logo_pushButton.setIconSize(QtCore.QSize(28, 28))
 		HBOX_Left.addWidget(self.logo_pushButton,0,QtCore.Qt.AlignLeft)
-		self.statusTip()
 
-
+		#add undo--------------------------------------------------------------------------------------
 		self.undo_pushButton = TittleBarButton(self._Tittle_widget)
 		self.undo_pushButton.setObjectName("undo_pushButton")
 		self.undo_pushButton.setFlat(True)
@@ -72,7 +71,9 @@ class TittleBarWidget(QToolBar):
 		self.undo_pushButton.setIcon(icon)
 		self.undo_pushButton.setIconSize(QtCore.QSize(20, 20))
 		HBOX_Left.addWidget(self.undo_pushButton,0)
-
+		self.undo_pushButton.setText("撤销")
+		
+		#add redo---------------------------------------------------------------------------------------------
 		self.redo_pushButton = TittleBarButton(self._Tittle_widget)
 		self.redo_pushButton.setObjectName("redo_pushButton")
 		self.redo_pushButton.setFlat(True)
@@ -82,7 +83,8 @@ class TittleBarWidget(QToolBar):
 		self.redo_pushButton.setIconSize(QtCore.QSize(20, 20))
 		HBOX_Left.addWidget(self.redo_pushButton, 0)
 		HBOX_Left.setSpacing(0)
-
+		
+		#add save------------------------------------------------------------------------------------------------
 		self.save_pushButton = TittleBarButton(self._Tittle_widget)
 		self.save_pushButton.setObjectName("save_pushButton")
 		self.save_pushButton.setFlat(True)
@@ -92,33 +94,33 @@ class TittleBarWidget(QToolBar):
 		self.save_pushButton.setIconSize(QtCore.QSize(20, 20))
 		HBOX_Left.addWidget(self.save_pushButton, 0)
 
-
-		self.winwownminimizing_pushButton_5 = TittleBarButton(self._Tittle_widget)
+		#---------------------------------------------------------------------------------------------
+		self.winwownminimizing_pushButton_5 = TittleBarButton_windown(self._Tittle_widget)
 		self.winwownminimizing_pushButton_5.setObjectName("winwownminimizing")
 		self.winwownminimizing_pushButton_5.setFlat(True)
 		icon = QtGui.QIcon()
 		icon.addPixmap(QtGui.QPixmap("icons/winwownminimizing.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
 		self.winwownminimizing_pushButton_5.setIcon(icon)
 		self.winwownminimizing_pushButton_5.setIconSize(QtCore.QSize(10, 10))
-		HBOX_Right.addWidget(self.winwownminimizing_pushButton_5, 0, QtCore.Qt.AlignLeft)
+		HBOX_Right.addWidget(self.winwownminimizing_pushButton_5, 0, QtCore.Qt.AlignVCenter)
 		
-		self.windownre_pushButton_5 = TittleBarButton(self._Tittle_widget)
+		self.windownre_pushButton_5 = TittleBarButton_windown(self._Tittle_widget)
 		self.windownre_pushButton_5.setObjectName("windownre")
 		self.windownre_pushButton_5.setFlat(True)
 		icon = QtGui.QIcon()
 		icon.addPixmap(QtGui.QPixmap("icons/windownre.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
 		self.windownre_pushButton_5.setIcon(icon)
 		self.windownre_pushButton_5.setIconSize(QtCore.QSize(10, 10))
-		HBOX_Right.addWidget(self.windownre_pushButton_5, 0, QtCore.Qt.AlignRight)
+		HBOX_Right.addWidget(self.windownre_pushButton_5, 0, QtCore.Qt.AlignVCenter)
 		
-		self.exit_pushButton_5 = TittleBarButton(self._Tittle_widget)
+		self.exit_pushButton_5 = TittleBarButton_windown(self._Tittle_widget)
 		self.exit_pushButton_5.setObjectName("exit_pushButton_5")
 		self.exit_pushButton_5.setFlat(True)
 		icon = QtGui.QIcon()
 		icon.addPixmap(QtGui.QPixmap("icons/windowclose.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
 		self.exit_pushButton_5.setIcon(icon)
 		self.exit_pushButton_5.setIconSize(QtCore.QSize(10, 10))
-		HBOX_Right.addWidget(self.exit_pushButton_5, 0, QtCore.Qt.AlignRight)
+		HBOX_Right.addWidget(self.exit_pushButton_5, 0, QtCore.Qt.AlignVCenter)
 		
 		
 		self.label = QtWidgets.QLabel(self)
