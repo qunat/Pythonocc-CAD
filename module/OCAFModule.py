@@ -145,3 +145,4 @@ class OCAF(object):
 			self.parent.statusBar().showMessage('状态：软件运行正常')
 		except:
 			pass
+	

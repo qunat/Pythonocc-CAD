@@ -18,6 +18,9 @@ class Mywindown(QtWidgets.QMainWindow, ShowGui.Ui_MainWindow,MainGui.Ui_MainWind
 	def __init__(self, parent=None):
 		super(Mywindown, self).__init__(parent)
 		# 3D显示设置
+		self.TittleBar.windownre_pushButton.Add_Action(action_1=self.showMaximized,action_2=self.showNormal)
+		self.TittleBar.winwownminimizing_pushButton.Add_Action(action_1=self.showMinimized)
+		self.TittleBar.exit_pushButton.Add_Action(action_1=sys.exit)
 		self.setWindowTitle("BrepCAD")
 
 	def centerOnScreen(self):

@@ -9,25 +9,6 @@ __author__ = 'loujiand'
 
 from GUI.TittleBarButton import TittleBarButton,TittleBarButton_windown
 
-Stylesheet = """
-#MainWindow {
-
-    border-radius: 10px;
-}
-#closeButton {
-    min-width: 30px;
-    min-height: 30px;
-    font-family: "Webdings";
-    padding:0px;
-   
-}
-#closeButton:hover {
-    color: white;
-    background: red;
-    border:none;
-}
-"""
-
 
 class TittleBarWidget(QToolBar):
 	def __init__(self, parent):
@@ -40,7 +21,7 @@ class TittleBarWidget(QToolBar):
 		self._Tittle_widget.setMinimumHeight(37*gui_scale())
 		self.setMovable(False)
 		self.addWidget(self._Tittle_widget)
-		self.setStyleSheet("background-color: rgb(14, 162, 185);")
+		#self.setStyleSheet("background-color: rgb(14, 162, 185);")
 		
 		HBOX=QHBoxLayout()
 		HBOX_Logo = QHBoxLayout()
@@ -65,66 +46,38 @@ class TittleBarWidget(QToolBar):
 		#self.logo_pushButton.setIconSize(QtCore.QSize(30, 30))
 		#HBOX_Logo.addWidget(self.logo_pushButton, 0, QtCore.Qt.AlignVCenter)
 		
-
+		#add open file
+		self.folder_pushButton = TittleBarButton(self._Tittle_widget, "folder_pushButton", "folder", [20, 20],"打开")
+		HBOX_Left.addWidget(self.folder_pushButton, 0)
 		#add undo--------------------------------------------------------------------------------------
-		self.undo_pushButton = TittleBarButton(self._Tittle_widget)
-		self.undo_pushButton.setObjectName("undo_pushButton")
-		self.undo_pushButton.setFlat(True)
-		icon = QtGui.QIcon()
-		icon.addPixmap(QtGui.QPixmap("icons/undo_system_bar.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-		self.undo_pushButton.setIcon(icon)
-		self.undo_pushButton.setIconSize(QtCore.QSize(20, 20))
+		self.undo_pushButton = TittleBarButton(self._Tittle_widget,"undo_pushButton","undo_system_bar",[20,20],"撤销")
 		HBOX_Left.addWidget(self.undo_pushButton,0)
-		#self.undo_pushButton.setText("撤销")
-		
 		#add redo---------------------------------------------------------------------------------------------
-		self.redo_pushButton = TittleBarButton(self._Tittle_widget)
-		self.redo_pushButton.setObjectName("redo_pushButton")
-		self.redo_pushButton.setFlat(True)
-		icon = QtGui.QIcon()
-		icon.addPixmap(QtGui.QPixmap("icons/redo_system_bar.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-		self.redo_pushButton.setIcon(icon)
-		self.redo_pushButton.setIconSize(QtCore.QSize(20, 20))
+		self.redo_pushButton = TittleBarButton(self._Tittle_widget,"redo_pushButton","redo_system_bar",[20,20],"重做")
 		HBOX_Left.addWidget(self.redo_pushButton, 0)
-		HBOX_Left.setSpacing(0)
-		
 		#add save------------------------------------------------------------------------------------------------
-		self.save_pushButton = TittleBarButton(self._Tittle_widget)
-		self.save_pushButton.setObjectName("save_pushButton")
-		self.save_pushButton.setFlat(True)
-		icon = QtGui.QIcon()
-		icon.addPixmap(QtGui.QPixmap("icons/save.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-		self.save_pushButton.setIcon(icon)
-		self.save_pushButton.setIconSize(QtCore.QSize(20, 20))
+		self.save_pushButton = TittleBarButton(self._Tittle_widget,"save_pushButton","save",[20,20],"保存")
 		HBOX_Left.addWidget(self.save_pushButton, 0)
-
-		#---------------------------------------------------------------------------------------------
-		self.winwownminimizing_pushButton_5 = TittleBarButton_windown(self._Tittle_widget)
-		self.winwownminimizing_pushButton_5.setObjectName("winwownminimizing")
-		self.winwownminimizing_pushButton_5.setFlat(True)
-		icon = QtGui.QIcon()
-		icon.addPixmap(QtGui.QPixmap("icons/winwownminimizing.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-		self.winwownminimizing_pushButton_5.setIcon(icon)
-		self.winwownminimizing_pushButton_5.setIconSize(QtCore.QSize(10, 10))
-		HBOX_Right.addWidget(self.winwownminimizing_pushButton_5, 0, QtCore.Qt.AlignVCenter)
+		#add copy
+		self.copy_pushButton = TittleBarButton(self._Tittle_widget, "copy_pushButton", "copy", [20, 20],"复制")
+		HBOX_Left.addWidget(self.copy_pushButton, 0)
+		#add paste
+		self.paste_pushButton = TittleBarButton(self._Tittle_widget, "paste_pushButton", "paste", [20, 20],"黏贴")
+		HBOX_Left.addWidget(self.paste_pushButton, 0)
+		# add about
+		self.about_pushButton = TittleBarButton(self._Tittle_widget, "about_pushButton", "about", [20, 20],"关于")
+		HBOX_Left.addWidget(self.about_pushButton, 0)
 		
-		self.windownre_pushButton_5 = TittleBarButton_windown(self._Tittle_widget)
-		self.windownre_pushButton_5.setObjectName("windownre")
-		self.windownre_pushButton_5.setFlat(True)
-		icon = QtGui.QIcon()
-		icon.addPixmap(QtGui.QPixmap("icons/windownre.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-		self.windownre_pushButton_5.setIcon(icon)
-		self.windownre_pushButton_5.setIconSize(QtCore.QSize(10, 10))
-		HBOX_Right.addWidget(self.windownre_pushButton_5, 0, QtCore.Qt.AlignVCenter)
-		
-		self.exit_pushButton_5 = TittleBarButton_windown(self._Tittle_widget)
-		self.exit_pushButton_5.setObjectName("exit_pushButton_5")
-		self.exit_pushButton_5.setFlat(True)
-		icon = QtGui.QIcon()
-		icon.addPixmap(QtGui.QPixmap("icons/windowclose.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-		self.exit_pushButton_5.setIcon(icon)
-		self.exit_pushButton_5.setIconSize(QtCore.QSize(10, 10))
-		HBOX_Right.addWidget(self.exit_pushButton_5, 0, QtCore.Qt.AlignVCenter)
+		#--------------------------------------------------------------------------------------------------
+		#add
+		self.winwownminimizing_pushButton = TittleBarButton_windown(self._Tittle_widget,"winwownminimizing","winwownminimizing",[10,10],)
+		HBOX_Right.addWidget(self.winwownminimizing_pushButton, 0, QtCore.Qt.AlignVCenter)
+		#add
+		self.windownre_pushButton = TittleBarButton_windown(self._Tittle_widget,"windownre","windownre",[10,10])
+		HBOX_Right.addWidget(self.windownre_pushButton, 0, QtCore.Qt.AlignVCenter)
+		#add
+		self.exit_pushButton = TittleBarButton_windown(self._Tittle_widget,"exit_pushButton_5","windowclose",[10,10])
+		HBOX_Right.addWidget(self.exit_pushButton, 0, QtCore.Qt.AlignVCenter)
 		
 		
 		self.label = QtWidgets.QLabel(self)

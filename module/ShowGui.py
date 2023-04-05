@@ -91,15 +91,18 @@ class Ui_MainWindow(MainGui.Ui_MainWindow):
 		self.OCAF=OCAFModule.OCAF(parent=self)
 		self.modeltree=ModelTree.ModelTree()
 		self.setCentralWidget(self.Displayshape_core.canva)
+		
 		# Create TittleBar
 		self.TittleBar = TittleBarWidget(self)
 		self.addToolBar(self.TittleBar)
 		#self.init_ribbon()
+		
 		# Create Ribbon
 		self._ribbon = RibbonWidget(self)
 		self.addToolBar(self._ribbon)
 		self.insertToolBarBreak(self._ribbon)
 		self.init_ribbon()
+		
 		#Create ToolBar
 		self.addToolBar(QtCore.Qt.TopToolBarArea, self.toolBar)
 		self.insertToolBarBreak(self.toolBar)
