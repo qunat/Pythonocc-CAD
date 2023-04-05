@@ -2,10 +2,10 @@ QToolButton {
     text-align: left;
     border: 1px solid transparent;
     padding: 0px;
-    margin-left:2px;
-    margin-right:2px;
-    margin-bottom:2px;
-    margin-top:2px;
+    margin-left:0px;
+    margin-right:0px;
+    margin-bottom:35px;
+    margin-top:1px;
 }
 
 QToolButton:hover {

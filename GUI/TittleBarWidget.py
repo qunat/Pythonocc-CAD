@@ -36,31 +36,35 @@ class TittleBarWidget(QToolBar):
 		self.setObjectName("TittleWidget")
 		self.setWindowTitle("Tittle")
 		self._Tittle_widget = QtWidgets.QWidget(self)
-		self._Tittle_widget.setMaximumHeight(35*gui_scale())
-		self._Tittle_widget.setMinimumHeight(35*gui_scale())
+		self._Tittle_widget.setMaximumHeight(37*gui_scale())
+		self._Tittle_widget.setMinimumHeight(37*gui_scale())
 		self.setMovable(False)
 		self.addWidget(self._Tittle_widget)
 		self.setStyleSheet("background-color: rgb(14, 162, 185);")
 		
 		HBOX=QHBoxLayout()
+		HBOX_Logo = QHBoxLayout()
 		HBOX_Left=QHBoxLayout()
 		HBOX_Center = QHBoxLayout()
 		HBOX_Right= QHBoxLayout()
 		self._Tittle_widget.setLayout(HBOX)
+		HBOX.addLayout(HBOX_Logo)
 		HBOX.addLayout(HBOX_Left)
 		HBOX.addLayout(HBOX_Center,280)
 		HBOX.addLayout(HBOX_Right,0)
 		#HBOX.setSpacing(500)
 		
 		#add logo-------------------------------------------------------------------------------------
-		self.logo_pushButton = QtWidgets.QPushButton(self._Tittle_widget)
-		self.logo_pushButton.setObjectName("logo_pushButton")
-		self.logo_pushButton.setFlat(True)
-		icon = QtGui.QIcon()
-		icon.addPixmap(QtGui.QPixmap("icons/logo-no-background.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-		self.logo_pushButton.setIcon(icon)
-		self.logo_pushButton.setIconSize(QtCore.QSize(28, 28))
-		HBOX_Left.addWidget(self.logo_pushButton,0,QtCore.Qt.AlignLeft)
+		#self.logo_pushButton = QtWidgets.QPushButton(self._Tittle_widget)
+		#self.logo_pushButton.setObjectName("logo_pushButton")
+		
+		#self.logo_pushButton.setFlat(True)
+		#icon = QtGui.QIcon()
+		#icon.addPixmap(QtGui.QPixmap("icons/logo-no-background.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+		#self.logo_pushButton.setIcon(icon)
+		#self.logo_pushButton.setIconSize(QtCore.QSize(30, 30))
+		#HBOX_Logo.addWidget(self.logo_pushButton, 0, QtCore.Qt.AlignVCenter)
+		
 
 		#add undo--------------------------------------------------------------------------------------
 		self.undo_pushButton = TittleBarButton(self._Tittle_widget)
@@ -71,7 +75,7 @@ class TittleBarWidget(QToolBar):
 		self.undo_pushButton.setIcon(icon)
 		self.undo_pushButton.setIconSize(QtCore.QSize(20, 20))
 		HBOX_Left.addWidget(self.undo_pushButton,0)
-		self.undo_pushButton.setText("撤销")
+		#self.undo_pushButton.setText("撤销")
 		
 		#add redo---------------------------------------------------------------------------------------------
 		self.redo_pushButton = TittleBarButton(self._Tittle_widget)
