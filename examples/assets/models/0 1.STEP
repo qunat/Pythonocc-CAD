@@ -1,0 +1,43 @@
+ISO-10303-21;
+HEADER;
+FILE_DESCRIPTION (( 'STEP AP214' ),
+    '1' );
+FILE_NAME ('0 1.STEP',
+    '2023-04-09T08:43:53',
+    ( 'Windows User' ),
+    ( 'P R C' ),
+    'SwSTEP 2.0',
+    'SolidWorks 2018',
+    '' );
+FILE_SCHEMA (( 'AUTOMOTIVE_DESIGN' ));
+ENDSEC;
+
+DATA;
+#1 = APPLICATION_CONTEXT ( 'automotive_design' ) ;
+#2 = PRODUCT_DEFINITION ( '未知', '', #6, #8 ) ;
+#3 = PRODUCT ( '0 1', '0 1', '', ( #17 ) ) ;
+#4 = APPLICATION_PROTOCOL_DEFINITION ( 'draft international standard', 'automotive_design', 1998, #24 ) ;
+#5 = APPLICATION_CONTEXT ( 'automotive_design' ) ;
+#6 = PRODUCT_DEFINITION_FORMATION_WITH_SPECIFIED_SOURCE ( '任何', '', #19, .NOT_KNOWN. ) ;
+#7 = APPLICATION_PROTOCOL_DEFINITION ( 'draft international standard', 'automotive_design', 1998, #5 ) ;
+#8 = PRODUCT_DEFINITION_CONTEXT ( 'detailed design', #12, 'design' ) ;
+#9 = CARTESIAN_POINT ( 'NONE',  ( 0.000000000000000000, 0.000000000000000000, 0.000000000000000000 ) ) ;
+#10 = DIRECTION ( 'NONE',  ( 1.000000000000000000, 0.000000000000000000, 0.000000000000000000 ) ) ;
+#11 = DIRECTION ( 'NONE',  ( 0.000000000000000000, 0.000000000000000000, 1.000000000000000000 ) ) ;
+#12 = APPLICATION_CONTEXT ( 'automotive_design' ) ;
+#13 = PRODUCT_RELATED_PRODUCT_CATEGORY ( 'part', '', ( #19 ) ) ;
+#14 = AXIS2_PLACEMENT_3D ( 'NONE', #9, #11, #10 ) ;
+#15 = PRODUCT_DEFINITION_CONTEXT ( 'detailed design', #24, 'design' ) ;
+#16 = PRODUCT_DEFINITION_FORMATION_WITH_SPECIFIED_SOURCE ( '任何', '', #3, .NOT_KNOWN. ) ;
+#17 = PRODUCT_CONTEXT ( 'NONE', #5, 'mechanical' ) ;
+#18 = APPLICATION_PROTOCOL_DEFINITION ( 'draft international standard', 'automotive_design', 1998, #12 ) ;
+#19 = PRODUCT ( '0 1', '0 1', '', ( #22 ) ) ;
+#20 = APPLICATION_PROTOCOL_DEFINITION ( 'draft international standard', 'automotive_design', 1998, #1 ) ;
+#21 = PRODUCT_DEFINITION_SHAPE ( 'NONE', 'NONE',  #2 ) ;
+#22 = PRODUCT_CONTEXT ( 'NONE', #1, 'mechanical' ) ;
+#23 = PRODUCT_DEFINITION_SHAPE ( 'NONE', 'NONE',  #25 ) ;
+#24 = APPLICATION_CONTEXT ( 'automotive_design' ) ;
+#25 = PRODUCT_DEFINITION ( '未知', '', #16, #15 ) ;
+#26 = PRODUCT_RELATED_PRODUCT_CATEGORY ( 'part', '', ( #3 ) ) ;
+ENDSEC;
+END-ISO-10303-21;

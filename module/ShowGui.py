@@ -172,8 +172,24 @@ class Ui_MainWindow(MainGui.Ui_MainWindow):
 		except Exception as e:
 			print(e)
 			pass
-
-
+	
+	def mousePressEvent(self, e):
+		if e.buttons() == Qt.LeftButton:
+			try:
+				self.pos = e.pos()
+			except:
+				pass
+	
+	
+	def mouseMoveEvent(self, event):
+		try:
+			if event.buttons() == Qt.LeftButton and self.pos:
+				self.move(self.mapToGlobal(event.pos() - self.pos))
+			event.accept()
+		except:
+			pass
+			
+	
 
 
 

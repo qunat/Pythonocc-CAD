@@ -29,7 +29,12 @@ class TittleBarButton(QToolButton,QPushButton,QAction):
 		self.setIcon(icon)
 		self.setIconSize(QtCore.QSize(icon_size[0],icon_size[1]))
 		self.setToolTip(action_tip)
-
+		self.Add_Action(action_1=action)
+	
+	def Add_Action(self, action_1=None):
+		if action_1!=None:
+			self.clicked.connect(action_1)
+		
 		
 		
 class TittleBarButton_windown(QToolButton,QPushButton):

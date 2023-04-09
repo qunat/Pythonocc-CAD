@@ -1,40 +1,69 @@
 # -*- coding: utf-8 -*-
 import threading
+import time
 
 from OCC.Core.BRep import BRep_Builder
 from OCC.Core.BRepTools import breptools_Write, breptools_Read, breptools_Triangulation
 from OCC.Core.Quantity import Quantity_Color, Quantity_TOC_RGB
 from OCC.Core.TopoDS import TopoDS_Face, TopoDS_Shape, TopoDS_Edge, TopoDS_Solid
-from PyQt5.QtWidgets import QFileDialog
+from PyQt5.QtCore import QThread
+from PyQt5.QtWidgets import QFileDialog,QWidget
 from module import qtDisplay
 from OCC.Extend.DataExchange import read_step_file,read_iges_file,read_stl_file
-from module import Assemble,Process_message_word
+from module import Assemble,ProcessWidgets
 from module.DisplayManager import DumpProcess,NoDumpProcess
 
 
 def Thread_derocate(fun):
-	def decorate(*args):
-		para=(i for i in args)
-		t = threading.Thread(target=fun, args=(args[0],))
+	def decorate():
+		#para=(i for i in args)
+		t = threading.Thread(target=fun, args=())
 		t.start()
 	return decorate
+
+
+def LoadProcessDerocate(parent):
+	def Decorate(*args):
+		newprocess=ProcessWidgets.ProcessWidget(parent)
+		newprocess.Show()
+		print(55555555)
+	return Decorate()
+
+class Thread(QThread):     #继承QThread
+	def __init__(self,parent):
+		super(Thread,self).__init__()
+		self.newprocess = ProcessWidgets.ProcessWidget(parent)
+		
+
+	def run(self):
+		print(66666)
+		self.newprocess.Show()
+
 
 class OCAF(object):
 	def __init__(self,parent=None):
 		self.parent=parent
 		pass
-	#@Thread_derocate
+	
+	
 	def Open_part(self):
 		try:
+			
 			self.chose_document = QFileDialog.getOpenFileName(self.parent, '打开文件', './',
 															  " STP files(*.stp , *.step);;(*.iges);;(*.stl)")  # 选择转换的文价夹
 			filepath = self.chose_document[0]  # 获取打开文件夹路径
 			# 判断文件类型 选择对应的导入函数
 			end_with = str(filepath).lower()
+			
+			#LoadProcessDerocate(self.parent)
+			# 创建一个新的线程
+			#thread = Thread(self.parent)
+			# 启动线程
+			#thread.start()
 			if end_with.endswith(".step") or end_with.endswith("stp"):
 				self.import_shape, assemble_relation_list, DumpToString = Assemble.read_step_file_with_names_colors(
 					filepath)
-				#print(DumpToString)
+				print(DumpToString)
 				#print(self.import_shape)
 				# 判断是否为标准的装配体结构
 				try:
@@ -67,13 +96,15 @@ class OCAF(object):
 					self.parent.modeltree.Create_tree_NodeList(root_dict=root_dict)
 				else:
 					pass
-				
 				return root_dict
 			
 			elif end_with.endswith(".iges") or end_with.endswith(".igs"):
 				self.import_shape = read_iges_file(filepath)
 				self.parent.statusbar.showMessage("状态：打开成功")  ###
 				self.parent.statusBar().showMessage('状态：软件运行正常')
+				
+				
+				
 			elif end_with.endswith(".stl") or end_with.endswith(".stl"):
 				self.import_shape = read_stl_file(filepath)
 				breptools_Triangulation()

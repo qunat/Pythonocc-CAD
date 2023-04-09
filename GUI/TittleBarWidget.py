@@ -47,7 +47,7 @@ class TittleBarWidget(QToolBar):
 		#HBOX_Logo.addWidget(self.logo_pushButton, 0, QtCore.Qt.AlignVCenter)
 		
 		#add open file
-		self.folder_pushButton = TittleBarButton(self._Tittle_widget, "folder_pushButton", "folder", [20, 20],"打开")
+		self.folder_pushButton = TittleBarButton(self._Tittle_widget, "folder_pushButton", "folder", [20, 20],"打开",parent.OCAF.Open_part)
 		HBOX_Left.addWidget(self.folder_pushButton, 0)
 		#add undo--------------------------------------------------------------------------------------
 		self.undo_pushButton = TittleBarButton(self._Tittle_widget,"undo_pushButton","undo_system_bar",[20,20],"撤销")

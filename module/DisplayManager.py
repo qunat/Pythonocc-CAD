@@ -9,6 +9,7 @@ from PyQt5.QtWidgets import QFileDialog
 from module import qtDisplay
 from OCC.Extend.DataExchange import read_step_file,read_iges_file,read_stl_file
 from module import Assemble
+import re
 
 class AssembleNode(object):
 	def __init__(self,DumpToString):
@@ -30,18 +31,24 @@ class AssembleNode(object):
 			pass
 		elif DumpToString_list[0]=="Free":
 			pass
+		elif DumpToString_list[0]=="FACE":
+			pass
 		else:
 			self.struct=DumpToString_list[0]
+			
 			self.kind=DumpToString_list[1]
+			
 			self.order=DumpToString_list[2]
+			
 			if "(refers" in DumpToString_list[3]:
 				self.refer=DumpToString_list[5][0:-1]
-				if "=>[" in DumpToString_list[6]:
-					self.name=DumpToString_list[6]
-				else:
-					self.name=DumpToString_list[6]
+				
+				pattern = re.compile(r'\"(.*?)\"')
+				self.name = pattern.findall(self.DumpToString)[0]
 			else:
-				self.name = DumpToString_list[3].replace('"',"")
+				pattern = re.compile(r'\"(.*?)\"')
+				self.name = pattern.findall(self.DumpToString)[0]
+				
 			
 		#print(self.struct,self.kind,self.order,self.name,self.refer)
 			
