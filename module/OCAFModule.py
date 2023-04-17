@@ -48,18 +48,16 @@ class OCAF(object):
 	
 	def Open_part(self):
 		try:
-			
+			self.parent.Displayshape_core.canva._display.EraseAll()
+			self.parent.modeltree.Clear_tree_NodeList()
 			self.chose_document = QFileDialog.getOpenFileName(self.parent, '打开文件', './',
 															  " STP files(*.stp , *.step);;(*.iges);;(*.stl)")  # 选择转换的文价夹
 			filepath = self.chose_document[0]  # 获取打开文件夹路径
 			# 判断文件类型 选择对应的导入函数
 			end_with = str(filepath).lower()
 			
-			#LoadProcessDerocate(self.parent)
-			# 创建一个新的线程
-			#thread = Thread(self.parent)
-			# 启动线程
-			#thread.start()
+			LoadProcessDerocate(self.parent)
+		
 			if end_with.endswith(".step") or end_with.endswith("stp"):
 				self.import_shape, assemble_relation_list, DumpToString = Assemble.read_step_file_with_names_colors(
 					filepath)

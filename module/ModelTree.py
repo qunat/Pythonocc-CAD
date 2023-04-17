@@ -42,6 +42,12 @@ class ModelTree(QtWidgets.QWidget):
 		self.tree.setColumnWidth(0, 250)
 		# 加载根节点的所有属性与子控件
 		# self.tree.addTopLevelItem(root)
+	def Clear_tree_NodeList(self):
+		item = self.tree.currentItem()
+		# 固定根节点
+		root = self.tree.invisibleRootItem()
+		for item in self.tree.selectedItems():
+			(item.parent() or root).removeChild(item)
 
 	def Create_tree_NodeList(self,root_dict={}):
 		for part_property in root_dict.values():

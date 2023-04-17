@@ -15,7 +15,7 @@ from GUI.RibbonTextbox import RibbonTextbox
 from GUI.RibbonWidget import *
 from GUI.TittleBarWidget import *
 from PyQt5.QtCore import  Qt
-from module import DisplayManager,ModelTree,OCAFModule,Ipython
+from module import DisplayManager,ModelTree,OCAFModule,Ipython,InteractiveModule
 
 from PyQt5 import QtGui,QtWidgets
 
@@ -90,6 +90,7 @@ class Ui_MainWindow(MainGui.Ui_MainWindow):
 		self.Displayshape_core=DisplayManager.DisplayManager(self)
 		self.OCAF=OCAFModule.OCAF(parent=self)
 		self.modeltree=ModelTree.ModelTree()
+		self.InteractiveOperate=InteractiveModule.InteractiveOperate(self)
 		self.setCentralWidget(self.Displayshape_core.canva)
 		
 		# Create TittleBar

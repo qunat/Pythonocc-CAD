@@ -185,9 +185,9 @@ class qtViewer3d(qtBaseViewer):
         except:  # PyQt5
             delta = event.angleDelta().y()
         if delta > 0:
-            zoom_factor = 2.
+            zoom_factor = 1.2
         else:
-            zoom_factor = 0.5
+            zoom_factor = 0.8
         self._display.ZoomFactor(zoom_factor)
 
     @property

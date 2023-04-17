@@ -1,14 +1,19 @@
 # -*- coding: utf-8 -*-
 from typing import List
 
+from OCC.Core.AIS import AIS_Trihedron, AIS_Plane
 from OCC.Core.BRep import BRep_Builder
 from OCC.Core.BRepTools import breptools_Write, breptools_Read, breptools_Triangulation
-from OCC.Core.Quantity import Quantity_Color, Quantity_TOC_RGB
+from OCC.Core.Geom import Geom_Axis2Placement, Geom_Plane
+from OCC.Core.Prs3d import Prs3d_LineAspect
 from OCC.Core.TopoDS import TopoDS_Face, TopoDS_Shape, TopoDS_Edge, TopoDS_Solid
 from PyQt5.QtWidgets import QFileDialog
 from module import qtDisplay
 from OCC.Extend.DataExchange import read_step_file,read_iges_file,read_stl_file
 from module import Assemble
+from OCC.Core.Quantity import *
+from OCC.Core.gp import *
+from OCC.Core.Select3D import *
 import re
 
 class AssembleNode(object):
@@ -120,11 +125,55 @@ class DisplayManager(object):
 	def __init__(self,parent=None):
 		self.canva=qtDisplay.qtViewer3d(parent)
 		self.parent=parent
-		self.part_maneger_core_dict={}
+		self.shape_maneger_core_dict={}
 		
 	def Dispalyshape(self):
 		self.canva._display.DisplayColoredShape()
-
+		
+	def Displaytriehedron(self):
+		axis = Geom_Axis2Placement(gp.ZOX())
+		triehedron = AIS_Trihedron(axis)
+		triehedron.SetXAxisColor(Quantity_Color(Quantity_NOC_RED))
+		triehedron.SetYAxisColor(Quantity_Color(Quantity_NOC_GREEN))
+		triehedron.SetAxisColor(Quantity_Color(Quantity_NOC_BLUE1))
+		drawer = triehedron.Attributes()
+		self.canva._display.Context.Display(triehedron, 0, 3, True)
+		self.shape_maneger_core_dict["axis"]=triehedron
+		
+		
+		
+	def Displayplane(self):
+		plane = Geom_Plane(gp_Pnt(0.0, 0.0, 0.0), gp_Dir(0, 1, 0))
+		ais_plane_xz = AIS_Plane(plane, True)
+		ais_plane_xz.SetColor(Quantity_Color(Quantity_NOC_GRAY))
+		ais_plane_xz.SetTypeOfSensitivity(Select3D_TOS_INTERIOR)
+		asp = Prs3d_LineAspect(Quantity_Color(Quantity_NOC_GREEN), 1, 10)
+		ais_plane_xz.SetAspect(asp)
+		self.canva._display.Context.Display(ais_plane_xz, True)
+		self.shape_maneger_core_dict["ais_plane_xz"]=ais_plane_xz
+		
+		plane = Geom_Plane(gp_Pnt(0.0, 0.0, 0.0), gp_Dir(1, 0, 0))
+		ais_plane_zy = AIS_Plane(plane, True)
+		ais_plane_zy.SetColor(Quantity_Color(Quantity_NOC_GRAY))
+		ais_plane_zy.SetTypeOfSensitivity(Select3D_TOS_INTERIOR)
+		asp = Prs3d_LineAspect(Quantity_Color(Quantity_NOC_WHITE), 2, 1)
+		ais_plane_zy.SetAspect(asp)
+		self.canva._display.Context.Display(ais_plane_zy, True)
+		self.shape_maneger_core_dict["ais_plane_zy"]=ais_plane_zy
+		
+		plane = Geom_Plane(gp_Pnt(0.0, 0.0, 0.0), gp_Dir(0, 0, 1))
+		ais_plane_zy = AIS_Plane(plane, True)
+		ais_plane_zy.SetColor(Quantity_Color(Quantity_NOC_GRAY))
+		ais_plane_zy.SetTypeOfSensitivity(Select3D_TOS_INTERIOR)
+		asp = Prs3d_LineAspect(Quantity_Color(Quantity_NOC_GREEN), 1, 10)
+		ais_plane_zy.SetAspect(asp)
+		self.canva._display.Context.Display(ais_plane_zy, True)
+		self.shape_maneger_core_dict["ais_plane_zy"]=ais_plane_zy
 	
-
+	def Displaydatum(self):
+		self.Displaytriehedron()
+		self.Displayplane()
+	
+	def select(self):
+		pass
 
