@@ -126,7 +126,11 @@ class DisplayManager(object):
 		self.canva=qtDisplay.qtViewer3d(parent)
 		self.parent=parent
 		self.shape_maneger_core_dict={}
-		
+		self._select_callbacks=[]
+		#self.canva.InitDriver()
+	
+	
+			
 	def Dispalyshape(self):
 		self.canva._display.DisplayColoredShape()
 		

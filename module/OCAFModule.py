@@ -83,7 +83,7 @@ class OCAF(object):
 																								 c.Blue(),
 																								 Quantity_TOC_RGB),
 																							    update=True)
-					self.parent.Displayshape_core.part_maneger_core_dict[label] = return_shape
+					self.parent.Displayshape_core.shape_maneger_core_dict[label] = return_shape
 					
 				
 				self.parent.statusbar.showMessage("状态：打开成功")  ###
