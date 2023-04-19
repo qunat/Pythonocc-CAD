@@ -21,6 +21,8 @@ class SelectWidget(QtWidgets.QMainWindow):
 		y = parent.geometry().y() + parent.geometry().height() / 2
 		self.setGeometry(x, y, 250, 80)
 		self.setWindowTitle('创建草图')
+		self.pushbutton_ok.clicked.connect(self.ok)
+		self.pushbutton_cancel.clicked.connect(self.cancel)
 		
 	
 	def setupUi(self):
@@ -39,8 +41,9 @@ class SelectWidget(QtWidgets.QMainWindow):
 		self.comboBox = QtWidgets.QComboBox(self.widget)
 		self.comboBox.setGeometry(QtCore.QRect(80, 100, 221, 500))
 		self.comboBox.setObjectName("comboBox")
-		self.comboBox.addItem("基于平面")
-		self.comboBox.addItem("基于路径")
+		self.comboBox.addItem("XY平面")
+		self.comboBox.addItem("ZX平面")
+		self.comboBox.addItem("YZ平面")
 		HBOX_comboBOX.addWidget(self.comboBox,0, QtCore.Qt.AlignTop)
 		
 		self.pushbutton_ok=QtWidgets.QPushButton("确定")
@@ -48,6 +51,12 @@ class SelectWidget(QtWidgets.QMainWindow):
 		HBOX_button.addWidget(self.pushbutton_ok)
 		HBOX_button.addWidget(self.pushbutton_cancel)
 		
+	def ok(self):
 	
+		self.close()
+		
+	def cancel(self):
+		self.close()
+		
 	def Show(self):
 		self.show()
