@@ -16,7 +16,7 @@ from GUI.RibbonWidget import *
 from GUI.TittleBarWidget import *
 from PyQt5.QtCore import  Qt
 from module import DisplayManager,ModelTree,OCAFModule,Ipython,InteractiveModule
-
+from sketcher import sketcher
 from PyQt5 import QtGui,QtWidgets
 
 class Auto_create_ribbon(object):
@@ -91,6 +91,7 @@ class Ui_MainWindow(MainGui.Ui_MainWindow):
 		self.OCAF=OCAFModule.OCAF(parent=self)
 		self.modeltree=ModelTree.ModelTree()
 		self.InteractiveOperate=InteractiveModule.InteractiveOperate(self)
+		self.Sketcher=sketcher.SketchModule(parent=self)
 		self.setCentralWidget(self.Displayshape_core.canva)
 		
 		# Create TittleBar
