@@ -42,7 +42,7 @@ class SelectWidget(QtWidgets.QMainWindow):
 		self.comboBox.setGeometry(QtCore.QRect(80, 100, 221, 500))
 		self.comboBox.setObjectName("comboBox")
 		self.comboBox.addItem("XY平面")
-		self.comboBox.addItem("ZX平面")
+		self.comboBox.addItem("XZ平面")
 		self.comboBox.addItem("YZ平面")
 		HBOX_comboBOX.addWidget(self.comboBox,0, QtCore.Qt.AlignTop)
 		
@@ -52,7 +52,7 @@ class SelectWidget(QtWidgets.QMainWindow):
 		HBOX_button.addWidget(self.pushbutton_cancel)
 		
 	def ok(self):
-	
+		self.parent.Sketcher.uptoplane()
 		self.close()
 		
 	def cancel(self):

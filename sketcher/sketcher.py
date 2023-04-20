@@ -10,9 +10,15 @@ class SketchModule(object):
 		self.select_windows=SelectWidget(parent=self.parent)
 		self.select_windows.Show()
 		
-	def fun(self):
+	def uptoplane(self):
 		self.parent.InteractiveOperate.InteractiveModule="SKETCH"
-		if self.select_windows.comboBox.currentText()=="XY平面":
-			self.parent.Displayshape_core.canva.View_Left()
+		if self.select_windows.comboBox.currentText()=="XZ平面":
+			self.parent.Displayshape_core.canva._display.View_Left()
+			self.parent.Displayshape_core.canva._display.FitAll()
+		if self.select_windows.comboBox.currentText()=="XZ平面":
+			self.parent.Displayshape_core.canva._display.View_Left()
+			self.parent.Displayshape_core.canva._display.FitAll()
+		if self.select_windows.comboBox.currentText()=="XZ平面":
+			self.parent.Displayshape_core.canva._display.View_Left()
 			self.parent.Displayshape_core.canva._display.FitAll()
 	
