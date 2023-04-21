@@ -12,13 +12,14 @@ class SketchModule(object):
 		
 	def uptoplane(self):
 		self.parent.InteractiveOperate.InteractiveModule="SKETCH"
-		if self.select_windows.comboBox.currentText()=="XZ平面":
-			self.parent.Displayshape_core.canva._display.View_Left()
+		if self.select_windows.comboBox.currentText()=="XY平面":
+			self.parent.Displayshape_core.canva._display.View_Front()
+			self.parent.Displayshape_core.canva._display.FitAll()
+		if self.select_windows.comboBox.currentText()=="YZ平面":
+			self.parent.Displayshape_core.canva._display.View_Bottom()
 			self.parent.Displayshape_core.canva._display.FitAll()
 		if self.select_windows.comboBox.currentText()=="XZ平面":
-			self.parent.Displayshape_core.canva._display.View_Left()
+			self.parent.Displayshape_core.canva._display.View_Right()
 			self.parent.Displayshape_core.canva._display.FitAll()
-		if self.select_windows.comboBox.currentText()=="XZ平面":
-			self.parent.Displayshape_core.canva._display.View_Left()
-			self.parent.Displayshape_core.canva._display.FitAll()
+
 	
