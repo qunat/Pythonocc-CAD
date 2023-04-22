@@ -22,6 +22,9 @@ from __future__ import print_function
 import logging
 import os
 import sys
+
+from PyQt5.QtCore import pyqtSignal, QObject
+
 from module import  OCCViewer
 from OCC.Display.backend import get_qt_modules
 
@@ -81,12 +84,26 @@ class qtBaseViewer(QtOpenGL.QGLWidget):
 		if self._inited:
 			super(qtBaseViewer, self).resizeEvent(event)
 			self._display.OnResize()
+class Foo(QObject):
+	# Define a new signal called 'trigger' that has no arguments.
+	trigger = pyqtSignal()
+	def connect_and_emit_trigger(self):
+		# Connect the trigger signal to a slot.
+		self.trigger.connect(self.handle_trigger)
+		# Emit the signal.
+		self.trigger.emit()
 
+	def handle_trigger(self):
+		# Show that the slot has been called.
+		#print("very nice")
+
+		pass
 
 class qtViewer3d(qtBaseViewer):
 
 	# emit signal when selection is changed
 	# is a list of TopoDS_*
+	mouse_move_Signal=pyqtSignal()
 	if HAVE_PYQT_SIGNAL:
 		sig_topods_selected = QtCore.pyqtSignal(list)
 
@@ -110,6 +127,7 @@ class qtViewer3d(qtBaseViewer):
 		self._available_cursors = {}
 		self.dragStartPosX=0
 		self.dragStartPosY=0
+		self.mouse_move_Signal=Foo()
 
 	@property
 	def qApp(self):
@@ -214,6 +232,10 @@ class qtViewer3d(qtBaseViewer):
 		self.dragStartPosX = ev.x()
 		self.dragStartPosY = ev.y()
 		self._display.StartRotation(self.dragStartPosX, self.dragStartPosY)
+		self.buttons_list=[]
+		if event.button() == QtCore.Qt.RightButton or event.button() == QtCore.Qt.MidButton:
+			self.buttons_list.append(QtCore.Qt.RightButton)
+		self.buttons_list.clear()
 		#abc=self._display.GetSelectedShapes()
 
 
@@ -260,11 +282,11 @@ class qtViewer3d(qtBaseViewer):
 		pt = evt.pos()
 		buttons = int(evt.buttons())
 		modifiers = evt.modifiers()
+		self.mouse_move_Signal.connect_and_emit_trigger()
 		#MOVE  ADD MYSELF
-		self.dragStartPosX = evt.x()
-		self.dragStartPosY = evt.y()
+
 		# ROTATE
-		if (buttons == QtCore.Qt.LeftButton and
+		if (buttons == QtCore.Qt.MidButton and
 				not modifiers == QtCore.Qt.ShiftModifier):
 			self.cursor = "rotate"
 			self._display.Rotation(pt.x(), pt.y())
@@ -272,7 +294,7 @@ class qtViewer3d(qtBaseViewer):
 		# DYNAMIC ZOOM
 
 		elif (buttons == QtCore.Qt.RightButton and
-			  not modifiers == QtCore.Qt.ShiftModifier and 0):#删掉了恢复
+			  not modifiers == QtCore.Qt.ShiftModifier ):#删掉了恢复
 			self.cursor = "zoom"
 			self._display.Repaint()
 			self._display.DynamicZoom(abs(self.dragStartPosX),
@@ -281,8 +303,9 @@ class qtViewer3d(qtBaseViewer):
 			self.dragStartPosX = pt.x()
 			self.dragStartPosY = pt.y()
 			self._drawbox = False
-		# PAN
-		elif buttons == QtCore.Qt.MidButton:
+
+			# PAN 1
+		elif buttons == QtCore.Qt.LeftButton  :
 			dx = pt.x() - self.dragStartPosX
 			dy = pt.y() - self.dragStartPosY
 			self.dragStartPosX = pt.x()
@@ -290,6 +313,19 @@ class qtViewer3d(qtBaseViewer):
 			self.cursor = "pan"
 			self._display.Pan(dx, -dy)
 			self._drawbox = False
+
+			# PAN 2
+		elif buttons == QtCore.Qt.MidButton and len(self.buttons_list)==2 :
+			print(buttons)
+			if buttons == QtCore.Qt.RightButton :
+				dx = pt.x() - self.dragStartPosX
+				dy = pt.y() - self.dragStartPosY
+				self.dragStartPosX = pt.x()
+				self.dragStartPosY = pt.y()
+				self.cursor = "pan"
+				self._display.Pan(dx, -dy)
+				self._drawbox = False
+
 		# DRAW BOX
 		# ZOOM WINDOW
 		elif (buttons == QtCore.Qt.RightButton and
@@ -308,3 +344,6 @@ class qtViewer3d(qtBaseViewer):
 			self._drawbox = False
 			self._display.MoveTo(pt.x(), pt.y())
 			self.cursor = "arrow"
+
+		self.dragStartPosX = evt.x()
+		self.dragStartPosY = evt.y()
