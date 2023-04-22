@@ -135,7 +135,7 @@ class DisplayManager(object):
 		self.canva._display.DisplayColoredShape()
 		
 	def Displaytriehedron(self):
-		axis = Geom_Axis2Placement(gp.ZOX())
+		axis = Geom_Axis2Placement(gp.XOY())
 		triehedron = AIS_Trihedron(axis)
 		triehedron.SetXAxisColor(Quantity_Color(Quantity_NOC_RED))
 		triehedron.SetYAxisColor(Quantity_Color(Quantity_NOC_GREEN))

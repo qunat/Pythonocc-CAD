@@ -17,7 +17,7 @@ class InteractiveOperate(object):
 		self.aisline=None
 		self.point_count=[]
 		
-		
+'''
 	def clicked_callback(self,shp, *kwargs):
 		try:
 			if self.InteractiveModule=="SKETCH":
@@ -53,7 +53,6 @@ class InteractiveOperate(object):
 		_dragStartPosX = self.parent.Displayshape_core.canva.dragStartPosX
 		if self.dragStartPosY != _dragStartPosY or self.dragStartPosX != _dragStartPosX:
 
-			print(time.time())
 			(x, y, z, vx, vy, vz) = self.parent.Displayshape_core.canva._display.View.ProjReferenceAxe(_dragStartPosX,
 																									   _dragStartPosY)
 			# print(x, y, z)
@@ -74,13 +73,12 @@ class InteractiveOperate(object):
 				self.parent.Displayshape_core.canva._display.Context.Redisplay(self.aisline[0], True,
 																			   False)  # 重新计算更新已经显示的物体
 				self.parent.Displayshape_core.canva._display.Context.UpdateCurrentViewer()
-				# self.parent.Displayshape_core.canva._display.FitAll()
-				aWire.Free()
-				print(time.time())
+				
+			
 			except Exception as e:
-				# print(e)
 				pass
 
 		self.dragStartPosX = _dragStartPosX
 		self.dragStartPosY = _dragStartPosY
 
+'''
