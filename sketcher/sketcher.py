@@ -1,13 +1,30 @@
 # -*- coding: utf-8 -*-
+from OCC.Core import BRepExtrema
 from OCC.Core.BRep import BRep_Tool
+from OCC.Core.Geom import Geom_CartesianPoint, Geom_Line
+from OCC.Core.Prs3d import Prs3d_PointAspect
+from OCC.Core.Quantity import Quantity_Color
 from OCC.Core.TopoDS import TopoDS_Vertex, TopoDS_Wire
-
+from OCC.Core.Quantity import Quantity_Color, Quantity_TOC_RGB
 from GUI.SelectWidget import SelectWidget
 import threading
 from OCC.Core.BRepBuilderAPI import BRepBuilderAPI_MakeEdge, BRepBuilderAPI_MakeWire
 from OCC.Core.GC import GC_MakeSegment
-from OCC.Core.gp import gp_Pnt
-from OCC.Core.AIS import AIS_Shape
+from OCC.Core.gp import gp_Pnt, gp_Dir, gp_Lin
+from OCC.Core.AIS import AIS_Shape, AIS_Point
+from OCC.Core.Aspect import (Aspect_TOM_POINT,
+                             Aspect_TOM_PLUS,
+                             Aspect_TOM_STAR,
+                             Aspect_TOM_X,
+                             Aspect_TOM_O,
+                             Aspect_TOM_O_POINT,
+                             Aspect_TOM_O_PLUS,
+                             Aspect_TOM_O_STAR,
+                             Aspect_TOM_O_X,
+                             Aspect_TOM_RING1,
+                             Aspect_TOM_RING2,
+                             Aspect_TOM_RING3,
+                             Aspect_TOM_BALL)
 
 
 class SketchModule(object):
@@ -39,7 +56,7 @@ class SketchModule(object):
 	
 	def clicked_callback(self, shp, *kwargs):
 		try:
-			
+			print(shp)
 			self.new_do_draw.draw_line(shp)# draw line
 		except Exception as e:
 			print(e)
@@ -70,22 +87,33 @@ class sketch_line(object):
 				(x, y, z, vx, vy, vz) = self.parent.Displayshape_core.canva._display.View.ProjReferenceAxe(
 					self.parent.Displayshape_core.canva.dragStartPosX,
 					self.parent.Displayshape_core.canva.dragStartPosY)
-				if shape!=None and  shape!=[] and not isinstance(shape,TopoDS_Wire) :
+				
+				if shape!=[] and isinstance(shape[0],TopoDS_Vertex) :#捕捉端点
 					P = BRep_Tool.Pnt(shape[0])
 					x,y,z=P.X(),P.Y(),P.Z()
+					
+				if shape!=[] and isinstance(shape[0],TopoDS_Wire) :#捕捉线上任意点
+					direction = gp_Dir(vx, vy, vz)
+					line = gp_Lin(gp_Pnt(x, y, z), direction)
+					ais_line = Geom_Line(line)
+					edge_builder = BRepBuilderAPI_MakeEdge(line)
+					edge = edge_builder.Edge()
+					extrema = BRepExtrema.BRepExtrema_DistShapeShape(shape[0], edge)
+					nearest_point = extrema.PointOnShape1(1)
+					x, y, z = nearest_point.X(), nearest_point.Y(), nearest_point.Z()
+					
 				
 				if len(self.point_count) == 0:
-					point = self.parent.Displayshape_core.canva._display.DisplayShape(gp_Pnt(x, y, z), True,
-																					  False)  # 重新计算更新已经显示的物
+					self.draw_point(x,y,z)
 					self.point = (x, y, z)
 					self.point_count.append(self.point)
 					self.show_line_dict[self.line_id] = None
 					self.parent.Displayshape_core.canva.mouse_move_Signal.trigger.connect(self.dynamics_drwa_line)
 					
+					
 				elif len(self.point_count) >= 1:
 					self.InteractiveModule = None
-					point = self.parent.Displayshape_core.canva._display.DisplayShape(gp_Pnt(x, y, z), True,
-																					  False)  # 重新计算更新已经显示的物
+					self.draw_point(x, y, z)# end point
 					aSegment = GC_MakeSegment(
 						gp_Pnt(self.point_count[-1][0], self.point_count[-1][1], self.point_count[-1][2]),
 						gp_Pnt(x, y, z))
@@ -130,5 +158,40 @@ class sketch_line(object):
 			
 			self.dragStartPosX = _dragStartPosX
 			self.dragStartPosY = _dragStartPosY
+	
 
+	def draw_point(self,x,y,z,point_type=None,color=None):
+		ALL_ASPECTS = [Aspect_TOM_POINT,
+					   Aspect_TOM_PLUS,
+					   Aspect_TOM_STAR,
+					   Aspect_TOM_X,
+					   Aspect_TOM_O,
+					   Aspect_TOM_O_POINT,
+					   Aspect_TOM_O_PLUS,
+					   Aspect_TOM_O_STAR,
+					   Aspect_TOM_O_X,
+					   Aspect_TOM_RING1,
+					   Aspect_TOM_RING2,
+					   Aspect_TOM_RING3,
+					   Aspect_TOM_BALL]
+		if point_type!=None:
+			point_type = ALL_ASPECTS[point_type]
+			p = Geom_CartesianPoint(gp_Pnt(x, y, z))
+			color = Quantity_Color(0, 0, 0, Quantity_TOC_RGB)
+			ais_point = AIS_Point(p)
 			
+			drawer = ais_point.Attributes()
+			asp = Prs3d_PointAspect(point_type, color, 4)
+			drawer.SetPointAspect(asp)
+			ais_point.SetAttributes(drawer)
+			point = self.parent.Displayshape_core.canva._display.Context.Display(ais_point,
+																				 False)  # 重新计算更新已经显示的物
+		else:
+			point = self.parent.Displayshape_core.canva._display.DisplayShape(gp_Pnt(x,y,z),color="YELLOW",
+																			update=False	 )  # 重新计算更新已经显示的物
+			self.parent.Displayshape_core.canva._display.Context.UpdateCurrentViewer()
+			self.parent.Displayshape_core.canva._display.Repaint()
+		
+		
+			
+		

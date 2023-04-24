@@ -249,7 +249,7 @@ class Viewer3d(Display3d):
 
     def SetModeHLR(self):
         self.View.SetComputedMode(True)
-
+	
     def SetOrthographicProjection(self):
         self.camera.SetProjectionType(Graphic3d_Camera.Projection_Orthographic)
 
