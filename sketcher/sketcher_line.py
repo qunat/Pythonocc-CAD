@@ -26,13 +26,6 @@ from OCC.Core.Aspect import (Aspect_TOM_POINT,
                              Aspect_TOM_RING3,
                              Aspect_TOM_BALL)
 
-
-
-		
-	
-	
-	
-	
 class sketch_line(object):
 	def __init__(self, parent=None):
 		self.parent = parent
@@ -124,7 +117,7 @@ class sketch_line(object):
 			self.dragStartPosY = _dragStartPosY
 	
 
-	def draw_point(self,x,y,z,point_type=0,color=None):
+	def draw_point(self,x,y,z,point_type=None,color=None):
 		ALL_ASPECTS = [Aspect_TOM_POINT,
 					   Aspect_TOM_PLUS,
 					   Aspect_TOM_STAR,

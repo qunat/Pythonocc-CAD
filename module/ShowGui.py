@@ -14,6 +14,7 @@ from GUI.Icons import get_icon
 from GUI.RibbonTextbox import RibbonTextbox
 from GUI.RibbonWidget import *
 from GUI.TittleBarWidget import *
+from GUI.TopBorderBarWidge import *
 from PyQt5.QtCore import  Qt
 from module import DisplayManager,ModelTree,OCAFModule,Ipython,InteractiveModule
 from sketcher import sketcher
@@ -105,11 +106,12 @@ class Ui_MainWindow(MainGui.Ui_MainWindow):
 		self.insertToolBarBreak(self._ribbon)
 		self.init_ribbon()
 		
-		#Create ToolBar
-		self.addToolBar(QtCore.Qt.TopToolBarArea, self.toolBar)
-		self.insertToolBarBreak(self.toolBar)
-		exitAct = QAction(QIcon('./icons/copy.png'), 'Exit', self)
-		self.toolBar.addAction(exitAct)
+		#Create TopBorderBar
+		self.TopBorderBa=TopBorderBarWidget(self)
+		self.addToolBar(QtCore.Qt.TopToolBarArea, self.TopBorderBa)
+		self.insertToolBarBreak(self.TopBorderBa)
+		#exitAct = QAction(QIcon('./icons/copy.png'), 'Exit', self)
+		#self.toolBar.addAction(exitAct)
 		
 		
 		#右键单击弹出界面
