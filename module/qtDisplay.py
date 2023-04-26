@@ -111,7 +111,7 @@ class qtViewer3d(qtBaseViewer):
 		qtBaseViewer.__init__(self, *kargs)
 
 		self.setObjectName("qt_viewer_3d")
-
+		self.parent=kargs[0]
 		self._drawbox = False
 		self._zoom_area = False
 		self._select_area = False
@@ -305,7 +305,7 @@ class qtViewer3d(qtBaseViewer):
 			self._drawbox = False
 
 			# PAN 1
-		elif buttons == QtCore.Qt.LeftButton  :
+		elif buttons == QtCore.Qt.LeftButton and self.parent.InteractiveOperate.InteractiveModule!="SKETCH" :
 			dx = pt.x() - self.dragStartPosX
 			dy = pt.y() - self.dragStartPosY
 			self.dragStartPosX = pt.x()

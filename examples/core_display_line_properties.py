@@ -56,7 +56,7 @@ def line():
 
         ais_line2 = AIS_Line(line2)
 
-        width = float(i)
+        width = float(10)
         drawer = ais_line2.Attributes()
         # asp : first parameter color, second type, last width
         asp = Prs3d_LineAspect(Quantity_Color(9*i), i, width)
