@@ -4,19 +4,17 @@ from OCC.Core.gp import gp_Pnt, gp_Dir, gp_Lin, gp_Ax2,gp_Dir
 from sketcher.sketcher_circel import sketch_circel
 from sketcher.sketcher_line import sketch_line
 from sketcher.sketcher_rectangle import sketch_rectangle
+from sketcher.sketcher_trim import sketch_trim
 
 class SketchModule(object):
 	def __init__(self,parent=None):
 		self.parent=parent
 		self.sketch_type=None
 		self.select_shape_list = []
-		self.dragStartPosX = 0
-		self.dragStartPosY = 0
-		self.aisline = None
-		self.point_count = []
 		self.gp_Dir=None
+		self.new_do_draw_dict={"line":None,"circel":None,"rectange":None}
 		
-	def select_skecth_plane(self):
+	def select_sketch_plane(self):
 		self.select_windows=SelectWidget(parent=self.parent)
 		self.select_windows.Show()
 		
@@ -38,53 +36,63 @@ class SketchModule(object):
 	
 	def clicked_callback(self, shp, *kwargs):
 		try:
-			print(shp)
+			#print(shp)
 			if self.sketch_type==4:
-				self.new_do_draw.draw_line(shp)# draw line
+				self.new_do_draw_dict["line"].draw_line(shp)# draw line
 			elif self.sketch_type==3:
-				self.new_do_draw.draw_circel(shp)
+				self.new_do_draw_dict["circel"].draw_circel(shp)
 			elif self.sketch_type==2:
-				self.new_do_draw.draw_rectangle(shp)
+				self.new_do_draw_dict["rectange"].draw_rectangle(shp)
+			elif self.sketch_type==8:
+				self.new_do_trim.trim(shp)
+				pass
+
 		except Exception as e:
 			print(e)
 	def do_draw(self):
-		if self.sketch_type==4:
-			self.new_do_draw=sketch_line(self.parent)# draw line
-		elif self.sketch_type==3:
-			self.new_do_draw = sketch_circel(self.parent,self.gp_Dir)  # draw ciecel
-		elif self.sketch_type==2:
-			self.new_do_draw = sketch_rectangle(self.parent,self.gp_Dir)  # draw rectangle
+		if self.sketch_type==4 and self.new_do_draw_dict["line"]==None:
+			self.new_do_draw_dict["line"]=sketch_line(self.parent)# draw line
+		elif self.sketch_type==3 and self.new_do_draw_dict["circel"]==None:
+			self.new_do_draw_dict["circel"] = sketch_circel(self.parent,self.gp_Dir)  # draw ciecel
+		elif self.sketch_type==2 and self.new_do_draw_dict["rectange"]==None:
+			self.new_do_draw_dict["rectange"] = sketch_rectangle(self.parent,self.gp_Dir)  # draw rectangle
+	def do_trim(self):
+		self.new_do_trim=sketch_trim(self.parent)
+
 
 		
 	def dynamics_drwa(self):
 		if self.sketch_type==4:
-			self.new_do_draw.dynamics_drwa_line()# draw line
+			self.new_do_draw_dict["line"].dynamics_drwa_line()# draw line
 		elif self.sketch_type==3:
-			self.new_do_draw.dynamics_drwa_circel()  # draw circel
+			self.new_do_draw_dict["circel"].dynamics_drwa_circel()  # draw circel
 		elif self.sketch_type==2:
-			self.new_do_draw.dynamics_drwa_rectangle()  # draw rectangle
+			self.new_do_draw_dict["rectange"].dynamics_drwa_rectangle()  # draw rectangle
 
-	def skecth_draw_profile(self):
+	def sketch_draw_profile(self):
 		self.sketch_type=1# profile draw
 		self.do_draw()
-	def skecth_draw_rectangle(self):
+	def sketch_draw_rectangle(self):
 		self.sketch_type=2# rectangle draw
 		self.do_draw()
-	def skecth_draw_circel(self):
+	def sketch_draw_circel(self):
 		self.sketch_type=3# circel draw
 		self.do_draw()
-	def skecth_draw_line(self):
+	def sketch_draw_line(self):
 		self.sketch_type=4# line draw
 		self.do_draw()
-	def skecth_draw_arc(self):
+	def sketch_draw_arc(self):
 		self.sketch_type=5# arc draw
 		self.do_draw()
-	def skecth_draw_spline(self):
+	def sketch_draw_spline(self):
 		self.sketch_type=6# spline draw
 		self.do_draw()
-	def skecth_draw_point(self):
+	def sketch_draw_point(self):
 		self.sketch_type=7# point draw
 		self.do_draw()
+	def sketch_trim(self):
+		self.sketch_type = 8  # sketch trim
+		self.do_trim()
 		
 	
 	
