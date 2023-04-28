@@ -127,6 +127,7 @@ class DisplayManager(object):
 		self.parent=parent
 		self.shape_maneger_core_dict={}
 		self._select_callbacks=[]
+
 		#self.canva.InitDriver()
 	
 	

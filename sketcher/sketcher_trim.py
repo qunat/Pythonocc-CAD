@@ -12,6 +12,7 @@ from OCC.Extend.TopologyUtils import TopologyExplorer
 
 from GUI.SelectWidget import SelectWidget
 import threading
+from OCC.Core.Quantity import *
 from OCC.Core.Quantity import Quantity_Color, Quantity_NOC_BLACK
 from OCC.Core.BRepBuilderAPI import BRepBuilderAPI_MakeEdge, BRepBuilderAPI_MakeWire
 from OCC.Core.GC import GC_MakeSegment, GC_MakeCircle
