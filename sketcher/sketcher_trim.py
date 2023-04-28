@@ -51,60 +51,65 @@ class sketch_trim(object):
 		print(self.sketch_show)
 
 	def trim(self,shape=None):
+		trim_point_min=None
+		distan_min=0
+		distance=0
+		trim_shape=None
 		for shp in self.sketch_show:
 			try:
 				# 创建线段修剪器对象
 				print(shape)
 				if shp[0].Shape().IsSame(shape[0]):
+					trim_shape=shp[0]
 					continue
 				extrema = BRepExtrema.BRepExtrema_DistShapeShape(shp[0].Shape(), shape[0])
 				nearest_point = extrema.PointOnShape1(1)
 				x, y, z = nearest_point.X(), nearest_point.Y(), nearest_point.Z()
 				trim_point=gp_Pnt(x,y,z)
-				point = self.parent.Displayshape_core.canva._display.DisplayShape(gp_Pnt(x, y, z), color="YELLOW",
-																				  update=False	)  # 重新计算更新已经显示的物
-				self.parent.Displayshape_core.canva._display.Repaint()
-				explorer=BRepTools_WireExplorer(shape[0])
-				startVertex = explorer.CurrentVertex()
-				explorer.Next()
-
-				endVertex = explorer.CurrentVertex()
-				explorer.Next()
-				P1 = BRep_Tool.Pnt(startVertex)  # 转换为pnt数据
-				P2 = BRep_Tool.Pnt(endVertex)  # 转换为pnt数据
-
-				#P1 = P1.Coord()
-				#P2 = P2.Coord()
 				(x, y, z, vx, vy, vz) = self.parent.Displayshape_core.canva._display.View.ProjReferenceAxe(
 					self.parent.Displayshape_core.canva.dragStartPosX,
 					self.parent.Displayshape_core.canva.dragStartPosY)
-				mouse_point=gp_Pnt(x,y,z)
-				distance1=P1.Distance(mouse_point)
-				distance2= P2.Distance(mouse_point)
-				if distance1>distance2:
-					end_point=P1
-				else:
-					end_point=P2
-
-				aSegment = GC_MakeSegment(trim_point,end_point)
-				anEdge = BRepBuilderAPI_MakeEdge(aSegment.Value())
-				aWire = BRepBuilderAPI_MakeWire(anEdge.Edge()).Shape()
-				self.parent.Sketcher.new_do_draw_dict["line"].show_line_dict[0][0].SetShape(aWire)  # 将已经显示的零件设置成另外一个新零件
-				self.parent.Sketcher.new_do_draw_dict["line"].show_line_dict[0][0].SetWidth(self.width)
-				self.parent.Sketcher.new_do_draw_dict["line"].show_line_dict[0][0].SetColor(Quantity_Color(self.color))
-				self.parent.Displayshape_core.canva._display.Context.Redisplay(self.parent.Sketcher.new_do_draw_dict["line"].show_line_dict[0][0],
-																			   True,
-																			   False)  # 重新计算更新已经显示的物体
-
-
-
-
-
-
+				mouse_point = gp_Pnt(x, y, z)
+				distance= trim_point.Distance(mouse_point)
+				if distance<=distan_min or distan_min==0:
+					distan_min=distance
+					trim_point_min=trim_point
 			except Exception as e:
 				print(e)
 				pass
-
+		point = self.parent.Displayshape_core.canva._display.DisplayShape(trim_point_min, color="YELLOW",
+																		  update=False)  # 重新计算更新已经显示的物
+		
+		self.parent.Displayshape_core.canva._display.Repaint()
+		#--------------------------------------------------------------------------------------------------
+		explorer = BRepTools_WireExplorer(shape[0])
+		startVertex = explorer.CurrentVertex()
+		explorer.Next()
+		
+		endVertex = explorer.CurrentVertex()
+		explorer.Next()
+		P1 = BRep_Tool.Pnt(startVertex)  # 转换为pnt数据
+		P2 = BRep_Tool.Pnt(endVertex)  # 转换为pnt数据
+		
+		
+		(x, y, z, vx, vy, vz) = self.parent.Displayshape_core.canva._display.View.ProjReferenceAxe(
+			self.parent.Displayshape_core.canva.dragStartPosX,
+			self.parent.Displayshape_core.canva.dragStartPosY)
+		mouse_point = gp_Pnt(x, y, z)
+		distance1 = P1.Distance(mouse_point)
+		distance2 = P2.Distance(mouse_point)
+		if distance1 > distance2:
+			end_point = P1
+		else:
+			end_point = P2
+		
+		aSegment = GC_MakeSegment(trim_point_min, end_point)
+		anEdge = BRepBuilderAPI_MakeEdge(aSegment.Value())
+		aWire = BRepBuilderAPI_MakeWire(anEdge.Edge()).Shape()
+		trim_shape.SetShape(aWire)  # 将已经显示的零件设置成另外一个新零件
+		trim_shape.SetWidth(self.width)
+		trim_shape.SetColor(Quantity_Color(self.color))
+		self.parent.Displayshape_core.canva._display.Context.Redisplay(trim_shape,True,False)  # 重新计算更新已经显示的物体
 
 	def draw_point(self,x,y,z,point_type=None,color=None):
 		ALL_ASPECTS = [Aspect_TOM_POINT,
