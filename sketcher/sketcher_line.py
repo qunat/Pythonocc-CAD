@@ -81,10 +81,10 @@ class sketch_line(object):
 						gp_Pnt(x, y, z))
 					anEdge = BRepBuilderAPI_MakeEdge(aSegment.Value())
 					aWire = BRepBuilderAPI_MakeWire(anEdge.Edge()).Shape()
-					self.show_line_dict[self.line_id][0].SetShape(aWire)  # 将已经显示的零件设置成另外一个新零件
-					self.show_line_dict[self.line_id][0].SetWidth(self.width)
-					self.show_line_dict[self.line_id][0].SetColor(Quantity_Color(self.color))
-					self.parent.Displayshape_core.canva._display.Context.Redisplay(self.show_line_dict[self.line_id][0], True,
+					self.show_line_dict[self.line_id].SetShape(aWire)  # 将已经显示的零件设置成另外一个新零件
+					self.show_line_dict[self.line_id].SetWidth(self.width)
+					self.show_line_dict[self.line_id].SetColor(Quantity_Color(self.color))
+					self.parent.Displayshape_core.canva._display.Context.Redisplay(self.show_line_dict[self.line_id], True,
 																				   False)  # 重新计算更新已经显示的物体
 					self.line_id+=1
 					self.point_count.clear()
@@ -108,13 +108,12 @@ class sketch_line(object):
 					
 					if self.show_line_dict[self.line_id] == None:
 						self.show_line_dict[self.line_id] = AIS_Shape(aWire)
-						self.show_line_dict[self.line_id] = self.parent.Displayshape_core.canva._display.DisplayShape(aWire, True,
-																								 False)  # 重新计算更新已经显示的物体
+						self.parent.Displayshape_core.canva._display.Context.Display(self.show_line_dict[self.line_id], True,)  # 重新计算更新已经显示的物体
 					else:
-						self.show_line_dict[self.line_id][0].SetShape(aWire)  # 将已经显示的零件设置成另外一个新零件
-						self.show_line_dict[self.line_id][0].SetWidth(self.width)
-						self.show_line_dict[self.line_id][0].SetColor(Quantity_Color(self.color))
-					self.parent.Displayshape_core.canva._display.Context.Redisplay(self.show_line_dict[self.line_id][0], True,
+						self.show_line_dict[self.line_id].SetShape(aWire)  # 将已经显示的零件设置成另外一个新零件
+						self.show_line_dict[self.line_id].SetWidth(self.width)
+						self.show_line_dict[self.line_id].SetColor(Quantity_Color(self.color))
+					self.parent.Displayshape_core.canva._display.Context.Redisplay(self.show_line_dict[self.line_id], True,
 																				   False)  # 重新计算更新已经显示的物体
 					self.parent.Displayshape_core.canva._display.Repaint()
 					self.parent.Displayshape_core.canva._display.Context.UpdateCurrentViewer()

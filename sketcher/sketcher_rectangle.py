@@ -67,10 +67,10 @@ class sketch_rectangle(sketch_line):
 
 					rectangle=self.process_rectangle(self.point_count[0][0],self.point_count[0][1],self.point_count[0][2],x,y,z).Shape()
 
-					self.show_rectangle_dict[self.rectangle_id][0].SetShape(rectangle)  # 将已经显示的零件设置成另外一个新零件
-					self.show_rectangle_dict[self.rectangle_id][0].SetWidth(self.width)
-					self.show_rectangle_dict[self.rectangle_id][0].SetColor(Quantity_Color(self.color))
-					self.parent.Displayshape_core.canva._display.Context.Redisplay(self.show_rectangle_dict[self.rectangle_id][0], True,
+					self.show_rectangle_dict[self.rectangle_id].SetShape(rectangle)  # 将已经显示的零件设置成另外一个新零件
+					self.show_rectangle_dict[self.rectangle_id].SetWidth(self.width)
+					self.show_rectangle_dict[self.rectangle_id].SetColor(Quantity_Color(self.color))
+					self.parent.Displayshape_core.canva._display.Context.Redisplay(self.show_rectangle_dict[self.rectangle_id], True,
 																				   False)  # 重新计算更新已经显示的物体
 					self.rectangle_id+=1
 					self.point_count.clear()
@@ -92,13 +92,12 @@ class sketch_rectangle(sketch_line):
 					
 					if self.show_rectangle_dict[self.rectangle_id] == None:
 						self.show_rectangle_dict[self.rectangle_id] = AIS_Shape(rectangle)
-						self.show_rectangle_dict[self.rectangle_id] = self.parent.Displayshape_core.canva._display.DisplayShape(rectangle, True,
-																								 False)  # 重新计算更新已经显示的物体
+						self.parent.Displayshape_core.canva._display.Context.Display(self.show_rectangle_dict[self.rectangle_id], True)  # 重新计算更新已经显示的物体
 					else:
-						self.show_rectangle_dict[self.rectangle_id][0].SetShape(rectangle)  # 将已经显示的零件设置成另外一个新零件
-						self.show_rectangle_dict[self.rectangle_id][0].SetWidth(self.width)
-						self.show_rectangle_dict[self.rectangle_id][0].SetColor(Quantity_Color(self.color))
-					self.parent.Displayshape_core.canva._display.Context.Redisplay(self.show_rectangle_dict[self.rectangle_id][0], True,
+						self.show_rectangle_dict[self.rectangle_id].SetShape(rectangle)  # 将已经显示的零件设置成另外一个新零件
+						self.show_rectangle_dict[self.rectangle_id].SetWidth(self.width)
+						self.show_rectangle_dict[self.rectangle_id].SetColor(Quantity_Color(self.color))
+					self.parent.Displayshape_core.canva._display.Context.Redisplay(self.show_rectangle_dict[self.rectangle_id], True,
 																				   False)  # 重新计算更新已经显示的物体
 					self.parent.Displayshape_core.canva._display.Context.UpdateCurrentViewer()
 				

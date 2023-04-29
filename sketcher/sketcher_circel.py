@@ -12,18 +12,18 @@ from OCC.Core.GC import GC_MakeSegment, GC_MakeCircle
 from OCC.Core.gp import gp_Pnt, gp_Dir, gp_Lin, gp_Ax2,gp_Dir
 from OCC.Core.AIS import AIS_Shape, AIS_Point
 from OCC.Core.Aspect import (Aspect_TOM_POINT,
-                             Aspect_TOM_PLUS,
-                             Aspect_TOM_STAR,
-                             Aspect_TOM_X,
-                             Aspect_TOM_O,
-                             Aspect_TOM_O_POINT,
-                             Aspect_TOM_O_PLUS,
-                             Aspect_TOM_O_STAR,
-                             Aspect_TOM_O_X,
-                             Aspect_TOM_RING1,
-                             Aspect_TOM_RING2,
-                             Aspect_TOM_RING3,
-                             Aspect_TOM_BALL)
+							 Aspect_TOM_PLUS,
+							 Aspect_TOM_STAR,
+							 Aspect_TOM_X,
+							 Aspect_TOM_O,
+							 Aspect_TOM_O_POINT,
+							 Aspect_TOM_O_PLUS,
+							 Aspect_TOM_O_STAR,
+							 Aspect_TOM_O_X,
+							 Aspect_TOM_RING1,
+							 Aspect_TOM_RING2,
+							 Aspect_TOM_RING3,
+							 Aspect_TOM_BALL)
 
 from sketcher.sketcher_line import sketch_line
 
@@ -80,10 +80,10 @@ class sketch_circel(sketch_line):
 				circel=GC_MakeCircle(p1,self.gp_Dir,radius).Value()
 				circel_builder = BRepBuilderAPI_MakeEdge(circel)
 				circel = circel_builder.Edge()
-				self.show_circel_dict[self.circel_id][0].SetShape(circel)  # 将已经显示的零件设置成另外一个新零件
-				self.show_circel_dict[self.circel_id][0].SetWidth(self.width)
-				self.show_circel_dict[self.circel_id][0].SetColor(Quantity_Color(self.color))
-				self.parent.Displayshape_core.canva._display.Context.Redisplay(self.show_circel_dict[self.circel_id][0],
+				self.show_circel_dict[self.circel_id].SetShape(circel)  # 将已经显示的零件设置成另外一个新零件
+				self.show_circel_dict[self.circel_id].SetWidth(self.width)
+				self.show_circel_dict[self.circel_id].SetColor(Quantity_Color(self.color))
+				self.parent.Displayshape_core.canva._display.Context.Redisplay(self.show_circel_dict[self.circel_id],
 																			   True,
 																			   False)  # 重新计算更新已经显示的物体
 				self.circel_id += 1
@@ -112,15 +112,13 @@ class sketch_circel(sketch_line):
 				
 				if self.show_circel_dict[self.circel_id] == None:
 					self.show_circel_dict[self.circel_id] = AIS_Shape(circel)
-					self.show_circel_dict[self.circel_id] = self.parent.Displayshape_core.canva._display.DisplayShape(circel,
-																												  True,
-																												  False)  # 重新计算更新已经显示的物体
+					self.parent.Displayshape_core.canva._display.Context.Display(self.show_circel_dict[self.circel_id],True)  # 重新计算更新已经显示的物体
 
 				else:
-					self.show_circel_dict[self.circel_id][0].SetShape(circel)  # 将已经显示的零件设置成另外一个新零件
-					self.show_circel_dict[self.circel_id][0].SetWidth(self.width)
-					self.show_circel_dict[self.circel_id][0].SetColor(Quantity_Color(self.color))
-				self.parent.Displayshape_core.canva._display.Context.Redisplay(self.show_circel_dict[self.circel_id][0],
+					self.show_circel_dict[self.circel_id].SetShape(circel)  # 将已经显示的零件设置成另外一个新零件
+					self.show_circel_dict[self.circel_id].SetWidth(self.width)
+					self.show_circel_dict[self.circel_id].SetColor(Quantity_Color(self.color))
+				self.parent.Displayshape_core.canva._display.Context.Redisplay(self.show_circel_dict[self.circel_id],
 																			   True,
 																			   False)  # 重新计算更新已经显示的物体
 				self.parent.Displayshape_core.canva._display.Context.UpdateCurrentViewer()
