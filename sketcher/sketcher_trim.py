@@ -51,7 +51,7 @@ class sketch_trim(object):
 		for key in lines:
 			lable="line"+str(key)
 			self.sketch_show_dict[lable]=self.parent.Sketcher.new_do_draw_dict["line"].show_line_dict[key]
-		print(self.sketch_show_dict)
+		#print(self.sketch_show_dict)
 
 
 	def trim(self,shape=None):
@@ -132,9 +132,9 @@ class sketch_trim(object):
 			self.parent.Displayshape_core.canva.dragStartPosX,
 			self.parent.Displayshape_core.canva.dragStartPosY)
 		mouse_point = gp_Pnt(x, y, z)
-		print("线段比较",distan_min_1+distan_min_2,distance)
+		#print("线段比较",distan_min_1+distan_min_2,distance)
 		if math.floor(distan_min_1+distan_min_2)==math.floor(distance):
-			print("修剪中间的线")
+			#print("修剪中间的线")
 			distance1 = P1.Distance(trim_point_min_1)
 			distance2 = P1.Distance(trim_point_min_2)
 			if distance1 < distance2:
@@ -149,22 +149,23 @@ class sketch_trim(object):
 			aWire = BRepBuilderAPI_MakeWire(anEdge.Edge()).Shape()
 			self.parent.Sketcher.new_do_draw_dict["line"].show_line_dict[trim_shape_key].SetShape(aWire)  # 将已经显示的零件设置成另外一个新零件
 			self.parent.Sketcher.new_do_draw_dict["line"].show_line_dict[trim_shape_key].SetWidth(self.width)
-			self.parent.Sketcher.new_do_draw_dict["line"].show_line_dict[trim_shape_key].SetColor(Quantity_Color(self.color))
+			self.parent.Sketcher.new_do_draw_dict["line"].show_line_dict[trim_shape_key].SetColor(Quantity_Color(Quantity_NOC_RED))
 			self.parent.Displayshape_core.canva._display.Context.Redisplay(self.parent.Sketcher.new_do_draw_dict["line"].show_line_dict[trim_shape_key], True, False)  # 重新计算更新已经显示的物体
-			print("修剪1完成")
+			#print("修剪1完成")
 
 			aSegment = GC_MakeSegment(trim_point_min_2, end_point_2)
 			anEdge = BRepBuilderAPI_MakeEdge(aSegment.Value())
 			aWire = BRepBuilderAPI_MakeWire(anEdge.Edge()).Shape()
 
-			key = len(self.parent.Sketcher.new_do_draw_dict["line"].show_line_dict.keys())
+			key = len(self.parent.Sketcher.new_do_draw_dict["line"].show_line_dict.keys())+1
 			self.parent.Sketcher.new_do_draw_dict["line"].show_line_dict[key]=AIS_Shape(aWire)
 			self.parent.Sketcher.new_do_draw_dict["line"].show_line_dict[key].SetWidth(self.width)
 			self.parent.Sketcher.new_do_draw_dict["line"].show_line_dict[key].SetColor(Quantity_Color(self.color))
 			self.parent.Displayshape_core.canva._display.Context.Display(self.parent.Sketcher.new_do_draw_dict["line"].show_line_dict[key], True)  # 重新计算更新已经显示的物体
-			print("Ok")
+			#print("Ok")
+
 		else:
-			print("enter")
+			#print("enter")
 			distance1 = P1.Distance(mouse_point)
 			distance2 = P2.Distance(mouse_point)
 			if distance1 > distance2:
