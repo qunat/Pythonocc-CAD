@@ -149,7 +149,7 @@ class sketch_trim(object):
 			aWire = BRepBuilderAPI_MakeWire(anEdge.Edge()).Shape()
 			self.parent.Sketcher.new_do_draw_dict["line"].show_line_dict[trim_shape_key].SetShape(aWire)  # 将已经显示的零件设置成另外一个新零件
 			self.parent.Sketcher.new_do_draw_dict["line"].show_line_dict[trim_shape_key].SetWidth(self.width)
-			self.parent.Sketcher.new_do_draw_dict["line"].show_line_dict[trim_shape_key].SetColor(Quantity_Color(Quantity_NOC_RED))
+			self.parent.Sketcher.new_do_draw_dict["line"].show_line_dict[trim_shape_key].SetColor(Quantity_Color(Quantity_NOC_BLACK))
 			self.parent.Displayshape_core.canva._display.Context.Redisplay(self.parent.Sketcher.new_do_draw_dict["line"].show_line_dict[trim_shape_key], True, False)  # 重新计算更新已经显示的物体
 			#print("修剪1完成")
 
