@@ -24,7 +24,7 @@ About
 pythonocc is a python package whose purpose is to provide 3D modeling
 features. It is intended to CAD/PDM/PLM and BIM related development.
 
-Latest release : [pythonocc-core 7.4.0 (february 2020)](https://github.com/tpaviot/pythonocc-core/releases/tag/7.4.0)
+version : [pythonocc-core 7.4.0 (february 2020)](https://github.com/tpaviot/pythonocc-core/releases/tag/7.4.0)
 
 Features
 --------

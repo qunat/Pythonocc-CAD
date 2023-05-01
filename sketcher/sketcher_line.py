@@ -41,6 +41,7 @@ class sketch_line(object):
 		self.show_line_dict = {}
 		self.point_count = []
 		self.line_id=0
+		
 
 
 		

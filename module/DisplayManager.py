@@ -173,7 +173,7 @@ class DisplayManager(object):
 		asp = Prs3d_LineAspect(Quantity_Color(Quantity_NOC_GREEN), 1, 10)
 		ais_plane_zy.SetAspect(asp)
 		self.canva._display.Context.Display(ais_plane_zy, True)
-		self.shape_maneger_core_dict["ais_plane_zy"]=ais_plane_zy
+		self.shape_maneger_core_dict["ais_plane_XY"]=ais_plane_zy
 	
 	def Displaydatum(self):
 		self.Displaytriehedron()
@@ -182,3 +182,8 @@ class DisplayManager(object):
 	def select(self):
 		pass
 
+	def Hide_datum(self):
+		self.canva._display.Context.Erase(self.shape_maneger_core_dict["ais_plane_xz"],True)
+		self.canva._display.Context.Erase(self.shape_maneger_core_dict["ais_plane_zy"],True)
+		self.canva._display.Context.Erase(self.shape_maneger_core_dict["ais_plane_XY"],True)
+		

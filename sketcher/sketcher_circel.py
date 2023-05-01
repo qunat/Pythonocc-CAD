@@ -86,6 +86,7 @@ class sketch_circel(sketch_line):
 				self.parent.Displayshape_core.canva._display.Context.Redisplay(self.show_circel_dict[self.circel_id],
 																			   True,
 																			   False)  # 重新计算更新已经显示的物体
+				
 				self.circel_id += 1
 				self.point_count.clear()
 	

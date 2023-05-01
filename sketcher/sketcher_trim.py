@@ -47,12 +47,16 @@ class sketch_trim(object):
 
 	def get_all_sketch_show(self):
 		lines=self.parent.Sketcher.new_do_draw_dict["line"].show_line_dict.keys()
-		#circels=self.parent.Sketcher.new_do_draw_dict["circel"].show_circel_dict.values()
+		rectangles=self.parent.Sketcher.new_do_draw_dict["rectangle"].show_rectangle_dict.keys()
+		
 		for key in lines:
 			lable="line"+str(key)
 			self.sketch_show_dict[lable]=self.parent.Sketcher.new_do_draw_dict["line"].show_line_dict[key]
-		#print(self.sketch_show_dict)
-
+		for key in rectangles:
+			lable="line"+str(key)
+			self.sketch_show_dict[lable]=self.parent.Sketcher.new_do_draw_dict["rectangle"].show_rectangle_dict[key]
+	
+		print(len(self.sketch_show_dict))
 
 	def trim(self,shape=None):
 		self.get_all_sketch_show()
@@ -87,27 +91,21 @@ class sketch_trim(object):
 				distance= trim_point.Distance(mouse_point)
 
 				if distan_min_1==0:
-					print("a")
 					distan_min_1=distance
 					trim_point_min_1=trim_point
 
 				elif distance < distan_min_1:
-					print("b")
 					trim_point_min_2 = trim_point_min_1
 					distan_min_2=distan_min_1
 					distan_min_1 = distance
 					trim_point_min_1 = trim_point
-					print(12,distan_min_1, distan_min_2)
 				else:
-					print("c")
 					if distance < distan_min_2 or distan_min_2==0:
 						distan_min_2=distance
 						trim_point_min_2=trim_point
-						print(13,distan_min_1, distan_min_2)
 
 
 			except Exception as e:
-				print(e)
 				pass
 		distance=trim_point_min_1.Distance(trim_point_min_2)
 
@@ -132,9 +130,9 @@ class sketch_trim(object):
 			self.parent.Displayshape_core.canva.dragStartPosX,
 			self.parent.Displayshape_core.canva.dragStartPosY)
 		mouse_point = gp_Pnt(x, y, z)
-		#print("线段比较",distan_min_1+distan_min_2,distance)
+		
 		if math.floor(distan_min_1+distan_min_2)==math.floor(distance):
-			#print("修剪中间的线")
+			
 			distance1 = P1.Distance(trim_point_min_1)
 			distance2 = P1.Distance(trim_point_min_2)
 			if distance1 < distance2:
@@ -151,21 +149,23 @@ class sketch_trim(object):
 			self.parent.Sketcher.new_do_draw_dict["line"].show_line_dict[trim_shape_key].SetWidth(self.width)
 			self.parent.Sketcher.new_do_draw_dict["line"].show_line_dict[trim_shape_key].SetColor(Quantity_Color(Quantity_NOC_BLACK))
 			self.parent.Displayshape_core.canva._display.Context.Redisplay(self.parent.Sketcher.new_do_draw_dict["line"].show_line_dict[trim_shape_key], True, False)  # 重新计算更新已经显示的物体
-			#print("修剪1完成")
+			
 
 			aSegment = GC_MakeSegment(trim_point_min_2, end_point_2)
 			anEdge = BRepBuilderAPI_MakeEdge(aSegment.Value())
 			aWire = BRepBuilderAPI_MakeWire(anEdge.Edge()).Shape()
 
-			key = len(self.parent.Sketcher.new_do_draw_dict["line"].show_line_dict.keys())+1
+			key = self.parent.Sketcher.new_do_draw_dict["line"].line_id
 			self.parent.Sketcher.new_do_draw_dict["line"].show_line_dict[key]=AIS_Shape(aWire)
 			self.parent.Sketcher.new_do_draw_dict["line"].show_line_dict[key].SetWidth(self.width)
 			self.parent.Sketcher.new_do_draw_dict["line"].show_line_dict[key].SetColor(Quantity_Color(self.color))
 			self.parent.Displayshape_core.canva._display.Context.Display(self.parent.Sketcher.new_do_draw_dict["line"].show_line_dict[key], True)  # 重新计算更新已经显示的物体
-			#print("Ok")
+			self.parent.Sketcher.new_do_draw_dict["line"].line_id=key+1
+			
+		
 
 		else:
-			#print("enter")
+			
 			distance1 = P1.Distance(mouse_point)
 			distance2 = P2.Distance(mouse_point)
 			if distance1 > distance2:
@@ -178,7 +178,6 @@ class sketch_trim(object):
 			self.parent.Sketcher.new_do_draw_dict["line"].show_line_dict[trim_shape_key].SetShape(aWire)  # 将已经显示的零件设置成另外一个新零件
 			self.parent.Sketcher.new_do_draw_dict["line"].show_line_dict[trim_shape_key].SetWidth(self.width)
 			self.parent.Sketcher.new_do_draw_dict["line"].show_line_dict[trim_shape_key].SetColor(Quantity_Color(self.color))
-
 			self.parent.Displayshape_core.canva._display.Context.Redisplay(self.parent.Sketcher.new_do_draw_dict["line"].show_line_dict[trim_shape_key], True, False)  # 重新计算更新已经显示的物体
 
 	def draw_point(self,x,y,z,point_type=None,color=None):

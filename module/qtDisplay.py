@@ -286,8 +286,8 @@ class qtViewer3d(qtBaseViewer):
 		#MOVE  ADD MYSELF
 
 		# ROTATE
-		if (buttons == QtCore.Qt.MidButton and
-				not modifiers == QtCore.Qt.ShiftModifier):
+		if (buttons == QtCore.Qt.MidButton and not modifiers == QtCore.Qt.ShiftModifier and
+				self.parent.InteractiveOperate.InteractiveModule!="SKETCH" ):
 			self.cursor = "rotate"
 			self._display.Rotation(pt.x(), pt.y())
 			self._drawbox = False
@@ -305,7 +305,7 @@ class qtViewer3d(qtBaseViewer):
 			self._drawbox = False
 
 			# PAN 1
-		elif buttons == QtCore.Qt.LeftButton and self.parent.InteractiveOperate.InteractiveModule!="SKETCH" :
+		elif buttons == QtCore.Qt.LeftButton and self.parent.InteractiveOperate.InteractiveModule!="SKETCH":
 			dx = pt.x() - self.dragStartPosX
 			dy = pt.y() - self.dragStartPosY
 			self.dragStartPosX = pt.x()
@@ -315,16 +315,15 @@ class qtViewer3d(qtBaseViewer):
 			self._drawbox = False
 
 			# PAN 2
-		elif buttons == QtCore.Qt.MidButton and len(self.buttons_list)==2 :
-			print(buttons)
-			if buttons == QtCore.Qt.RightButton :
-				dx = pt.x() - self.dragStartPosX
-				dy = pt.y() - self.dragStartPosY
-				self.dragStartPosX = pt.x()
-				self.dragStartPosY = pt.y()
-				self.cursor = "pan"
-				self._display.Pan(dx, -dy)
-				self._drawbox = False
+		elif buttons == QtCore.Qt.MidButton and self.parent.InteractiveOperate.InteractiveModule=="SKETCH" :
+			
+			dx = pt.x() - self.dragStartPosX
+			dy = pt.y() - self.dragStartPosY
+			self.dragStartPosX = pt.x()
+			self.dragStartPosY = pt.y()
+			self.cursor = "pan"
+			self._display.Pan(dx, -dy)
+			self._drawbox = False
 
 		# DRAW BOX
 		# ZOOM WINDOW

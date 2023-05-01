@@ -12,7 +12,7 @@ class SketchModule(object):
 		self.sketch_type=None
 		self.select_shape_list = []
 		self.gp_Dir=None
-		self.new_do_draw_dict={"line":None,"circel":None,"rectange":None}
+		self.new_do_draw_dict={"line":None,"circel":None,"rectangle":None}
 		
 	def select_sketch_plane(self):
 		self.select_windows=SelectWidget(parent=self.parent)
@@ -21,6 +21,7 @@ class SketchModule(object):
 	def uptoplane(self):
 		self.parent.InteractiveOperate.InteractiveModule="SKETCH"
 		self.parent.Displayshape_core.canva._display.register_select_callback(self.clicked_callback)
+		self.parent.Displayshape_core.Hide_datum()
 		if self.select_windows.comboBox.currentText()=="XY平面":
 			self.parent.Displayshape_core.canva._display.View_Top()
 			self.parent.Displayshape_core.canva._display.FitAll()
@@ -36,15 +37,15 @@ class SketchModule(object):
 	
 	def clicked_callback(self, shp, *kwargs):
 		try:
-			#print(shp)
 			if self.sketch_type==4:
 				self.new_do_draw_dict["line"].draw_line(shp)# draw line
 			elif self.sketch_type==3:
 				self.new_do_draw_dict["circel"].draw_circel(shp)
 			elif self.sketch_type==2:
-				self.new_do_draw_dict["rectange"].draw_rectangle(shp)
+				self.new_do_draw_dict["rectangle"].draw_rectangle(shp)
 			elif self.sketch_type==8:
-				self.new_do_trim.trim(shp)
+				if shp!=[]:
+					self.new_do_trim.trim(shp)
 				pass
 
 		except Exception as e:
@@ -54,20 +55,19 @@ class SketchModule(object):
 			self.new_do_draw_dict["line"]=sketch_line(self.parent)# draw line
 		elif self.sketch_type==3 and self.new_do_draw_dict["circel"]==None:
 			self.new_do_draw_dict["circel"] = sketch_circel(self.parent,self.gp_Dir)  # draw ciecel
-		elif self.sketch_type==2 and self.new_do_draw_dict["rectange"]==None:
-			self.new_do_draw_dict["rectange"] = sketch_rectangle(self.parent,self.gp_Dir)  # draw rectangle
+		elif self.sketch_type==2 and self.new_do_draw_dict["rectangle"]==None:
+			self.new_do_draw_dict["rectangle"] = sketch_rectangle(self.parent,self.gp_Dir)  # draw rectangle
+			
 	def do_trim(self):
 		self.new_do_trim=sketch_trim(self.parent)
 
-
-		
 	def dynamics_drwa(self):
 		if self.sketch_type==4:
 			self.new_do_draw_dict["line"].dynamics_drwa_line()# draw line
 		elif self.sketch_type==3:
 			self.new_do_draw_dict["circel"].dynamics_drwa_circel()  # draw circel
 		elif self.sketch_type==2:
-			self.new_do_draw_dict["rectange"].dynamics_drwa_rectangle()  # draw rectangle
+			self.new_do_draw_dict["rectangel"].dynamics_drwa_rectangle()  # draw rectangle
 
 	def sketch_draw_profile(self):
 		self.sketch_type=1# profile draw
