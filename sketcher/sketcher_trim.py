@@ -47,16 +47,16 @@ class sketch_trim(object):
 
 	def get_all_sketch_show(self):
 		lines=self.parent.Sketcher.new_do_draw_dict["line"].show_line_dict.keys()
-		rectangles=self.parent.Sketcher.new_do_draw_dict["rectangle"].show_rectangle_dict.keys()
+		#rectangles=self.parent.Sketcher.new_do_draw_dict["rectangle"].show_rectangle_dict.keys()
 		
 		for key in lines:
 			lable="line"+str(key)
 			self.sketch_show_dict[lable]=self.parent.Sketcher.new_do_draw_dict["line"].show_line_dict[key]
-		for key in rectangles:
-			lable="line"+str(key)
-			self.sketch_show_dict[lable]=self.parent.Sketcher.new_do_draw_dict["rectangle"].show_rectangle_dict[key]
+		#for key in rectangles:
+			#lable="line"+str(key)
+			#self.sketch_show_dict[lable]=self.parent.Sketcher.new_do_draw_dict["rectangle"].show_rectangle_dict[key]
 	
-		print(len(self.sketch_show_dict))
+		print(self.sketch_show_dict)
 
 	def trim(self,shape=None):
 		self.get_all_sketch_show()
