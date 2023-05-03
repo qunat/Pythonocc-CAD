@@ -46,15 +46,30 @@ class sketch_trim(object):
 
 
 	def get_all_sketch_show(self):
-		lines=self.parent.Sketcher.new_do_draw_dict["line"].show_line_dict.keys()
-		#rectangles=self.parent.Sketcher.new_do_draw_dict["rectangle"].show_rectangle_dict.keys()
-		
-		for key in lines:
-			lable="line"+str(key)
-			self.sketch_show_dict[lable]=self.parent.Sketcher.new_do_draw_dict["line"].show_line_dict[key]
-		#for key in rectangles:
-			#lable="line"+str(key)
-			#self.sketch_show_dict[lable]=self.parent.Sketcher.new_do_draw_dict["rectangle"].show_rectangle_dict[key]
+
+
+
+		try:
+			if self.parent.Sketcher.new_do_draw_dict["line"].show_line_dict != []:
+				lines = self.parent.Sketcher.new_do_draw_dict["line"].show_line_dict.keys()
+				for key in lines:
+					lable = "line" + str(key)
+					self.sketch_show_dict[lable] = self.parent.Sketcher.new_do_draw_dict["line"].show_line_dict[key]
+		except:
+			pass
+
+		try:
+			if self.parent.Sketcher.new_do_draw_dict["rectangle"].show_line_dict != []:
+				rectangles = self.parent.Sketcher.new_do_draw_dict["rectangle"].show_line_dict.keys()
+				for key in rectangles:
+					lable = "rectangle" + str(key)
+					self.sketch_show_dict[lable] = self.parent.Sketcher.new_do_draw_dict["rectangle"].show_line_dict[
+						key]
+		except:
+			pass
+
+
+
 	
 		print(self.sketch_show_dict)
 
@@ -64,16 +79,28 @@ class sketch_trim(object):
 		trim_point_min_2 = None
 		distan_min_1 = 0
 		distan_min_2 = 0
-		distance = 0
-		trim_shape = None
+		type=None
+		print(shape)
 		for key in self.sketch_show_dict.keys():
 			try:
 				# 创建线段修剪器对象
-				key = int(key.replace("line", ""))
-				shp = self.parent.Sketcher.new_do_draw_dict["line"].show_line_dict[key]
-				if shp.Shape().IsSame(shape[0]):
-					trim_shape_key = key
-					continue
+				if key[0:4]=="line":
+					key = int(key.replace("line", ""))
+					shp = self.parent.Sketcher.new_do_draw_dict["line"].show_line_dict[key]
+					if shp.Shape().IsSame(shape[0]):
+						type = "line"
+						trim_shape_key = key
+						continue
+
+				elif key[0:9]=="rectangle":
+					key = int(key.replace("rectangle", ""))
+					shp = self.parent.Sketcher.new_do_draw_dict["rectangle"].show_line_dict[key]
+					if shp.Shape().IsSame(shape[0]):
+						trim_shape_key = key
+						type = "rectangle"
+						continue
+
+
 				extrema = BRepExtrema.BRepExtrema_DistShapeShape(shp.Shape(), shape[0])
 				nearest_point_1 = extrema.PointOnShape1(1)
 				nearest_point_2 = extrema.PointOnShape2(1)
@@ -108,14 +135,15 @@ class sketch_trim(object):
 			except Exception as e:
 				print(e)
 				pass
-				#--------------------------------------------------------------------------------------line_trim
-		self.trim_line(shape,trim_point_min_1,trim_point_min_2,distan_min_1,distan_min_2,trim_shape_key)
+		#----------------------------------------------------line_trim-----------------------------------------------
+		self.trim_line(shape,trim_point_min_1, trim_point_min_2, distan_min_1, distan_min_2, trim_shape_key,type)
 
 
 
 
-	def trim_line(self,shape,trim_point_min_1,trim_point_min_2,distan_min_1,distan_min_2,trim_shape_key):
+	def trim_line(self, shape, trim_point_min_1, trim_point_min_2, distan_min_1, distan_min_2, trim_shape_key,type="line"):
 		#To do trim line
+
 		distance = trim_point_min_1.Distance(trim_point_min_2)
 		point = self.parent.Displayshape_core.canva._display.DisplayShape(trim_point_min_1, color="YELLOW",
 																		  update=False)  # 重新计算更新已经显示的物
@@ -152,26 +180,26 @@ class sketch_trim(object):
 			aSegment = GC_MakeSegment(trim_point_min_1, end_point_1)
 			anEdge = BRepBuilderAPI_MakeEdge(aSegment.Value())
 			aWire = BRepBuilderAPI_MakeWire(anEdge.Edge()).Shape()
-			self.parent.Sketcher.new_do_draw_dict["line"].show_line_dict[trim_shape_key].SetShape(
+			self.parent.Sketcher.new_do_draw_dict[type].show_line_dict[trim_shape_key].SetShape(
 				aWire)  # 将已经显示的零件设置成另外一个新零件
-			self.parent.Sketcher.new_do_draw_dict["line"].show_line_dict[trim_shape_key].SetWidth(self.width)
-			self.parent.Sketcher.new_do_draw_dict["line"].show_line_dict[trim_shape_key].SetColor(
+			self.parent.Sketcher.new_do_draw_dict[type].show_line_dict[trim_shape_key].SetWidth(self.width)
+			self.parent.Sketcher.new_do_draw_dict[type].show_line_dict[trim_shape_key].SetColor(
 				Quantity_Color(Quantity_NOC_BLACK))
 			self.parent.Displayshape_core.canva._display.Context.Redisplay(
-				self.parent.Sketcher.new_do_draw_dict["line"].show_line_dict[trim_shape_key], True,
+				self.parent.Sketcher.new_do_draw_dict[type].show_line_dict[trim_shape_key], True,
 				False)  # 重新计算更新已经显示的物体
 
 			aSegment = GC_MakeSegment(trim_point_min_2, end_point_2)
 			anEdge = BRepBuilderAPI_MakeEdge(aSegment.Value())
 			aWire = BRepBuilderAPI_MakeWire(anEdge.Edge()).Shape()
 
-			key = self.parent.Sketcher.new_do_draw_dict["line"].line_id
-			self.parent.Sketcher.new_do_draw_dict["line"].show_line_dict[key] = AIS_Shape(aWire)
-			self.parent.Sketcher.new_do_draw_dict["line"].show_line_dict[key].SetWidth(self.width)
-			self.parent.Sketcher.new_do_draw_dict["line"].show_line_dict[key].SetColor(Quantity_Color(self.color))
+			key = self.parent.Sketcher.new_do_draw_dict[type].line_id
+			self.parent.Sketcher.new_do_draw_dict[type].show_line_dict[key] = AIS_Shape(aWire)
+			self.parent.Sketcher.new_do_draw_dict[type].show_line_dict[key].SetWidth(self.width)
+			self.parent.Sketcher.new_do_draw_dict[type].show_line_dict[key].SetColor(Quantity_Color(self.color))
 			self.parent.Displayshape_core.canva._display.Context.Display(
-				self.parent.Sketcher.new_do_draw_dict["line"].show_line_dict[key], True)  # 重新计算更新已经显示的物体
-			self.parent.Sketcher.new_do_draw_dict["line"].line_id = key + 1
+				self.parent.Sketcher.new_do_draw_dict[type].show_line_dict[key], True)  # 重新计算更新已经显示的物体
+			self.parent.Sketcher.new_do_draw_dict[type].line_id +=1
 
 		else:
 			distance1 = P1.Distance(mouse_point)
@@ -180,20 +208,26 @@ class sketch_trim(object):
 				end_point = P1
 			else:
 				end_point = P2
-			aSegment = GC_MakeSegment(trim_point_min_1, end_point)
-			anEdge = BRepBuilderAPI_MakeEdge(aSegment.Value())
-			aWire = BRepBuilderAPI_MakeWire(anEdge.Edge()).Shape()
-			self.parent.Sketcher.new_do_draw_dict["line"].show_line_dict[trim_shape_key].SetShape(
-				aWire)  # 将已经显示的零件设置成另外一个新零件
-			self.parent.Sketcher.new_do_draw_dict["line"].show_line_dict[trim_shape_key].SetWidth(self.width)
-			self.parent.Sketcher.new_do_draw_dict["line"].show_line_dict[trim_shape_key].SetColor(
-				Quantity_Color(self.color))
-			self.parent.Displayshape_core.canva._display.Context.Redisplay(
-				self.parent.Sketcher.new_do_draw_dict["line"].show_line_dict[trim_shape_key], True,
-				False)  # 重新计算更新已经显示的物体
+
+			if math.ceil(trim_point_min_1.Distance(P1))==0 or math.ceil(trim_point_min_1.Distance(P2))==0:#交点和端的重合
+				self.parent.Displayshape_core.canva._display.Context.Erase(self.parent.Sketcher.new_do_draw_dict[type].show_line_dict[trim_shape_key],True)
+			else:
+				aSegment = GC_MakeSegment(trim_point_min_1, end_point)
+				anEdge = BRepBuilderAPI_MakeEdge(aSegment.Value())
+				aWire = BRepBuilderAPI_MakeWire(anEdge.Edge()).Shape()
+				self.parent.Sketcher.new_do_draw_dict[type].show_line_dict[trim_shape_key].SetShape(
+					aWire)  # 将已经显示的零件设置成另外一个新零件
+				self.parent.Sketcher.new_do_draw_dict[type].show_line_dict[trim_shape_key].SetWidth(self.width)
+				self.parent.Sketcher.new_do_draw_dict[type].show_line_dict[trim_shape_key].SetColor(
+					Quantity_Color(self.color))
+				self.parent.Displayshape_core.canva._display.Context.Redisplay(
+					self.parent.Sketcher.new_do_draw_dict[type].show_line_dict[trim_shape_key], True,
+					False)  # 重新计算更新已经显示的物体
 
 
-def draw_point(self,x,y,z,point_type=None,color=None):
+
+
+	def draw_point(self,x,y,z,point_type=None,color=None):
 		ALL_ASPECTS = [Aspect_TOM_POINT,
 					   Aspect_TOM_PLUS,
 					   Aspect_TOM_STAR,

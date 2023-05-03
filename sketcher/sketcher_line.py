@@ -89,6 +89,7 @@ class sketch_line(object):
 																				   False)  # 重新计算更新已经显示的物体
 					self.line_id+=1
 					self.point_count.clear()
+
 		
 	def dynamics_drwa_line(self):
 			_dragStartPosY = self.parent.Displayshape_core.canva.dragStartPosY

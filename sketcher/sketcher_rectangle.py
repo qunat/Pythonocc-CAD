@@ -28,9 +28,9 @@ class sketch_rectangle(sketch_line):
 		self.point_count = []
 		self.line_dict = {}
 		self.pointt_dict = {}
-		self.show_rectangle_dict = {}
+		self.show_line_dict = {}
 		self.point_count = []
-		self.rectangle_id=0
+		self.line_id=0
 		
 	def draw_rectangle(self,shape=None):
 			if self.parent.InteractiveOperate.InteractiveModule == "SKETCH":
@@ -57,7 +57,7 @@ class sketch_rectangle(sketch_line):
 					self.draw_point(x,y,z)
 					self.point = (x, y, z)
 					self.point_count.append(self.point)
-					self.show_rectangle_dict[self.rectangle_id] = None
+					self.show_line_dict[self.line_id] = None
 					self.parent.Displayshape_core.canva.mouse_move_Signal.trigger.connect(self.dynamics_drwa_rectangle)
 					
 					
@@ -66,15 +66,16 @@ class sketch_rectangle(sketch_line):
 					self.draw_point(x, y, z)# end point
 
 					rectangle_list=self.process_rectangle(self.point_count[0][0],self.point_count[0][1],self.point_count[0][2],x,y,z,model=1)
-					self.parent.Displayshape_core.canva._display.Context.Erase(self.show_rectangle_dict[self.rectangle_id],True)
+					self.parent.Displayshape_core.canva._display.Context.Erase(self.show_line_dict[self.line_id],True)
+					self.show_line_dict.clear()
 					
 					for rectangle in rectangle_list:
-			
-						self.show_rectangle_dict[self.rectangle_id]=AIS_Shape(rectangle)  # 将已经显示的零件设置成另外一个新零件
-						self.show_rectangle_dict[self.rectangle_id].SetWidth(self.width)
-						self.show_rectangle_dict[self.rectangle_id].SetColor(Quantity_Color(self.color))
-						self.parent.Displayshape_core.canva._display.Context.Display(self.show_rectangle_dict[self.rectangle_id], True)  # 重新计算更新已经显示的物体
-						self.rectangle_id+=1
+
+						self.show_line_dict[self.line_id]=AIS_Shape(rectangle.Shape())  # 将已经显示的零件设置成另外一个新零件
+						self.show_line_dict[self.line_id].SetWidth(self.width)
+						self.show_line_dict[self.line_id].SetColor(Quantity_Color(self.color))
+						self.parent.Displayshape_core.canva._display.Context.Display(self.show_line_dict[self.line_id], True)  # 重新计算更新已经显示的物体
+						self.line_id+=1
 					self.point_count.clear()
 		
 	def dynamics_drwa_rectangle(self):
@@ -92,14 +93,14 @@ class sketch_rectangle(sketch_line):
 					z0 = self.point[2]
 					rectangle=self.process_rectangle(x0,y0,z0,x,y,z).Shape()
 					
-					if self.show_rectangle_dict[self.rectangle_id] == None:
-						self.show_rectangle_dict[self.rectangle_id] = AIS_Shape(rectangle)
-						self.parent.Displayshape_core.canva._display.Context.Display(self.show_rectangle_dict[self.rectangle_id], True)  # 重新计算更新已经显示的物体
+					if self.show_line_dict[self.line_id] == None:
+						self.show_line_dict[self.line_id] = AIS_Shape(rectangle)
+						self.parent.Displayshape_core.canva._display.Context.Display(self.show_line_dict[self.line_id], True)  # 重新计算更新已经显示的物体
 					else:
-						self.show_rectangle_dict[self.rectangle_id].SetShape(rectangle)  # 将已经显示的零件设置成另外一个新零件
-						self.show_rectangle_dict[self.rectangle_id].SetWidth(self.width)
-						self.show_rectangle_dict[self.rectangle_id].SetColor(Quantity_Color(self.color))
-					self.parent.Displayshape_core.canva._display.Context.Redisplay(self.show_rectangle_dict[self.rectangle_id], True,
+						self.show_line_dict[self.line_id].SetShape(rectangle)  # 将已经显示的零件设置成另外一个新零件
+						self.show_line_dict[self.line_id].SetWidth(self.width)
+						self.show_line_dict[self.line_id].SetColor(Quantity_Color(self.color))
+					self.parent.Displayshape_core.canva._display.Context.Redisplay(self.show_line_dict[self.line_id], True,
 																				   False)  # 重新计算更新已经显示的物体
 					self.parent.Displayshape_core.canva._display.Context.UpdateCurrentViewer()
 				
@@ -144,7 +145,7 @@ class sketch_rectangle(sketch_line):
 			
 			aRectangle = BRepBuilderAPI_MakeWire(aWire1.Edge(), aWire2.Edge(), aWire3.Edge(), aWire4.Edge())
 		elif model==1:
-			aRectangle = [aWire1.Edge(), aWire2.Edge(), aWire3.Edge(), aWire4.Edge()]
+			aRectangle = [aWire1, aWire2, aWire3, aWire4]
 		
 		
 		#self.new_build = TopoDS_Builder()  # 建立一个TopoDS_Builder()
