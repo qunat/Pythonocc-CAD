@@ -67,7 +67,7 @@ class sketch_rectangle(sketch_line):
 
 					rectangle_list=self.process_rectangle(self.point_count[0][0],self.point_count[0][1],self.point_count[0][2],x,y,z,model=1)
 					self.parent.Displayshape_core.canva._display.Context.Erase(self.show_line_dict[self.line_id],True)
-					self.show_line_dict.clear()
+					self.show_line_dict.pop(self.line_id)
 					
 					for rectangle in rectangle_list:
 
@@ -77,6 +77,8 @@ class sketch_rectangle(sketch_line):
 						self.parent.Displayshape_core.canva._display.Context.Display(self.show_line_dict[self.line_id], True)  # 重新计算更新已经显示的物体
 						self.line_id+=1
 					self.point_count.clear()
+					print(self.show_line_dict)
+					self.parent.Displayshape_core.canva.mouse_move_Signal.trigger.disconnect(self.dynamics_drwa_rectangle)
 		
 	def dynamics_drwa_rectangle(self):
 			_dragStartPosY = self.parent.Displayshape_core.canva.dragStartPosY

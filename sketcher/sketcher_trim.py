@@ -74,6 +74,7 @@ class sketch_trim(object):
 		print(self.sketch_show_dict)
 
 	def trim(self,shape=None):
+		self.sketch_show_dict = {}
 		self.get_all_sketch_show()
 		trim_point_min_1 = None
 		trim_point_min_2 = None
@@ -211,6 +212,8 @@ class sketch_trim(object):
 
 			if math.ceil(trim_point_min_1.Distance(P1))==0 or math.ceil(trim_point_min_1.Distance(P2))==0:#交点和端的重合
 				self.parent.Displayshape_core.canva._display.Context.Erase(self.parent.Sketcher.new_do_draw_dict[type].show_line_dict[trim_shape_key],True)
+				self.parent.Sketcher.new_do_draw_dict[type].show_line_dict.pop(trim_shape_key)
+
 			else:
 				aSegment = GC_MakeSegment(trim_point_min_1, end_point)
 				anEdge = BRepBuilderAPI_MakeEdge(aSegment.Value())
