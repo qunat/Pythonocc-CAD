@@ -4,7 +4,7 @@ from OCC.Core.BRep import BRep_Tool
 from OCC.Core.Geom import Geom_CartesianPoint, Geom_Line
 from OCC.Core.Prs3d import Prs3d_PointAspect
 from OCC.Core.Quantity import Quantity_Color
-from OCC.Core.TopoDS import TopoDS_Vertex, TopoDS_Wire
+from OCC.Core.TopoDS import TopoDS_Vertex, TopoDS_Wire, TopoDS_Shape
 from OCC.Core.Quantity import Quantity_Color, Quantity_TOC_RGB
 from GUI.SelectWidget import SelectWidget
 import threading
@@ -41,6 +41,8 @@ class sketch_line(object):
 		self.show_line_dict = {}
 		self.point_count = []
 		self.line_id=0
+		#self.parent.Displayshape_core.canva.mouse_move_Signal.trigger.connect(self.dynamics_draw_trance)
+
 		
 
 
@@ -72,6 +74,7 @@ class sketch_line(object):
 					self.point_count.append(self.point)
 					self.show_line_dict[self.line_id] = None
 					self.parent.Displayshape_core.canva.mouse_move_Signal.trigger.connect(self.dynamics_drwa_line)
+
 					
 					
 				elif len(self.point_count) >= 1:
@@ -90,7 +93,31 @@ class sketch_line(object):
 					self.line_id+=1
 					self.point_count.clear()
 
-		
+	def dynamics_draw_trance(self):
+		Distance=0
+		_dragStartPosY = self.parent.Displayshape_core.canva.dragStartPosY
+		_dragStartPosX = self.parent.Displayshape_core.canva.dragStartPosX
+		(x, y, z, vx, vy, vz) = self.parent.Displayshape_core.canva._display.View.ProjReferenceAxe(_dragStartPosX,_dragStartPosY)
+		direction = gp_Dir(vx, vy, vz)
+		line = gp_Lin(gp_Pnt(x, y, z), direction)
+		ais_line = Geom_Line(line)
+		edge_builder = BRepBuilderAPI_MakeEdge(line)
+		edge = edge_builder.Edge()
+		for key in self.show_line_dict.keys():
+			try:
+				extrema = BRepExtrema.BRepExtrema_DistShapeShape(self.show_line_dict[key].Shape(), edge)
+				nearest_point1 = extrema.PointOnShape1(1)
+				nearest_point2 = extrema.PointOnShape1(1)
+				if Distance>nearest_point1.Distance(nearest_point2) or Distance==0:
+					Distance=nearest_point1.Distance(nearest_point2)
+					x, y, z = nearest_point1.X(), nearest_point1.Y(), nearest_point1.Z()
+				pass
+			except Exception as e:
+				print(e)
+				pass
+		if len(self.show_line_dict.keys())!=0 and Distance<=1:
+			ais_point=self.draw_point(x,y,z)
+
 	def dynamics_drwa_line(self):
 			_dragStartPosY = self.parent.Displayshape_core.canva.dragStartPosY
 			_dragStartPosX = self.parent.Displayshape_core.canva.dragStartPosX
@@ -159,6 +186,7 @@ class sketch_line(object):
 																			update=False	 )  # 重新计算更新已经显示的物
 			self.parent.Displayshape_core.canva._display.Context.UpdateCurrentViewer()
 			self.parent.Displayshape_core.canva._display.Repaint()
-		
+
+
 		
 			
