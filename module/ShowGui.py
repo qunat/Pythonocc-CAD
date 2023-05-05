@@ -21,17 +21,17 @@ from sketcher import sketcher
 from PyQt5 import QtGui,QtWidgets
 
 class Auto_create_ribbon(object):
-	def __init__(self,parent=None):
+	def __init__(self,parent=None,init_name="Ribbon_main"):
 		self.parent=parent
 		self.ribbon_dict={}
 		self.ribbon_table={}  # table 选项
 		self._action_dict = {}
 		self.ribbon_list = []
 		self.panel_dict = {}
-		self.Read_ribbon_init()
+		self.Read_ribbon_init(init_name)
 		self.Create_ribbon()
-	def Read_ribbon_init(self):
-		with open("./GUI/Ribbon.ini","r",encoding="utf-8") as f:
+	def Read_ribbon_init(self,init_name):
+		with open("./GUI/{}.ini".format(init_name),"r",encoding="utf-8") as f:
 			inner=f.readlines()
 			for i in inner:
 				if i=="\t":
@@ -52,13 +52,18 @@ class Auto_create_ribbon(object):
 			shortcut = ribbon_list[7].split("=")[1]
 			if connection=="None":
 				connection="self.void_funtion"
+				
 			if not table_name in self.ribbon_table.keys():
 				self.ribbon_table[table_name]=self.parent._ribbon.add_ribbon_tab(table_name) #创建table
+				
 			self._action_dict[action_name]=self.add_action(action_name, icon_name, status_tip, True, eval(connection), None)#创建action
 			
 			if  not table_name in self.ribbon_dict.keys():
 				self.panel_dict[panel_name]=self.ribbon_table[table_name].add_ribbon_pane(panel_name)#创建panel
 				self.ribbon_dict[table_name]=self.panel_dict.keys()
+				
+				
+				
 			else:
 				if not panel_name in self.ribbon_dict[table_name]:
 					self.panel_dict[panel_name] = self.ribbon_table[table_name].add_ribbon_pane(panel_name)  # 创建panel
@@ -82,7 +87,7 @@ class Auto_create_ribbon(object):
 	def void_funtion(self):
 		pass
 	
-	
+
 	
 class Ui_MainWindow(MainGui.Ui_MainWindow):
 	def __init__(self):
@@ -141,7 +146,15 @@ class Ui_MainWindow(MainGui.Ui_MainWindow):
 		pass
 
 	def init_ribbon(self):
-		RibbonMange=Auto_create_ribbon(parent=self)
+		self.RibbonMange=Auto_create_ribbon(parent=self,init_name="Ribbon_main")
+	def change_ribbon(self):
+		try:
+			self._ribbon._ribbon_widget.clear()
+			self.RibbonMange = Auto_create_ribbon(parent=self, init_name="Ribbon_sketcher")
+			
+		except:
+			pass
+		
 		
 	def rightMenuShow(self):
 		try:

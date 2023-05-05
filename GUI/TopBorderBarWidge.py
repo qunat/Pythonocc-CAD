@@ -80,6 +80,6 @@ class TopBorderBarWidget(QToolBar):
 		ribbon_tab.setObjectName("tab_" + name)
 		self._ribbon_widget.addTab(ribbon_tab, name)
 		return ribbon_tab
-
+	
 	def set_active(self, name):
 		self.setCurrentWidget(self.findChild("tab_" + name))

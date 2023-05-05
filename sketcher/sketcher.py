@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+import threading
+
 from GUI.SelectWidget import SelectWidget
 from OCC.Core.gp import gp_Pnt, gp_Dir, gp_Lin, gp_Ax2,gp_Dir
 from sketcher.sketcher_circel import sketch_circel
@@ -16,7 +18,12 @@ class SketchModule(object):
 		
 	def select_sketch_plane(self):
 		self.select_windows=SelectWidget(parent=self.parent)
+		#t=threading.Thread(target=self.parent.change_ribbon,args=())
+		#t.start()
+		self.parent.change_ribbon()
 		self.select_windows.Show()
+		
+		
 		
 	def uptoplane(self):
 		self.parent.InteractiveOperate.InteractiveModule="SKETCH"
