@@ -147,10 +147,10 @@ class Ui_MainWindow(MainGui.Ui_MainWindow):
 
 	def init_ribbon(self):
 		self.RibbonMange=Auto_create_ribbon(parent=self,init_name="Ribbon_main")
-	def change_ribbon(self):
+	def change_ribbon(self,init_name):
 		try:
 			self._ribbon._ribbon_widget.clear()
-			self.RibbonMange = Auto_create_ribbon(parent=self, init_name="Ribbon_sketcher")
+			self.RibbonMange = Auto_create_ribbon(parent=self, init_name=init_name)
 			
 		except:
 			pass

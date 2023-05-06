@@ -20,10 +20,14 @@ class SketchModule(object):
 		self.select_windows=SelectWidget(parent=self.parent)
 		#t=threading.Thread(target=self.parent.change_ribbon,args=())
 		#t.start()
-		self.parent.change_ribbon()
+		self.parent.change_ribbon(init_name="Ribbon_sketcher")
 		self.select_windows.Show()
 		
-		
+	def quite_sketch(self):
+		self.parent.change_ribbon(init_name="Ribbon_main")
+		self.parent.Displayshape_core.canva._display.View_Iso()
+		self.parent.Displayshape_core.canva._display.FitAll()
+		self.parent.InteractiveOperate.InteractiveModule="main"
 		
 	def uptoplane(self):
 		self.parent.InteractiveOperate.InteractiveModule="SKETCH"
