@@ -147,6 +147,7 @@ class Ui_MainWindow(MainGui.Ui_MainWindow):
 
 	def init_ribbon(self):
 		self.RibbonMange=Auto_create_ribbon(parent=self,init_name="Ribbon_main")
+		self._ribbon._ribbon_widget.setCurrentIndex(1)
 	def change_ribbon(self,init_name):
 		try:
 			self._ribbon._ribbon_widget.clear()
