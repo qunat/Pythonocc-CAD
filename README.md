@@ -9,11 +9,7 @@ This framework can basically meet the needs of graduation design of college stud
 ![alt tag](http://cad-upyun.test.upcdn.net/pythonocc-CAD/BrepCAD-3.png)
 ![alt tag](http://cad-upyun.test.upcdn.net/pythonocc-CAD/BrepCAD-4.png)
 ![alt tag](http://cad-upyun.test.upcdn.net/pythonocc-CAD/BrepCAD-5.png)
-![alt tag](http://cad-upyun.test.upcdn.net/pythonocc-CAD/pythonocc-CAD-2.png)
-![alt tag](http://cad-upyun.test.upcdn.net/pythonocc-CAD/pythonocc-CAD-3.png)
-![alt tag](http://cad-upyun.test.upcdn.net/pythonocc-CAD/pythonocc-CAD-6.png)
-![alt tag](http://cad-upyun.test.upcdn.net/pythonocc-CAD/pythonocc-CAD-5.png)
-![alt tag](http://cad-upyun.test.upcdn.net/pythonocc-CAD/pythonocc-CAD-4.png)
+
 
 pythonocc-core
 --------------
