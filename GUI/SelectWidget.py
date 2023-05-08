@@ -54,6 +54,7 @@ class SelectWidget(QtWidgets.QMainWindow):
 		self.statusBar().showMessage("请选择草绘平面")
 	def ok(self):
 		self.parent.Sketcher.uptoplane()
+		self.parent.change_ribbon(init_name="Ribbon_sketcher")
 		self.close()
 		
 	def cancel(self):

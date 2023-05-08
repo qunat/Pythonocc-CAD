@@ -1,12 +1,19 @@
 # -*- coding: utf-8 -*-
 import threading
 
+from OCC.Core.BRepBuilderAPI import BRepBuilderAPI_MakeEdge
+
 from GUI.SelectWidget import SelectWidget
-from OCC.Core.gp import gp_Pnt, gp_Dir, gp_Lin, gp_Ax2,gp_Dir
+from OCC.Core.gp import gp_Pnt, gp_Dir, gp_Lin, gp_Ax2, gp_Dir, gp_Pln
+from OCC.Core.gp import (gp_Pnt2d, gp_Ax2d, gp_Dir2d, gp_Circ2d, gp_Origin2d, gp_DX2d,
+                         gp_Ax2, gp_OX2d, gp_Lin2d, gp_Trsf, gp_XOY,
+                         gp_Pnt, gp_Vec, gp_Ax3, gp_Pln, gp_Origin, gp_DX, gp_DY,
+                         gp_DZ, gp_OZ)
 from sketcher.sketcher_circel import sketch_circel
 from sketcher.sketcher_line import sketch_line
 from sketcher.sketcher_rectangle import sketch_rectangle
 from sketcher.sketcher_trim import sketch_trim
+from OCC.Core.GeomAPI import geomapi_To3d
 
 class SketchModule(object):
 	def __init__(self,parent=None):
@@ -18,16 +25,20 @@ class SketchModule(object):
 		
 	def select_sketch_plane(self):
 		self.select_windows=SelectWidget(parent=self.parent)
-		#t=threading.Thread(target=self.parent.change_ribbon,args=())
-		#t.start()
-		self.parent.change_ribbon(init_name="Ribbon_sketcher")
 		self.select_windows.Show()
+		#self.parent.change_ribbon(init_name="Ribbon_sketcher")
+		
 		
 	def quite_sketch(self):
 		self.parent.change_ribbon(init_name="Ribbon_main")
+		self.parent._ribbon._ribbon_widget.setCurrentIndex(1)
 		self.parent.Displayshape_core.canva._display.View_Iso()
 		self.parent.Displayshape_core.canva._display.FitAll()
 		self.parent.InteractiveOperate.InteractiveModule="main"
+		
+	def _2Dto3d(self):
+		plane = gp_Pln(gp_Origin(), self.gp_Dir)
+		line = BRepBuilderAPI_MakeEdge(geomapi_To3d(self.new_do_draw_dict["line"].show_line_dict[0], plane)).Edge()
 		
 	def uptoplane(self):
 		self.parent.InteractiveOperate.InteractiveModule="SKETCH"

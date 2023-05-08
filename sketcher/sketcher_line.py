@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from OCC.Core import BRepExtrema
 from OCC.Core.BRep import BRep_Tool
+from OCC.Core.GCE2d import GCE2d_MakeLine
 from OCC.Core.Geom import Geom_CartesianPoint, Geom_Line
 from OCC.Core.Prs3d import Prs3d_PointAspect
 from OCC.Core.Quantity import Quantity_Color
@@ -8,10 +9,11 @@ from OCC.Core.TopoDS import TopoDS_Vertex, TopoDS_Wire, TopoDS_Shape
 from OCC.Core.Quantity import Quantity_Color, Quantity_TOC_RGB
 from GUI.SelectWidget import SelectWidget
 import threading
+from OCC.Core.GeomAPI import geomapi_To3d,geomapi_To2d
 from OCC.Core.Quantity import Quantity_Color, Quantity_NOC_BLACK
 from OCC.Core.BRepBuilderAPI import BRepBuilderAPI_MakeEdge, BRepBuilderAPI_MakeWire
 from OCC.Core.GC import GC_MakeSegment, GC_MakeCircle
-from OCC.Core.gp import gp_Pnt, gp_Dir, gp_Lin, gp_Ax2,gp_Dir
+from OCC.Core.gp import gp_Pnt, gp_Dir, gp_Lin, gp_Ax2, gp_Dir, gp_Pln, gp_Origin, gp_Lin2d,gp_Pnt2d
 from OCC.Core.AIS import AIS_Shape, AIS_Point
 from OCC.Core.Aspect import (Aspect_TOM_POINT,
                              Aspect_TOM_PLUS,
@@ -52,6 +54,7 @@ class sketch_line(object):
 				(x, y, z, vx, vy, vz) = self.parent.Displayshape_core.canva._display.View.ProjReferenceAxe(
 					self.parent.Displayshape_core.canva.dragStartPosX,
 					self.parent.Displayshape_core.canva.dragStartPosY)
+				print("mouse point",x,y,z)
 				
 				if shape!=[] and isinstance(shape[0],TopoDS_Vertex) :#捕捉端点
 					P = BRep_Tool.Pnt(shape[0])
@@ -85,6 +88,12 @@ class sketch_line(object):
 						gp_Pnt(x, y, z))
 					anEdge = BRepBuilderAPI_MakeEdge(aSegment.Value())
 					aWire = BRepBuilderAPI_MakeWire(anEdge.Edge()).Shape()
+					"""
+					3d转2d测试代码
+					plane = gp_Pln(gp_Origin(), gp_Dir(0,0,1))
+					arc1 = geomapi_To2d(aSegment.Value(), plane)
+					arc1 = BRepBuilderAPI_MakeEdge(geomapi_To3d(arc1, plane)).Edge()
+					"""
 					self.show_line_dict[self.line_id].SetShape(aWire)  # 将已经显示的零件设置成另外一个新零件
 					self.show_line_dict[self.line_id].SetWidth(self.width)
 					self.show_line_dict[self.line_id].SetColor(Quantity_Color(self.color))
