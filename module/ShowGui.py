@@ -99,6 +99,7 @@ class Ui_MainWindow(MainGui.Ui_MainWindow):
 		self.InteractiveOperate=InteractiveModule.InteractiveOperate(self)
 		self.Sketcher=sketcher.SketchModule(parent=self)
 		self.setCentralWidget(self.Displayshape_core.canva)
+
 		
 		# Create TittleBar
 		self.TittleBar = TittleBarWidget(self)

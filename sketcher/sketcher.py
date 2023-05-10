@@ -74,7 +74,7 @@ class SketchModule(object):
 			print(e)
 	def do_draw(self):
 		if self.sketch_type==4 and self.new_do_draw_dict["line"]==None:
-			self.new_do_draw_dict["line"]=sketch_line(self.parent)# draw line
+			self.new_do_draw_dict["line"]=sketch_line(self.parent,self.gp_Dir)# draw line
 		elif self.sketch_type==3 and self.new_do_draw_dict["circel"]==None:
 			self.new_do_draw_dict["circel"] = sketch_circel(self.parent,self.gp_Dir)  # draw ciecel
 		elif self.sketch_type==2 and self.new_do_draw_dict["rectangle"]==None:

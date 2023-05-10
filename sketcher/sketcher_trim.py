@@ -46,9 +46,6 @@ class sketch_trim(object):
 
 
 	def get_all_sketch_show(self):
-
-
-
 		try:
 			if self.parent.Sketcher.new_do_draw_dict["line"].show_line_dict != []:
 				lines = self.parent.Sketcher.new_do_draw_dict["line"].show_line_dict.keys()
