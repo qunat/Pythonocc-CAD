@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 from typing import List
 
-from OCC.Core.AIS import AIS_Trihedron, AIS_Plane
+from OCC.Core.AIS import AIS_Trihedron, AIS_Plane, AIS_ViewCube
 from OCC.Core.BRep import BRep_Builder
+from OCC.Core.BRepPrimAPI import BRepPrimAPI_MakeBox
 from OCC.Core.BRepTools import breptools_Write, breptools_Read, breptools_Triangulation
 from OCC.Core.Geom import Geom_Axis2Placement, Geom_Plane
 from OCC.Core.Prs3d import Prs3d_LineAspect
@@ -13,6 +14,7 @@ from OCC.Extend.DataExchange import read_step_file,read_iges_file,read_stl_file
 from module import Assemble
 from OCC.Core.Quantity import *
 from OCC.Core.gp import *
+from OCC.Core.Graphic3d import *
 from OCC.Core.Select3D import *
 import re
 
@@ -130,7 +132,19 @@ class DisplayManager(object):
 
 		#self.canva.InitDriver()
 	
-	
+	def ProjReferenceAxe(self):#返回当前鼠标位置在视图中的值
+		_dragStartPosY = self.canva.dragStartPosY
+		_dragStartPosX = self.canva.dragStartPosX
+		(x, y, z, vx, vy, vz) = self.parent.Displayshape_core.canva._display.View.ProjReferenceAxe(_dragStartPosX,
+																								   _dragStartPosY)
+		if abs(vx)==1:
+			x=0
+		elif abs(vy)==1:
+			y=0
+		elif abs(vz)==1 :
+			z=0
+		return x,y,z,vx, vy, vz
+
 			
 	def Dispalyshape(self):
 		self.canva._display.DisplayColoredShape()
@@ -186,4 +200,9 @@ class DisplayManager(object):
 		self.canva._display.Context.Erase(self.shape_maneger_core_dict["ais_plane_xz"],True)
 		self.canva._display.Context.Erase(self.shape_maneger_core_dict["ais_plane_zy"],True)
 		self.canva._display.Context.Erase(self.shape_maneger_core_dict["ais_plane_XY"],True)
-		
+
+	def DisplayCube(self):
+		#my_box = BRepPrimAPI_MakeBox(10., 20., 30.).Shape()
+		self.shape_maneger_core_dict["cube"] = AIS_ViewCube()
+		self.shape_maneger_core_dict["cube"].SetTransformPersistence(Graphic3d_TMF_TriedronPers, gp_Pnt(1, 1, 100))
+		self.canva._display.Context.Display(self.shape_maneger_core_dict["cube"], True)

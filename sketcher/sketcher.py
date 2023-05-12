@@ -22,10 +22,20 @@ class SketchModule(object):
 		self.select_shape_list = []
 		self.gp_Dir=None
 		self.new_do_draw_dict={"line":None,"circel":None,"rectangle":None}
+		self.parent.Displayshape_core.canva.mouse_move_Signal.trigger.connect(self.show_coordinate)
+
+
+
+	def show_coordinate(self):
+		(x, y, z, vx, vy, vz) = self.parent.Displayshape_core.ProjReferenceAxe()
+		coordinate="X:{:.2f}   Y:{:.2f}".format(x,y)
+		self.parent.Displayshape_core.canva._display.View.SetProj(vx, vy, vz)
+		self.parent.statusbar.showMessage(coordinate)
 		
 	def select_sketch_plane(self):
 		self.select_windows=SelectWidget(parent=self.parent)
 		self.select_windows.Show()
+		#self.parent.Displayshape_core.canva._display.SetSelectionModeEdge()
 		#self.parent.change_ribbon(init_name="Ribbon_sketcher")
 		
 		
@@ -44,10 +54,12 @@ class SketchModule(object):
 		self.parent.InteractiveOperate.InteractiveModule="SKETCH"
 		self.parent.Displayshape_core.canva._display.register_select_callback(self.clicked_callback)
 		self.parent.Displayshape_core.Hide_datum()
+
 		if self.select_windows.comboBox.currentText()=="XY平面":
 			self.parent.Displayshape_core.canva._display.View_Top()
 			self.parent.Displayshape_core.canva._display.FitAll()
 			self.gp_Dir=gp_Dir(0,0,1)
+
 		if self.select_windows.comboBox.currentText()=="YZ平面":
 			self.parent.Displayshape_core.canva._display.View_Right()
 			self.parent.Displayshape_core.canva._display.FitAll()

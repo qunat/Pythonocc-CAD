@@ -571,7 +571,7 @@ class Viewer3d(Display3d):
             shapes = [shapes]
         # build AIS_Shapes list
         for shape in shapes:
-            print(123,shape)
+            #print(123,shape)
             if material or texture:
                 if texture:
                     shape_to_display = AIS_TexturedShape(shape)

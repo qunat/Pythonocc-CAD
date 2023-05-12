@@ -11,19 +11,7 @@ from OCC.Core.BRepBuilderAPI import BRepBuilderAPI_MakeEdge, BRepBuilderAPI_Make
 from OCC.Core.GC import GC_MakeSegment, GC_MakeCircle
 from OCC.Core.gp import gp_Pnt, gp_Dir, gp_Lin, gp_Ax2,gp_Dir
 from OCC.Core.AIS import AIS_Shape, AIS_Point
-from OCC.Core.Aspect import (Aspect_TOM_POINT,
-							 Aspect_TOM_PLUS,
-							 Aspect_TOM_STAR,
-							 Aspect_TOM_X,
-							 Aspect_TOM_O,
-							 Aspect_TOM_O_POINT,
-							 Aspect_TOM_O_PLUS,
-							 Aspect_TOM_O_STAR,
-							 Aspect_TOM_O_X,
-							 Aspect_TOM_RING1,
-							 Aspect_TOM_RING2,
-							 Aspect_TOM_RING3,
-							 Aspect_TOM_BALL)
+
 
 from sketcher.sketcher_line import sketch_line
 
@@ -42,16 +30,17 @@ class sketch_circel(sketch_line):
 		self.show_circel_dict = {}
 		self.point_count = []
 		self.circel_id = 0
+
 	
 	def draw_circel(self, shape=None):
 		if self.parent.InteractiveOperate.InteractiveModule == "SKETCH":
-			(x, y, z, vx, vy, vz) = self.parent.Displayshape_core.canva._display.View.ProjReferenceAxe(
-				self.parent.Displayshape_core.canva.dragStartPosX,
-				self.parent.Displayshape_core.canva.dragStartPosY)
+			(x, y, z, vx, vy, vz) = self.parent.Displayshape_core.ProjReferenceAxe()
+			print(x,y,z)
 			
 			if shape != [] and isinstance(shape[0], TopoDS_Vertex):  # 捕捉端点
 				P = BRep_Tool.Pnt(shape[0])
 				x, y, z = P.X(), P.Y(), P.Z()
+				print(x,y,z)
 			
 			if shape != [] and isinstance(shape[0], TopoDS_Wire):  # 捕捉线上任意点
 				direction = gp_Dir(vx, vy, vz)
@@ -95,10 +84,8 @@ class sketch_circel(sketch_line):
 		_dragStartPosX = self.parent.Displayshape_core.canva.dragStartPosX
 		if self.dragStartPosY != _dragStartPosY or self.dragStartPosX != _dragStartPosX:
 			
-			(x, y, z, vx, vy, vz) = self.parent.Displayshape_core.canva._display.View.ProjReferenceAxe(
-				_dragStartPosX,
-				_dragStartPosY)
-			# print(x, y, z)
+			(x, y, z, vx, vy, vz) = self.parent.Displayshape_core.ProjReferenceAxe()
+
 			try:
 				x0 = self.point[0]
 				y0 = self.point[1]

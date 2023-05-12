@@ -44,7 +44,7 @@ from OCC.Extend.TopologyUtils import (discretize_edge, get_sorted_hlr_edges,
 from OCC.Core.BRepPrimAPI import BRepPrimAPI_MakeBox
 from OCC.Display.OCCViewer import rgb_color
 from OCC.Display.SimpleGui import init_display
-import chardet
+#import chardet
 
 try:
     import svgwrite
