@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-# -*- coding: utf-8 -*-
 
 # Form implementation generated from reading ui file 'Process_message_word.ui'
 #
@@ -10,23 +9,23 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QHBoxLayout,QVBoxLayout
-
+from GUI.SketcherButton import SketcherButton
 
 class SketcherWidget(QtWidgets.QMainWindow):
-	def __init__(self, parent=None):
+	def __init__(self, parent=None,mode=None):
 		super(SketcherWidget, self).__init__(parent)
 		self.parent=parent
-		self.setupUi()
+		self.setupUi(parent)
 		x = parent.geometry().x() + parent.geometry().width() / 2
 		y = parent.geometry().y() + parent.geometry().height() / 2
-		self.setGeometry(x, y, 250, 80)
-		self.setWindowTitle('创建草图')
-		self.pushbutton_ok.clicked.connect(self.ok)
-		self.pushbutton_cancel.clicked.connect(self.cancel)
+		self.setGeometry(x, y, 50*3, 5*3)
+		self.setWindowTitle('绘制矩形')
+		#self.pushbutton_ok.clicked.connect(self.ok)
+		#self.pushbutton_cancel.clicked.connect(self.cancel)
 		
 		
 	
-	def setupUi(self):
+	def setupUi(self,parent):
 		self.widget = QtWidgets.QWidget(self)
 		#self.setMovable(False)
 		#self.addWidget(self.widget)
@@ -39,18 +38,48 @@ class SketcherWidget(QtWidgets.QMainWindow):
 		HBOX.addLayout(HBOX_comboBOX)
 		HBOX.addLayout(HBOX_button)
 		
-		self.comboBox = QtWidgets.QComboBox(self.widget)
-		self.comboBox.setGeometry(QtCore.QRect(80, 100, 221, 500))
-		self.comboBox.setObjectName("comboBox")
-		self.comboBox.addItem("XY平面")
-		self.comboBox.addItem("XZ平面")
-		self.comboBox.addItem("YZ平面")
-		HBOX_comboBOX.addWidget(self.comboBox,0, QtCore.Qt.AlignTop)
-		
-		self.pushbutton_ok=QtWidgets.QPushButton("确定")
-		self.pushbutton_cancel = QtWidgets.QPushButton("取消")
+		#self.comboBox = QtWidgets.QComboBox(self.widget)
+		#self.comboBox.setGeometry(QtCore.QRect(80, 100, 221, 500))
+		#self.comboBox.setObjectName("comboBox")
+		#self.comboBox.addItem("XY平面")
+		#self.comboBox.addItem("XZ平面")
+		#self.comboBox.addItem("YZ平面")
+		#HBOX_comboBOX.addWidget(self.comboBox,0, QtCore.Qt.AlignTop)
+
+		#self.folder_pushButton = SketcherButton(self.widget, "folder_pushButton", "folder", [20, 20], "打开",
+												 #parent.OCAF.Open_part)
+		#HBOX_button.addWidget(self.folder_pushButton, 0)
+
+		self.pushbutton_ok=QtWidgets.QPushButton()
+		icon = QtGui.QIcon()
+		icon.addPixmap(QtGui.QPixmap("icons/{}.png".format("folder")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+		self.pushbutton_ok.setIcon(icon)
+		self.pushbutton_ok.setIconSize(QtCore.QSize(20, 20))
 		HBOX_button.addWidget(self.pushbutton_ok)
-		HBOX_button.addWidget(self.pushbutton_cancel)
+
+		self.pushbutton_ok = QtWidgets.QPushButton()
+		icon = QtGui.QIcon()
+		icon.addPixmap(QtGui.QPixmap("icons/{}.png".format("folder")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+		self.pushbutton_ok.setIcon(icon)
+		self.pushbutton_ok.setIconSize(QtCore.QSize(20, 20))
+		HBOX_button.addWidget(self.pushbutton_ok)
+
+		self.pushbutton_ok = QtWidgets.QPushButton()
+		self.pushbutton_ok.setFlat(True)
+		icon = QtGui.QIcon()
+		icon.addPixmap(QtGui.QPixmap("icons/{}.png".format("folder")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+		self.pushbutton_ok.setIcon(icon)
+		self.pushbutton_ok.setIconSize(QtCore.QSize(20, 20))
+		HBOX_button.addWidget(self.pushbutton_ok)
+
+
+
+
+		
+		#self.pushbutton_ok=QtWidgets.QPushButton("确定")
+		#self.pushbutton_cancel = QtWidgets.QPushButton("取消")
+		#HBOX_button.addWidget(self.pushbutton_ok)
+		#HBOX_button.addWidget(self.pushbutton_cancel)
 		self.statusBar().showMessage("请选择草绘平面")
 	def ok(self):
 		self.parent.Sketcher.uptoplane()

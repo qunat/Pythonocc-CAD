@@ -12,7 +12,7 @@ from OCC.Core.TopExp import TopExp_Explorer
 from OCC.Core.TopoDS import TopoDS_Vertex, TopoDS_Wire, TopoDS_Shape, TopoDS_Edge
 from OCC.Core.Quantity import Quantity_Color, Quantity_TOC_RGB
 from PyQt5.QtGui import QCursor, QPixmap
-
+from numba import *
 from GUI.SelectWidget import SelectWidget
 import threading
 from OCC.Core.TopAbs import TopAbs_VERTEX
@@ -46,7 +46,6 @@ class Brep_line(object):
 		self.capture_point_list=[None,None,None]
 		self.capture_any_point_list = [None]
 		self.create_line(point1,point2)
-
 
 	def create_line(self,p1=[],p2=[]):
 		x0,y0,z0=p1
@@ -131,46 +130,62 @@ class Brep_line(object):
 		p1=[x,y,z]
 		self.capture_any_point_list[0] = self.create_capture_point(p1)
 
+	def get_end_point_pnt(self,point):
+		Vertex0 = self.edge_point_list[point].Vertex()
+		pnt = BRep_Tool.Pnt(Vertex0)
+		return pnt
+
 	def display_line(self):
 		self.parent.parent.Displayshape_core.canva._display.Context.Display(self.ais_shape,False)#显示的物体
+		self.parent.parent.Displayshape_core.canva._display.Repaint()
+		self.parent.parent.Displayshape_core.canva._display.Context.UpdateCurrentViewer()
 
 
 	def redisplay(self):
 		self.parent.parent.Displayshape_core.canva._display.Context.Redisplay(self.ais_shape, True,False) #重新计算更新已经显示的物体
+		self.parent.parent.Displayshape_core.canva._display.Repaint()
 		self.parent.parent.Displayshape_core.canva._display.Context.UpdateCurrentViewer()
 
 	def display_all(self):
 		self.parent.parent.Displayshape_core.canva._display.Context.Display(self.ais_shape,False)#显示的物体
 		self.parent.parent.Displayshape_core.canva._display.Context.Display(self.edge_point_list[0], False)  # 显示的物体
 		self.parent.parent.Displayshape_core.canva._display.Context.Display(self.edge_point_list[1], False)  # 显示的物体
+		self.parent.parent.Displayshape_core.canva._display.Repaint()
+		self.parent.parent.Displayshape_core.canva._display.Context.UpdateCurrentViewer()
 
 	def redisplay_all(self):
 		self.parent.parent.Displayshape_core.canva._display.Context.Display(self.edge_point_list[0], False)  # 显示的物体
 		self.parent.parent.Displayshape_core.canva._display.Context.Display(self.edge_point_list[1], False)  # 显示的物体
 		self.parent.parent.Displayshape_core.canva._display.Context.Redisplay(self.ais_shape, True,False) #重新计算更新已经显示的物体
+		self.parent.parent.Displayshape_core.canva._display.Repaint()
 		self.parent.parent.Displayshape_core.canva._display.Context.UpdateCurrentViewer()
 	def display_capture_point(self):
 		self.parent.parent.Displayshape_core.canva._display.Context.Display(self.capture_point_list[0], False)  # 显示的物体
 		self.parent.parent.Displayshape_core.canva._display.Context.Display(self.capture_point_list[1], False)  # 显示的物体
 		self.parent.parent.Displayshape_core.canva._display.Context.Display(self.capture_point_list[2], False)  # 显示的物体
+		self.parent.parent.Displayshape_core.canva._display.Repaint()
+		self.parent.parent.Displayshape_core.canva._display.Context.UpdateCurrentViewer()
 
 	def remove_capture_point(self):
 		self.parent.parent.Displayshape_core.canva._display.Context.Remove(self.capture_point_list[0], True)  #移除捕捉的任意点
 		self.parent.parent.Displayshape_core.canva._display.Context.Remove(self.capture_point_list[1], True)  #移除捕捉的任意点
 		self.parent.parent.Displayshape_core.canva._display.Context.Remove(self.capture_point_list[2], True)  #移除捕捉的任意点
+		self.parent.parent.Displayshape_core.canva._display.Repaint()
+		self.parent.parent.Displayshape_core.canva._display.Context.UpdateCurrentViewer()
 
 
 	def display_capture_any_point(self):
 		self.parent.parent.Displayshape_core.canva._display.Context.Display(self.capture_any_point_list[0],
 																			False)  # 显示的物体
+		self.parent.parent.Displayshape_core.canva._display.Repaint()
+		self.parent.parent.Displayshape_core.canva._display.Context.UpdateCurrentViewer()
 
 	def remove_capture_any_point(self):
 		self.parent.parent.Displayshape_core.canva._display.Context.Remove(self.capture_any_point_list[0], False)  # 移除
+		self.parent.parent.Displayshape_core.canva._display.Repaint()
+		self.parent.parent.Displayshape_core.canva._display.Context.UpdateCurrentViewer()
 
-	def get_end_point_pnt(self,point):
-		Vertex0 = self.edge_point_list[point].Vertex()
-		pnt = BRep_Tool.Pnt(Vertex0)
-		return pnt
+
 
 
 
@@ -195,82 +210,78 @@ class sketch_line(object):
 		self.capture_edge_point_list=[]
 		self.capture_middle_point_list = []
 
+	def catch_capure_point(self,shape):#捕捉绘制点
+		(x, y, z, vx, vy, vz) = self.parent.Displayshape_core.ProjReferenceAxe()
+		if shape != [] and isinstance(shape[0], TopoDS_Vertex):  # 捕捉端点
+			P = BRep_Tool.Pnt(shape[0])
+			x, y, z = P.X(), P.Y(), P.Z()
+		if shape != [] and isinstance(shape[0], TopoDS_Edge):  # 捕捉线上任意点
+			direction = gp_Dir(vx, vy, vz)
+			line = gp_Lin(gp_Pnt(x, y, z), direction)
+			edge_builder = BRepBuilderAPI_MakeEdge(line)
+			edge = edge_builder.Edge()
+			extrema = BRepExtrema.BRepExtrema_DistShapeShape(shape[0], edge)
+			nearest_point = extrema.PointOnShape1(1)
+			x, y, z = nearest_point.X(), nearest_point.Y(), nearest_point.Z()
+		if shape == []:  # 捕捉生成的端点
+			shape_id = 0
+			Distance = 0
+			_dragStartPosY = self.parent.Displayshape_core.canva.dragStartPosY
+			_dragStartPosX = self.parent.Displayshape_core.canva.dragStartPosX
+			(x, y, z, vx, vy, vz) = self.parent.Displayshape_core.ProjReferenceAxe()
+			direction = gp_Dir(vx, vy, vz)
+			line = gp_Lin(gp_Pnt(x, y, z), direction)
+			edge_builder = BRepBuilderAPI_MakeEdge(line)
+			edge = edge_builder.Edge()
+			for key in self.show_line_dict.keys():
+				try:
+					if key == self.line_id and len(self.point_count) >= 1:
+						continue
+					extrema = BRepExtrema.BRepExtrema_DistShapeShape(self.show_line_dict[key].ais_shape.Shape(), edge)
+					nearest_point1 = extrema.PointOnShape1(1)
+					nearest_point2 = extrema.PointOnShape2(1)
+					if Distance > nearest_point1.Distance(nearest_point2) or Distance == 0:
+						Distance = nearest_point1.Distance(nearest_point2)
+						shape_id = key
+					pass
+				except Exception as e:
+					print(e)
+					pass
+
+			try:
+				point0 = self.show_line_dict[shape_id].get_end_point_pnt(0)
+				point1 = self.show_line_dict[shape_id].get_end_point_pnt(1)
+				if point0.Distance(gp_Pnt(x, y, z)) <= 10:
+					x = point0.X()
+					y = point0.Y()
+					z = point0.Z()
+				elif point1.Distance(gp_Pnt(x, y, z)) <= 10:
+					x = point1.X()
+					y = point1.Y()
+					z = point1.Z()
+				else:
+					(x, y, z, vx, vy, vz) = self.parent.Displayshape_core.ProjReferenceAxe()
+			except Exception as e:
+				print(e)
+				pass
+		return x, y, z, vx, vy, vz
+
+
 
 	def draw_line(self,shape=None):
 			if self.parent.InteractiveOperate.InteractiveModule == "SKETCH":
-				print(shape)
 				(x, y, z, vx, vy, vz) = self.parent.Displayshape_core.ProjReferenceAxe()
-				if shape!=[] and isinstance(shape[0],TopoDS_Vertex) :#捕捉端点
-					P = BRep_Tool.Pnt(shape[0])
-					x,y,z=P.X(),P.Y(),P.Z()
-					
-				if shape!=[] and isinstance(shape[0],TopoDS_Edge) :#捕捉线上任意点
-					direction = gp_Dir(vx, vy, vz)
-					line = gp_Lin(gp_Pnt(x, y, z), direction)
-					ais_line = Geom_Line(line)
-					edge_builder = BRepBuilderAPI_MakeEdge(line)
-					edge = edge_builder.Edge()
-					extrema = BRepExtrema.BRepExtrema_DistShapeShape(shape[0], edge)
-					nearest_point = extrema.PointOnShape1(1)
-					x, y, z = nearest_point.X(), nearest_point.Y(), nearest_point.Z()
-
-				if shape==[]:#捕捉生成的端点
-					shape_id = 0
-					Distance = 0
-					print("enter this ")
-					_dragStartPosY = self.parent.Displayshape_core.canva.dragStartPosY
-					_dragStartPosX = self.parent.Displayshape_core.canva.dragStartPosX
-					(x, y, z, vx, vy, vz) = self.parent.Displayshape_core.ProjReferenceAxe()
-					direction = gp_Dir(vx, vy, vz)
-					line = gp_Lin(gp_Pnt(x, y, z), direction)
-					edge_builder = BRepBuilderAPI_MakeEdge(line)
-					edge = edge_builder.Edge()
-					for key in self.show_line_dict.keys():
-						try:
-							if key == self.line_id and len(self.point_count) >= 1:
-								continue
-							extrema = BRepExtrema.BRepExtrema_DistShapeShape(self.show_line_dict[key].ais_shape.Shape(), edge)
-							nearest_point1 = extrema.PointOnShape1(1)
-							nearest_point2 = extrema.PointOnShape2(1)
-							if Distance > nearest_point1.Distance(nearest_point2) or Distance == 0:
-								Distance = nearest_point1.Distance(nearest_point2)
-								shape_id = key
-							pass
-						except Exception as e:
-							print(e)
-							pass
-
-					try:
-						point0=self.show_line_dict[shape_id].get_end_point_pnt(0)
-						point1 = self.show_line_dict[shape_id].get_end_point_pnt(1)
-						if point0.Distance(gp_Pnt(x, y, z))<=10:
-							x=point0.X()
-							y = point0.Y()
-							z = point0.Z()
-						elif point1.Distance(gp_Pnt(x, y, z))<=10:
-							x = point1.X()
-							y = point1.Y()
-							z = point1.Z()
-						else:
-							(x, y, z, vx, vy, vz) = self.parent.Displayshape_core.ProjReferenceAxe()
-					except Exception as e:
-						print(e)
-						pass
+				(x, y, z, vx, vy, vz)=self.catch_capure_point(shape)
 
 				if len(self.point_count) == 0:
-					#self.draw_point(x,y,z)
 					self.point = [x, y, z]
 					self.point_count.append(self.point)
 					self.show_line_dict[self.line_id] = None
 					self.parent.Displayshape_core.canva.mouse_move_Signal.trigger.connect(self.dynamics_drwa_line)
 					self.parent.Displayshape_core.canva.mouse_move_Signal.trigger.connect(self.dynamics_draw_trance)
 
-					
-					
 				elif len(self.point_count) >= 1 :
-					print("mouse point", x, y, z,vx, vy, vz)
 					self.InteractiveModule = None
-					#self.draw_point(x, y, z)# end point
 
 					if self.capture_point_None!=0:
 						print(self.capture_point_None)
@@ -312,12 +323,13 @@ class sketch_line(object):
 				print(e)
 				pass
 		#捕捉生产端点和中点,任意点
-		if Distance>10 or Distance==0:
+		if Distance>15 or Distance==0:
 			self.capture_point_None=0
 			try:
 				self.show_line_dict[shape_id].remove_capture_point()
 				self.show_line_dict[shape_id].remove_capture_any_point()
 				self.parent.Displayshape_core.canva._display.Repaint()
+				self.parent.Displayshape_core.canva._display.Context.UpdateCurrentViewer()
 			except:
 				pass
 		else:
@@ -326,14 +338,8 @@ class sketch_line(object):
 			self.show_line_dict[shape_id].display_capture_any_point()
 			self.show_line_dict[shape_id].display_capture_point()
 			self.parent.Displayshape_core.canva._display.Repaint()
+			self.parent.Displayshape_core.canva._display.Context.UpdateCurrentViewer()
 			pass
-
-		if len(self.show_line_dict.keys())!=0 and 0<Distance<=10:
-
-			if self.capture_point_list==[]:
-				pass
-			elif len(self.capture_point_list)==1:
-				pass
 
 	def dynamics_drwa_line(self):
 			_dragStartPosY = self.parent.Displayshape_core.canva.dragStartPosY

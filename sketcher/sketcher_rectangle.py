@@ -12,9 +12,10 @@ from OCC.Core.BRepBuilderAPI import BRepBuilderAPI_MakeEdge, BRepBuilderAPI_Make
 from OCC.Core.GC import GC_MakeSegment, GC_MakeCircle
 from OCC.Core.gp import gp_Pnt, gp_Dir, gp_Lin, gp_Ax2,gp_Dir
 from OCC.Core.AIS import AIS_Shape, AIS_Point
+from GUI import SketcherWidget
 
 
-from sketcher.sketcher_line import sketch_line
+from sketcher.sketcher_line import sketch_line,Brep_line
 
 
 class sketch_rectangle(sketch_line):
@@ -31,63 +32,45 @@ class sketch_rectangle(sketch_line):
 		self.show_line_dict = {}
 		self.point_count = []
 		self.line_id=0
+		sketch_rectangle_gui=SketcherWidget.SketcherWidget(parent=parent)
+		sketch_rectangle_gui.show()
 		
 	def draw_rectangle(self,shape=None):
 			if self.parent.InteractiveOperate.InteractiveModule == "SKETCH":
-				(x, y, z, vx, vy, vz) = self.parent.Displayshape_core.canva._display.View.ProjReferenceAxe(
-					self.parent.Displayshape_core.canva.dragStartPosX,
-					self.parent.Displayshape_core.canva.dragStartPosY)
-				
-				if shape!=[] and isinstance(shape[0],TopoDS_Vertex) :#捕捉端点
-					P = BRep_Tool.Pnt(shape[0])
-					x,y,z=P.X(),P.Y(),P.Z()
-					
-				if shape!=[] and isinstance(shape[0],TopoDS_Wire) :#捕捉线上任意点
-					direction = gp_Dir(vx, vy, vz)
-					line = gp_Lin(gp_Pnt(x, y, z), direction)
-					ais_line = Geom_Line(line)
-					edge_builder = BRepBuilderAPI_MakeEdge(line)
-					edge = edge_builder.Edge()
-					extrema = BRepExtrema.BRepExtrema_DistShapeShape(shape[0], edge)
-					nearest_point = extrema.PointOnShape1(1)
-					x, y, z = nearest_point.X(), nearest_point.Y(), nearest_point.Z()
-					
-				
+				(x, y, z, vx, vy, vz) = self.parent.Displayshape_core.ProjReferenceAxe()
+				x, y, z, vx, vy, vz=self.catch_capure_point(shape)#启用端点捕捉
 				if len(self.point_count) == 0:
-					self.draw_point(x,y,z)
 					self.point = (x, y, z)
 					self.point_count.append(self.point)
 					self.show_line_dict[self.line_id] = None
 					self.parent.Displayshape_core.canva.mouse_move_Signal.trigger.connect(self.dynamics_drwa_rectangle)
-					
-					
+					self.parent.Displayshape_core.canva.mouse_move_Signal.trigger.connect(self.dynamics_draw_trance)
+
 				elif len(self.point_count) >= 1:
 					self.InteractiveModule = None
-					self.draw_point(x, y, z)# end point
-
 					rectangle_list=self.process_rectangle(self.point_count[0][0],self.point_count[0][1],self.point_count[0][2],x,y,z,model=1)
 					self.parent.Displayshape_core.canva._display.Context.Erase(self.show_line_dict[self.line_id],True)
 					self.show_line_dict.pop(self.line_id)
 					
 					for rectangle in rectangle_list:
-
-						self.show_line_dict[self.line_id]=AIS_Shape(rectangle.Shape())  # 将已经显示的零件设置成另外一个新零件
-						self.show_line_dict[self.line_id].SetWidth(self.width)
-						self.show_line_dict[self.line_id].SetColor(Quantity_Color(self.color))
-						self.parent.Displayshape_core.canva._display.Context.Display(self.show_line_dict[self.line_id], True)  # 重新计算更新已经显示的物体
+						try:
+							self.show_line_dict[self.line_id]=Brep_line(self,rectangle[0],rectangle[1])  # 将已经显示的零件设置成另外一个新零件
+							self.show_line_dict[self.line_id].set_ais_shape(rectangle[0],rectangle[1])
+							self.show_line_dict[self.line_id].redisplay_all()
+							self.parent.Displayshape_core.canva._display.Context.UpdateCurrentViewer()
+						except Exception as e:
+							print(e)
 						self.line_id+=1
 					self.point_count.clear()
-					print(self.show_line_dict)
-					self.parent.Displayshape_core.canva.mouse_move_Signal.trigger.disconnect(self.dynamics_drwa_rectangle)
+					#print(self.show_line_dict)
+					#self.parent.Displayshape_core.canva.mouse_move_Signal.trigger.disconnect(self.dynamics_drwa_rectangle)
 		
 	def dynamics_drwa_rectangle(self):
 			_dragStartPosY = self.parent.Displayshape_core.canva.dragStartPosY
 			_dragStartPosX = self.parent.Displayshape_core.canva.dragStartPosX
 			if self.dragStartPosY != _dragStartPosY or self.dragStartPosX != _dragStartPosX:
 				
-				(x, y, z, vx, vy, vz) = self.parent.Displayshape_core.canva._display.View.ProjReferenceAxe(
-					_dragStartPosX,
-					_dragStartPosY)
+				(x, y, z, vx, vy, vz) = self.parent.Displayshape_core.ProjReferenceAxe()
 				# print(x, y, z)
 				try:
 					x0 = self.point[0]
@@ -147,7 +130,12 @@ class sketch_rectangle(sketch_line):
 			
 			aRectangle = BRepBuilderAPI_MakeWire(aWire1.Edge(), aWire2.Edge(), aWire3.Edge(), aWire4.Edge())
 		elif model==1:
-			aRectangle = [aWire1, aWire2, aWire3, aWire4]
+			#aRectangle = [aWire1, aWire2, aWire3, aWire4]
+			P0=[P0.X(),P0.Y(),P0.Z()]
+			P1 = [P1.X(), P1.Y(), P1.Z()]
+			P2 = [P2.X(), P2.Y(), P2.Z()]
+			P3 = [P3.X(), P3.Y(), P3.Z()]
+			aRectangle = [[P0,P1], [P1,P2], [P2,P3], [P3,P0]]
 		
 		
 		#self.new_build = TopoDS_Builder()  # 建立一个TopoDS_Builder()
