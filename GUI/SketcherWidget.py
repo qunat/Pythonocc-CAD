@@ -16,9 +16,9 @@ class SketcherWidget(QtWidgets.QMainWindow):
 		super(SketcherWidget, self).__init__(parent)
 		self.parent=parent
 		self.setupUi(parent)
-		x = parent.geometry().x() + parent.geometry().width() / 2
-		y = parent.geometry().y() + parent.geometry().height() / 2
-		self.setGeometry(x, y, 50*3, 5*3)
+		x = parent.Displayshape_core.canva.geometry().x() + parent.Displayshape_core.canva.geometry().width() / 2
+		y = parent.Displayshape_core.canva.geometry().y() + parent.Displayshape_core.canva.geometry().height() / 2
+		self.setGeometry(x, y, 80*3, 5*3)
 		self.setWindowTitle('绘制矩形')
 		#self.pushbutton_ok.clicked.connect(self.ok)
 		#self.pushbutton_cancel.clicked.connect(self.cancel)
@@ -52,24 +52,24 @@ class SketcherWidget(QtWidgets.QMainWindow):
 
 		self.pushbutton_ok=QtWidgets.QPushButton()
 		icon = QtGui.QIcon()
-		icon.addPixmap(QtGui.QPixmap("icons/{}.png".format("folder")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+		icon.addPixmap(QtGui.QPixmap("icons/{}.png".format("矩形1")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
 		self.pushbutton_ok.setIcon(icon)
-		self.pushbutton_ok.setIconSize(QtCore.QSize(20, 20))
+		self.pushbutton_ok.setIconSize(QtCore.QSize(35, 35))
 		HBOX_button.addWidget(self.pushbutton_ok)
 
 		self.pushbutton_ok = QtWidgets.QPushButton()
 		icon = QtGui.QIcon()
-		icon.addPixmap(QtGui.QPixmap("icons/{}.png".format("folder")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+		icon.addPixmap(QtGui.QPixmap("icons/{}.png".format("矩形2")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
 		self.pushbutton_ok.setIcon(icon)
-		self.pushbutton_ok.setIconSize(QtCore.QSize(20, 20))
+		self.pushbutton_ok.setIconSize(QtCore.QSize(30, 30))
 		HBOX_button.addWidget(self.pushbutton_ok)
 
 		self.pushbutton_ok = QtWidgets.QPushButton()
-		self.pushbutton_ok.setFlat(True)
+		#self.pushbutton_ok.setFlat(True)
 		icon = QtGui.QIcon()
-		icon.addPixmap(QtGui.QPixmap("icons/{}.png".format("folder")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+		icon.addPixmap(QtGui.QPixmap("icons/{}.png".format("矩形3")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
 		self.pushbutton_ok.setIcon(icon)
-		self.pushbutton_ok.setIconSize(QtCore.QSize(20, 20))
+		self.pushbutton_ok.setIconSize(QtCore.QSize(30, 30))
 		HBOX_button.addWidget(self.pushbutton_ok)
 
 
@@ -80,7 +80,7 @@ class SketcherWidget(QtWidgets.QMainWindow):
 		#self.pushbutton_cancel = QtWidgets.QPushButton("取消")
 		#HBOX_button.addWidget(self.pushbutton_ok)
 		#HBOX_button.addWidget(self.pushbutton_cancel)
-		self.statusBar().showMessage("请选择草绘平面")
+		#self.statusBar().showMessage("请选择草绘平面")
 	def ok(self):
 		self.parent.Sketcher.uptoplane()
 		self.close()

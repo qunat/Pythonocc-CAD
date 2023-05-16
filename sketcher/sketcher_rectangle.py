@@ -62,6 +62,7 @@ class sketch_rectangle(sketch_line):
 							print(e)
 						self.line_id+=1
 					self.point_count.clear()
+					self.show_element = self.parent.Sketcher.get_all_sketcher_element()
 					#print(self.show_line_dict)
 					#self.parent.Displayshape_core.canva.mouse_move_Signal.trigger.disconnect(self.dynamics_drwa_rectangle)
 		

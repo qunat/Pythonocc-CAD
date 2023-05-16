@@ -45,14 +45,21 @@ source activate pyoccenv
 conda install -c conda-forge pythonocc-core=7.4
 ```
 
-#Run it 
+# Run it 
 ```
 git clone https://github.com/qunat/Pythonocc-CAD.git
 conda activate your environment
 cd pythonocc-CAD
 python BaseGui.py
 ```
+#  also download the exe installation package, which includes the Pythonnocc environment and source code
 
+setup.exe: [http://cad-upyun.test.upcdn.net/pythonocc-CAD/setup.exe](http://cad-upyun.test.upcdn.net/pythonocc-CAD/setup.exe)
+```
+install setup.exe
+cd BrepCAD
+start.bat
+```
 
 
 # QupyRibbon

@@ -21,10 +21,24 @@ class SketchModule(object):
 		self.sketch_type=None
 		self.select_shape_list = []
 		self.gp_Dir=None
-		self.new_do_draw_dict={"line":None,"circel":None,"rectangle":None}
+		self.new_do_draw_dict={"line":None,"circel":None,"rectangle":None,"arc":None}
 		self.parent.Displayshape_core.canva.mouse_move_Signal.trigger.connect(self.show_coordinate)
 
 
+
+	def get_all_sketcher_element(self):
+		sketch_element_dict={}
+		for element in self.new_do_draw_dict.keys():
+			try:
+				if self.parent.Sketcher.new_do_draw_dict[element].show_line_dict != [] and (element=="line" or element=="rectangle"):
+					lines = self.parent.Sketcher.new_do_draw_dict[element].show_line_dict.keys()
+					for key in lines:
+						lable = element + str(key)
+						sketch_element_dict[lable] = self.parent.Sketcher.new_do_draw_dict[element].show_line_dict[key]
+
+			except:
+				pass
+		return sketch_element_dict
 
 	def show_coordinate(self):
 		(x, y, z, vx, vy, vz) = self.parent.Displayshape_core.ProjReferenceAxe()

@@ -134,7 +134,10 @@ class Brep_line(object):
 		Vertex0 = self.edge_point_list[point].Vertex()
 		pnt = BRep_Tool.Pnt(Vertex0)
 		return pnt
-
+	def get_capture_point_pnt(self,point):
+		Vertex0 = self.capture_point_list[point].Vertex()
+		pnt = BRep_Tool.Pnt(Vertex0)
+		return pnt
 	def display_line(self):
 		self.parent.parent.Displayshape_core.canva._display.Context.Display(self.ais_shape,False)#显示的物体
 		self.parent.parent.Displayshape_core.canva._display.Repaint()
@@ -294,6 +297,7 @@ class sketch_line(object):
 					self.show_line_dict[self.line_id].redisplay_all()
 					self.line_id+=1
 					self.point_count.clear()
+					self.show_element = self.parent.Sketcher.get_all_sketcher_element()
 
 
 
@@ -307,39 +311,60 @@ class sketch_line(object):
 		line = gp_Lin(gp_Pnt(x, y, z), direction)
 		edge_builder = BRepBuilderAPI_MakeEdge(line)
 		edge = edge_builder.Edge()
-		for key in self.show_line_dict.keys():
-			try:
-				if key==self.line_id  and len(self.point_count) >= 1:
-					continue
-				extrema = BRepExtrema.BRepExtrema_DistShapeShape(self.show_line_dict[key].ais_shape.Shape(), edge)
-				nearest_point1 = extrema.PointOnShape1(1)
-				nearest_point2 = extrema.PointOnShape2(1)
-				if Distance>nearest_point1.Distance(nearest_point2) or Distance==0:
-					Distance=nearest_point1.Distance(nearest_point2)
-					x, y, z = (nearest_point1.X()), (nearest_point1.Y()), (nearest_point1.Z())
-					shape_id=key
-				pass
-			except Exception as e:
-				print(e)
-				pass
-		#捕捉生产端点和中点,任意点
-		if Distance>15 or Distance==0:
-			self.capture_point_None=0
-			try:
-				self.show_line_dict[shape_id].remove_capture_point()
-				self.show_line_dict[shape_id].remove_capture_any_point()
-				self.parent.Displayshape_core.canva._display.Repaint()
-				self.parent.Displayshape_core.canva._display.Context.UpdateCurrentViewer()
-			except:
-				pass
-		else:
-			self.show_line_dict[shape_id].remove_capture_any_point()
-			self.show_line_dict[shape_id].set_capture_any_point(x, y, z)
-			self.show_line_dict[shape_id].display_capture_any_point()
-			self.show_line_dict[shape_id].display_capture_point()
-			self.parent.Displayshape_core.canva._display.Repaint()
-			self.parent.Displayshape_core.canva._display.Context.UpdateCurrentViewer()
+		try:
+			for key in self.show_element.keys():
+				try:
+					if key == self.line_id and len(self.point_count) >= 1:
+						continue
+					if self.show_element == []:
+						continue
+					extrema = BRepExtrema.BRepExtrema_DistShapeShape(self.show_element[key].ais_shape.Shape(), edge)
+					nearest_point1 = extrema.PointOnShape1(1)
+					nearest_point2 = extrema.PointOnShape2(1)
+					if Distance > nearest_point1.Distance(nearest_point2) or Distance == 0:
+						Distance = nearest_point1.Distance(nearest_point2)
+						x, y, z = (nearest_point1.X()), (nearest_point1.Y()), (nearest_point1.Z())
+						if "line" in key:
+							shape_id = int(key.replace("line", ""))
+							element=self.parent.Sketcher.new_do_draw_dict["line"].show_line_dict
+						elif "rectangle" in key:
+							shape_id = int(key.replace("rectangle", ""))
+							element = self.parent.Sketcher.new_do_draw_dict["rectangle"].show_line_dict
+
+					pass
+				except Exception as e:
+					print(e)
+					pass
+
+			# 捕捉生产端点和中点,任意点
+			if Distance > 15 or Distance == 0:
+				self.capture_point_None = 0
+				try:
+					element[shape_id].remove_capture_point()
+					element[shape_id].remove_capture_any_point()
+					self.parent.Displayshape_core.canva._display.Repaint()
+					self.parent.Displayshape_core.canva._display.Context.UpdateCurrentViewer()
+				except Exception as e:
+					pass
+			else:
+				try:
+					element[shape_id].remove_capture_any_point()
+					pnt1=element[shape_id].get_capture_point_pnt(1)
+					pnt2=gp_Pnt(x,y,z)
+					if pnt2.Distance(pnt1)>=15:
+						element[shape_id].set_capture_any_point(x, y, z)
+						element[shape_id].display_capture_any_point()
+
+					element[shape_id].display_capture_point()
+					self.parent.Displayshape_core.canva._display.Repaint()
+					self.parent.Displayshape_core.canva._display.Context.UpdateCurrentViewer()
+				except Exception as e:
+					print(e)
+
+
+		except:
 			pass
+
 
 	def dynamics_drwa_line(self):
 			_dragStartPosY = self.parent.Displayshape_core.canva.dragStartPosY
