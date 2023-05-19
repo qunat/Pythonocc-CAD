@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import math
+import time
 
 from OCC.Core import BRepExtrema
 from OCC.Core.BRep import BRep_Tool
@@ -23,18 +24,18 @@ from OCC.Core.GC import GC_MakeSegment, GC_MakeCircle
 from OCC.Core.gp import gp_Pnt, gp_Dir, gp_Lin, gp_Ax2, gp_Dir, gp_Pln, gp_Origin, gp_Lin2d,gp_Pnt2d
 from OCC.Core.AIS import AIS_Shape, AIS_Point
 from OCC.Core.Aspect import (Aspect_TOM_POINT,
-                             Aspect_TOM_PLUS,
-                             Aspect_TOM_STAR,
-                             Aspect_TOM_X,
-                             Aspect_TOM_O,
-                             Aspect_TOM_O_POINT,
-                             Aspect_TOM_O_PLUS,
-                             Aspect_TOM_O_STAR,
-                             Aspect_TOM_O_X,
-                             Aspect_TOM_RING1,
-                             Aspect_TOM_RING2,
-                             Aspect_TOM_RING3,
-                             Aspect_TOM_BALL)
+							 Aspect_TOM_PLUS,
+							 Aspect_TOM_STAR,
+							 Aspect_TOM_X,
+							 Aspect_TOM_O,
+							 Aspect_TOM_O_POINT,
+							 Aspect_TOM_O_PLUS,
+							 Aspect_TOM_O_STAR,
+							 Aspect_TOM_O_X,
+							 Aspect_TOM_RING1,
+							 Aspect_TOM_RING2,
+							 Aspect_TOM_RING3,
+							 Aspect_TOM_BALL)
 
 
 class Brep_line(object):
@@ -46,6 +47,7 @@ class Brep_line(object):
 		self.capture_point_list=[None,None,None]
 		self.capture_any_point_list = [None]
 		self.create_line(point1,point2)
+		self.isDone=None
 
 	def create_line(self,p1=[],p2=[]):
 		x0,y0,z0=p1
@@ -124,8 +126,8 @@ class Brep_line(object):
 		self.capture_point_list[0]=self.create_capture_point(p1)
 		self.capture_point_list[1] = self.create_capture_point(p1,p2)
 		self.capture_point_list[2] = self.create_capture_point(p2)
-
 		self.redisplay()
+
 	def set_capture_any_point(self,x,y,z):
 		p1=[x,y,z]
 		self.capture_any_point_list[0] = self.create_capture_point(p1)
@@ -162,6 +164,7 @@ class Brep_line(object):
 		self.parent.parent.Displayshape_core.canva._display.Context.Redisplay(self.ais_shape, True,False) #重新计算更新已经显示的物体
 		self.parent.parent.Displayshape_core.canva._display.Repaint()
 		self.parent.parent.Displayshape_core.canva._display.Context.UpdateCurrentViewer()
+
 	def display_capture_point(self):
 		self.parent.parent.Displayshape_core.canva._display.Context.Display(self.capture_point_list[0], False)  # 显示的物体
 		self.parent.parent.Displayshape_core.canva._display.Context.Display(self.capture_point_list[1], False)  # 显示的物体
@@ -169,12 +172,14 @@ class Brep_line(object):
 		self.parent.parent.Displayshape_core.canva._display.Repaint()
 		self.parent.parent.Displayshape_core.canva._display.Context.UpdateCurrentViewer()
 
+
 	def remove_capture_point(self):
 		self.parent.parent.Displayshape_core.canva._display.Context.Remove(self.capture_point_list[0], True)  #移除捕捉的任意点
 		self.parent.parent.Displayshape_core.canva._display.Context.Remove(self.capture_point_list[1], True)  #移除捕捉的任意点
 		self.parent.parent.Displayshape_core.canva._display.Context.Remove(self.capture_point_list[2], True)  #移除捕捉的任意点
 		self.parent.parent.Displayshape_core.canva._display.Repaint()
 		self.parent.parent.Displayshape_core.canva._display.Context.UpdateCurrentViewer()
+		self.isDone=True
 
 
 	def display_capture_any_point(self):
@@ -187,7 +192,19 @@ class Brep_line(object):
 		self.parent.parent.Displayshape_core.canva._display.Context.Remove(self.capture_any_point_list[0], False)  # 移除
 		self.parent.parent.Displayshape_core.canva._display.Repaint()
 		self.parent.parent.Displayshape_core.canva._display.Context.UpdateCurrentViewer()
+		self.isDone = True
 
+
+
+def timer_decorator(func):
+	def wrapper(*args, **kwargs):
+		start_time = time.time()
+		result = func(*args, **kwargs)
+		end_time = time.time()
+		execution_time = end_time - start_time
+		print(f"函数 {func.__name__} 执行时间为: {execution_time} 秒")
+		return result
+	return wrapper
 
 
 
@@ -212,84 +229,93 @@ class sketch_line(object):
 		self.capture_point_None=0
 		self.capture_edge_point_list=[]
 		self.capture_middle_point_list = []
+		self.draw_line_connect=0
+		self.draw_trance_element=None
+
+
 
 	def catch_capure_point(self,shape):#捕捉绘制点
-		(x, y, z, vx, vy, vz) = self.parent.Displayshape_core.ProjReferenceAxe()
-		if shape != [] and isinstance(shape[0], TopoDS_Vertex):  # 捕捉端点
-			P = BRep_Tool.Pnt(shape[0])
-			x, y, z = P.X(), P.Y(), P.Z()
-		if shape != [] and isinstance(shape[0], TopoDS_Edge):  # 捕捉线上任意点
-			direction = gp_Dir(vx, vy, vz)
-			line = gp_Lin(gp_Pnt(x, y, z), direction)
-			edge_builder = BRepBuilderAPI_MakeEdge(line)
-			edge = edge_builder.Edge()
-			extrema = BRepExtrema.BRepExtrema_DistShapeShape(shape[0], edge)
-			nearest_point = extrema.PointOnShape1(1)
-			x, y, z = nearest_point.X(), nearest_point.Y(), nearest_point.Z()
-		if shape == []:  # 捕捉生成的端点
+		if True:  # 捕捉生成的端点
 			shape_id = 0
 			Distance = 0
-			_dragStartPosY = self.parent.Displayshape_core.canva.dragStartPosY
-			_dragStartPosX = self.parent.Displayshape_core.canva.dragStartPosX
 			(x, y, z, vx, vy, vz) = self.parent.Displayshape_core.ProjReferenceAxe()
 			direction = gp_Dir(vx, vy, vz)
 			line = gp_Lin(gp_Pnt(x, y, z), direction)
 			edge_builder = BRepBuilderAPI_MakeEdge(line)
 			edge = edge_builder.Edge()
-			for key in self.show_line_dict.keys():
-				try:
-					if key == self.line_id and len(self.point_count) >= 1:
-						continue
-					extrema = BRepExtrema.BRepExtrema_DistShapeShape(self.show_line_dict[key].ais_shape.Shape(), edge)
-					nearest_point1 = extrema.PointOnShape1(1)
-					nearest_point2 = extrema.PointOnShape2(1)
-					if Distance > nearest_point1.Distance(nearest_point2) or Distance == 0:
-						Distance = nearest_point1.Distance(nearest_point2)
-						shape_id = key
-					pass
-				except Exception as e:
-					print(e)
-					pass
-
 			try:
-				point0 = self.show_line_dict[shape_id].get_end_point_pnt(0)
-				point1 = self.show_line_dict[shape_id].get_end_point_pnt(1)
-				if point0.Distance(gp_Pnt(x, y, z)) <= 10:
-					x = point0.X()
-					y = point0.Y()
-					z = point0.Z()
-				elif point1.Distance(gp_Pnt(x, y, z)) <= 10:
-					x = point1.X()
-					y = point1.Y()
-					z = point1.Z()
-				else:
+				for key in self.show_element.keys():
+					try:
+						if key == self.line_id and len(self.point_count) >= 1:
+							continue
+						if self.show_element == []:
+							continue
+						extrema = BRepExtrema.BRepExtrema_DistShapeShape(self.show_element[key].ais_shape.Shape(), edge)
+						nearest_point1 = extrema.PointOnShape1(1)
+						nearest_point2 = extrema.PointOnShape2(1)
+						if Distance > nearest_point1.Distance(nearest_point2) or Distance == 0:
+							Distance = nearest_point1.Distance(nearest_point2)
+							x1, y1, z1 = (nearest_point1.X()), (nearest_point1.Y()), (nearest_point1.Z())
+							if "line" in key:
+								shape_id = int(key.replace("line", ""))
+								element = self.parent.Sketcher.new_do_draw_dict["line"].show_line_dict
+							elif "rectangle" in key:
+								shape_id = int(key.replace("rectangle", ""))
+								element = self.parent.Sketcher.new_do_draw_dict["rectangle"].show_line_dict
+
+						pass
+					except Exception as e:
+						print(e)
+						pass
+
+
+				# 捕捉生产端点和中点,任意点
+				pnt = gp_Pnt(x, y, z)
+				pnt0 = element[shape_id].get_capture_point_pnt(0)
+				pnt1 = element[shape_id].get_capture_point_pnt(1)
+				pnt2 = element[shape_id].get_capture_point_pnt(2)
+				if Distance > 15 or Distance == 0:
+					self.capture_point_None = 0
 					(x, y, z, vx, vy, vz) = self.parent.Displayshape_core.ProjReferenceAxe()
+
+				else:
+					if pnt.Distance(pnt0) <= 15:
+						x, y, z = pnt0.X(), pnt0.Y(), pnt0.Z()
+					elif pnt.Distance(pnt1) <= 15:
+						x, y, z = pnt1.X(), pnt1.Y(), pnt1.Z()
+					elif pnt.Distance(pnt2) <= 15:
+						x, y, z = pnt2.X(), pnt2.Y(), pnt2.Z()
+					else:
+						x, y, z = x1, y1, z1
 			except Exception as e:
 				print(e)
 				pass
+
+		end_time = time.time()
+
 		return x, y, z, vx, vy, vz
 
 
-
+	@timer_decorator
 	def draw_line(self,shape=None):
 			if self.parent.InteractiveOperate.InteractiveModule == "SKETCH":
-				(x, y, z, vx, vy, vz) = self.parent.Displayshape_core.ProjReferenceAxe()
+				if self.draw_line_connect!=1:
+					self.parent.Displayshape_core.canva.mouse_move_Signal.trigger.connect(self.dynamics_draw_trance)
+					self.draw_line_connect=1
 				(x, y, z, vx, vy, vz)=self.catch_capure_point(shape)
-
 				if len(self.point_count) == 0:
+					#self.start_time=time.time()
 					self.point = [x, y, z]
 					self.point_count.append(self.point)
 					self.show_line_dict[self.line_id] = None
 					self.parent.Displayshape_core.canva.mouse_move_Signal.trigger.connect(self.dynamics_drwa_line)
-					self.parent.Displayshape_core.canva.mouse_move_Signal.trigger.connect(self.dynamics_draw_trance)
+
 
 				elif len(self.point_count) >= 1 :
 					self.InteractiveModule = None
-
 					if self.capture_point_None!=0:
 						print(self.capture_point_None)
-						capture_point=BRep_Tool.Pnt(self.capture_point.Vertex())
-						x,y,z=capture_point.X(),capture_point.Y(),capture_point.Z()
+
 
 					p1=self.point
 					p2=[x,y,z]
@@ -298,10 +324,18 @@ class sketch_line(object):
 					self.line_id+=1
 					self.point_count.clear()
 					self.show_element = self.parent.Sketcher.get_all_sketcher_element()
+					#self.end_time=time.time()
 
 
 
+
+	@timer_decorator
 	def dynamics_draw_trance(self):
+		try:
+			self.draw_trance_element.remove_capture_point()
+			self.draw_trance_element.remove_capture_any_point()
+		except:
+			pass
 		shape_id=0
 		Distance=0
 		_dragStartPosY = self.parent.Displayshape_core.canva.dragStartPosY
@@ -330,12 +364,15 @@ class sketch_line(object):
 						elif "rectangle" in key:
 							shape_id = int(key.replace("rectangle", ""))
 							element = self.parent.Sketcher.new_do_draw_dict["rectangle"].show_line_dict
+						self.draw_trance_element=element[shape_id]
+					elif Distance>20:
+						element[shape_id].remove_capture_point()
+						element[shape_id].remove_capture_any_point()
 
 					pass
 				except Exception as e:
 					print(e)
 					pass
-
 			# 捕捉生产端点和中点,任意点
 			if Distance > 15 or Distance == 0:
 				self.capture_point_None = 0
@@ -345,13 +382,17 @@ class sketch_line(object):
 					self.parent.Displayshape_core.canva._display.Repaint()
 					self.parent.Displayshape_core.canva._display.Context.UpdateCurrentViewer()
 				except Exception as e:
+
 					pass
 			else:
 				try:
 					element[shape_id].remove_capture_any_point()
-					pnt1=element[shape_id].get_capture_point_pnt(1)
-					pnt2=gp_Pnt(x,y,z)
-					if pnt2.Distance(pnt1)>=15:
+					pnt = gp_Pnt(x, y, z)
+					pnt0=element[shape_id].get_capture_point_pnt(0)
+					pnt1 = element[shape_id].get_capture_point_pnt(1)
+					pnt2 = element[shape_id].get_capture_point_pnt(2)
+
+					if pnt.Distance(pnt0)>=15 and pnt.Distance(pnt1)>=15 and pnt.Distance(pnt2)>=15:
 						element[shape_id].set_capture_any_point(x, y, z)
 						element[shape_id].display_capture_any_point()
 
@@ -360,12 +401,10 @@ class sketch_line(object):
 					self.parent.Displayshape_core.canva._display.Context.UpdateCurrentViewer()
 				except Exception as e:
 					print(e)
-
-
 		except:
 			pass
 
-
+	@timer_decorator
 	def dynamics_drwa_line(self):
 			_dragStartPosY = self.parent.Displayshape_core.canva.dragStartPosY
 			_dragStartPosX = self.parent.Displayshape_core.canva.dragStartPosX
