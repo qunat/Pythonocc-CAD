@@ -12,6 +12,7 @@ from OCC.Core.gp import (gp_Pnt2d, gp_Ax2d, gp_Dir2d, gp_Circ2d, gp_Origin2d, gp
 from sketcher.sketcher_circel import sketch_circel
 from sketcher.sketcher_line import sketch_line
 from sketcher.sketcher_rectangle import sketch_rectangle
+from sketcher.sketcher_profile import sketch_profile
 from sketcher.sketcher_trim import sketch_trim
 from OCC.Core.GeomAPI import geomapi_To3d
 
@@ -21,7 +22,7 @@ class SketchModule(object):
 		self.sketch_type=None
 		self.select_shape_list = []
 		self.gp_Dir=None
-		self.new_do_draw_dict={"line":None,"circel":None,"rectangle":None,"arc":None}
+		self.new_do_draw_dict={"line":None,"circel":None,"rectangle":None,"arc":None,"profile":None}
 		self.parent.Displayshape_core.canva.mouse_move_Signal.trigger.connect(self.show_coordinate)
 
 
@@ -30,11 +31,17 @@ class SketchModule(object):
 		sketch_element_dict={}
 		for element in self.new_do_draw_dict.keys():
 			try:
-				if self.parent.Sketcher.new_do_draw_dict[element].show_line_dict != [] and (element=="line" or element=="rectangle"):
+				if self.parent.Sketcher.new_do_draw_dict[element].show_line_dict != [] and (element=="line" or element=="rectangle" or element=="profile"):
 					lines = self.parent.Sketcher.new_do_draw_dict[element].show_line_dict.keys()
 					for key in lines:
 						lable = element + str(key)
 						sketch_element_dict[lable] = self.parent.Sketcher.new_do_draw_dict[element].show_line_dict[key]
+				elif self.parent.Sketcher.new_do_draw_dict[element].show_circel_dict != [] and (element=="circel"):
+					circel = self.parent.Sketcher.new_do_draw_dict[element].show_circel_dict.keys()
+					for key in circel:
+						lable = element + str(key)
+						sketch_element_dict[lable] = self.parent.Sketcher.new_do_draw_dict[element].show_circel_dict[key]
+
 
 			except:
 				pass
@@ -58,7 +65,7 @@ class SketchModule(object):
 		self.parent._ribbon._ribbon_widget.setCurrentIndex(1)
 		self.parent.Displayshape_core.canva._display.View_Iso()
 		self.parent.Displayshape_core.canva._display.FitAll()
-		self.parent.InteractiveOperate.InteractiveModule="main"
+		self.parent.InteractiveOperate.InteractiveModule="Home"
 		
 	def _2Dto3d(self):
 		plane = gp_Pln(gp_Origin(), self.gp_Dir)
@@ -91,6 +98,9 @@ class SketchModule(object):
 				self.new_do_draw_dict["circel"].draw_circel(shp)
 			elif self.sketch_type==2:
 				self.new_do_draw_dict["rectangle"].draw_rectangle(shp)
+			elif self.sketch_type==1:
+				self.new_do_draw_dict["profile"].draw_line(shp)
+
 			elif self.sketch_type==8:
 				if shp!=[]:
 					self.new_do_trim.trim(shp)
@@ -105,6 +115,8 @@ class SketchModule(object):
 			self.new_do_draw_dict["circel"] = sketch_circel(self.parent,self.gp_Dir)  # draw ciecel
 		elif self.sketch_type==2 and self.new_do_draw_dict["rectangle"]==None:
 			self.new_do_draw_dict["rectangle"] = sketch_rectangle(self.parent,self.gp_Dir)  # draw rectangle
+		elif self.sketch_type==1 and self.new_do_draw_dict["rectangle"]==None:
+			self.new_do_draw_dict["profile"] = sketch_profile(self.parent,self.gp_Dir)  # draw rectangle
 			
 	def do_trim(self):
 		self.new_do_trim=sketch_trim(self.parent)
@@ -116,6 +128,8 @@ class SketchModule(object):
 			self.new_do_draw_dict["circel"].dynamics_drwa_circel()  # draw circel
 		elif self.sketch_type==2:
 			self.new_do_draw_dict["rectangel"].dynamics_drwa_rectangle()  # draw rectangle
+		elif self.sketch_type==1:
+			self.new_do_draw_dict["profile"].dynamics_drwa_line()  #draw profile
 
 	def sketch_draw_profile(self):
 		self.sketch_type=1# profile draw

@@ -21,6 +21,7 @@ class InteractiveOperate(object):
 		self.dragStartPosY = 0
 		self.aisline=None
 		self.point_count=[]
+		self.InteractiveClose=None
 
 	def Setting(self):
 		HighlightStyle = self.parent.Displayshape_core.canva._display.Context.HighlightStyle()

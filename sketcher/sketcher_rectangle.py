@@ -34,17 +34,22 @@ class sketch_rectangle(sketch_line):
 		self.line_id=0
 		sketch_rectangle_gui=SketcherWidget.SketcherWidget(parent=parent)
 		sketch_rectangle_gui.show()
+		self.draw_line_connect=None
 		
 	def draw_rectangle(self,shape=None):
 			if self.parent.InteractiveOperate.InteractiveModule == "SKETCH":
-				(x, y, z, vx, vy, vz) = self.parent.Displayshape_core.ProjReferenceAxe()
+				if self.draw_line_connect != 1:
+					self.parent.Displayshape_core.canva.mouse_move_Signal.trigger.connect(self.dynamics_draw_trance)
+					self.draw_trance_element=1
+
+
 				x, y, z, vx, vy, vz=self.catch_capure_point(shape)#启用端点捕捉
 				if len(self.point_count) == 0:
 					self.point = (x, y, z)
 					self.point_count.append(self.point)
 					self.show_line_dict[self.line_id] = None
 					self.parent.Displayshape_core.canva.mouse_move_Signal.trigger.connect(self.dynamics_drwa_rectangle)
-					self.parent.Displayshape_core.canva.mouse_move_Signal.trigger.connect(self.dynamics_draw_trance)
+
 
 				elif len(self.point_count) >= 1:
 					self.InteractiveModule = None

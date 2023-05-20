@@ -84,6 +84,7 @@ class qtBaseViewer(QtOpenGL.QGLWidget):
 		if self._inited:
 			super(qtBaseViewer, self).resizeEvent(event)
 			self._display.OnResize()
+
 class Foo(QObject):
 	# Define a new signal called 'trigger' that has no arguments.
 	trigger = pyqtSignal()
@@ -175,6 +176,9 @@ class qtViewer3d(qtBaseViewer):
 
 	def keyPressEvent(self, event):
 		code = event.key()
+		if code == QtCore.Qt.Key_Escape:
+			self.parent.InteractiveOperate.InteractiveClose= "finish"
+
 		if code in self._key_map:
 			self._key_map[code]()
 		elif code in range(256):

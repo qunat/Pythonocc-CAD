@@ -38,6 +38,8 @@ from OCC.Core.Aspect import (Aspect_TOM_POINT,
 							 Aspect_TOM_BALL)
 
 
+
+
 class Brep_line(object):
 	def __init__(self,parent=None,point1=[],point2=[]):
 		self.parent=parent
@@ -194,7 +196,9 @@ class Brep_line(object):
 		self.parent.parent.Displayshape_core.canva._display.Context.UpdateCurrentViewer()
 		self.isDone = True
 
-
+	def remove_ais_shape(self):
+		self.parent.parent.Displayshape_core.canva._display.Context.Remove(self.ais_shape, False)
+		self.parent.parent.Displayshape_core.canva._display.Context.UpdateCurrentViewer()
 
 def timer_decorator(func):
 	def wrapper(*args, **kwargs):
@@ -262,6 +266,12 @@ class sketch_line(object):
 							elif "rectangle" in key:
 								shape_id = int(key.replace("rectangle", ""))
 								element = self.parent.Sketcher.new_do_draw_dict["rectangle"].show_line_dict
+							elif "profile" in key:
+								shape_id = int(key.replace("profile", ""))
+								element = self.parent.Sketcher.new_do_draw_dict["profile"].show_line_dict
+							elif "circel" in key:
+								shape_id = int(key.replace("circel", ""))
+								element = self.parent.Sketcher.new_do_draw_dict["circel"].show_line_dict
 
 						pass
 					except Exception as e:
@@ -291,7 +301,7 @@ class sketch_line(object):
 				print(e)
 				pass
 
-		end_time = time.time()
+
 
 		return x, y, z, vx, vy, vz
 
@@ -364,6 +374,13 @@ class sketch_line(object):
 						elif "rectangle" in key:
 							shape_id = int(key.replace("rectangle", ""))
 							element = self.parent.Sketcher.new_do_draw_dict["rectangle"].show_line_dict
+						elif "profile" in key:
+							shape_id = int(key.replace("profile", ""))
+							element = self.parent.Sketcher.new_do_draw_dict["profile"].show_line_dict
+						elif "circel" in key:
+							shape_id = int(key.replace("circel", ""))
+							element = self.parent.Sketcher.new_do_draw_dict["circel"].show_circel_dict
+
 						self.draw_trance_element=element[shape_id]
 					elif Distance>20:
 						element[shape_id].remove_capture_point()
@@ -373,34 +390,46 @@ class sketch_line(object):
 				except Exception as e:
 					print(e)
 					pass
-			# 捕捉生产端点和中点,任意点
-			if Distance > 15 or Distance == 0:
-				self.capture_point_None = 0
-				try:
+
+			from sketcher.sketcher_circel import Brep_circel
+			if isinstance(element[shape_id],Brep_line):#直线捕捉
+				# 捕捉生产端点和中点,任意点
+				if Distance > 15 or Distance == 0:
+					self.capture_point_None = 0
+					try:
+						element[shape_id].remove_capture_point()
+						element[shape_id].remove_capture_any_point()
+						self.parent.Displayshape_core.canva._display.Repaint()
+						self.parent.Displayshape_core.canva._display.Context.UpdateCurrentViewer()
+					except Exception as e:
+
+						pass
+				else:
+					try:
+						element[shape_id].remove_capture_any_point()
+						pnt = gp_Pnt(x, y, z)
+						pnt0 = element[shape_id].get_capture_point_pnt(0)
+						pnt1 = element[shape_id].get_capture_point_pnt(1)
+						pnt2 = element[shape_id].get_capture_point_pnt(2)
+
+						if pnt.Distance(pnt0) >= 15 and pnt.Distance(pnt1) >= 15 and pnt.Distance(pnt2) >= 15:
+							element[shape_id].set_capture_any_point(x, y, z)
+							element[shape_id].display_capture_any_point()
+
+						element[shape_id].display_capture_point()
+						self.parent.Displayshape_core.canva._display.Repaint()
+						self.parent.Displayshape_core.canva._display.Context.UpdateCurrentViewer()
+					except Exception as e:
+						print(e)
+			elif isinstance(element[shape_id],Brep_circel):#圆弧捕捉
+				if Distance > 15 or Distance == 0:
 					element[shape_id].remove_capture_point()
-					element[shape_id].remove_capture_any_point()
-					self.parent.Displayshape_core.canva._display.Repaint()
-					self.parent.Displayshape_core.canva._display.Context.UpdateCurrentViewer()
-				except Exception as e:
 
-					pass
-			else:
-				try:
-					element[shape_id].remove_capture_any_point()
-					pnt = gp_Pnt(x, y, z)
-					pnt0=element[shape_id].get_capture_point_pnt(0)
-					pnt1 = element[shape_id].get_capture_point_pnt(1)
-					pnt2 = element[shape_id].get_capture_point_pnt(2)
-
-					if pnt.Distance(pnt0)>=15 and pnt.Distance(pnt1)>=15 and pnt.Distance(pnt2)>=15:
-						element[shape_id].set_capture_any_point(x, y, z)
-						element[shape_id].display_capture_any_point()
-
+				else:
 					element[shape_id].display_capture_point()
-					self.parent.Displayshape_core.canva._display.Repaint()
-					self.parent.Displayshape_core.canva._display.Context.UpdateCurrentViewer()
-				except Exception as e:
-					print(e)
+				print("捕捉圆弧")
+				pass
+
 		except:
 			pass
 

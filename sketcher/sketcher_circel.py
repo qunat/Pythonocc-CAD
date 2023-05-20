@@ -11,9 +11,105 @@ from OCC.Core.BRepBuilderAPI import BRepBuilderAPI_MakeEdge, BRepBuilderAPI_Make
 from OCC.Core.GC import GC_MakeSegment, GC_MakeCircle
 from OCC.Core.gp import gp_Pnt, gp_Dir, gp_Lin, gp_Ax2,gp_Dir
 from OCC.Core.AIS import AIS_Shape, AIS_Point
-
-
 from sketcher.sketcher_line import sketch_line
+from OCC.Core.Aspect import (Aspect_TOM_POINT,
+							 Aspect_TOM_PLUS,
+							 Aspect_TOM_STAR,
+							 Aspect_TOM_X,
+							 Aspect_TOM_O,
+							 Aspect_TOM_O_POINT,
+							 Aspect_TOM_O_PLUS,
+							 Aspect_TOM_O_STAR,
+							 Aspect_TOM_O_X,
+							 Aspect_TOM_RING1,
+							 Aspect_TOM_RING2,
+							 Aspect_TOM_RING3,
+							 Aspect_TOM_BALL)
+
+class Brep_circel(object):
+	def __init__(self,parent=None,point1=None,point2=None,gp_dir=None):
+		self.parent=parent
+		self.center_point=[None]
+		self.gp_dir=gp_dir
+		self.ais_shape=None
+		self.capture_center_point_list=[None]
+		self.capture_any_point_list = [None]
+		self.create_circel(point1,point2)
+		self.isDone=None
+
+	def create_circel(self,p1,p2):
+		radius = p1.Distance(p2)
+		circel = GC_MakeCircle(p1, self.gp_dir, radius).Value()
+		circel_builder = BRepBuilderAPI_MakeEdge(circel)
+		circel = circel_builder.Edge()
+		self.ais_shape=AIS_Shape(circel)
+		self.ais_shape.SetColor(Quantity_Color(self.parent.color))
+		self.ais_shape.SetWidth(self.parent.width)
+		self.center_point[0]=self.create_center_point(p1)
+		self.display_circel()
+		self.dispaly_center_point()
+
+	def create_center_point(self,p1):
+		x, y, z = p1.Coord()
+		point_type = Aspect_TOM_POINT
+		p = Geom_CartesianPoint(gp_Pnt(x, y, z))
+		color = Quantity_Color(0, 0, 0, Quantity_TOC_RGB)
+		ais_point = AIS_Point(p)
+		drawer = ais_point.Attributes()
+		asp = Prs3d_PointAspect(point_type, color, 4)
+		drawer.SetPointAspect(asp)
+		ais_point.SetAttributes(drawer)
+		return ais_point
+
+	def create_capture_point(self, *args):
+		x, y, z = args[0].Coord()
+		point_type = Aspect_TOM_O_POINT
+		p = Geom_CartesianPoint(gp_Pnt(x, y, z))
+		color = Quantity_Color(1, 1, 1, Quantity_TOC_RGB)
+		ais_point = AIS_Point(p)
+		drawer = ais_point.Attributes()
+		asp = Prs3d_PointAspect(point_type, color, 4)
+		drawer.SetPointAspect(asp)
+		ais_point.SetAttributes(drawer)
+		return ais_point
+
+
+	def set_ais_shape(self,p1,p2):
+		radius = p1.Distance(p2)
+		circel = GC_MakeCircle(p1, self.gp_dir, radius).Value()
+		circel_builder = BRepBuilderAPI_MakeEdge(circel)
+		circel = circel_builder.Edge()
+		self.ais_shape.SetWidth(self.parent.width)
+		self.ais_shape.SetShape(circel)
+		self.ais_shape.SetColor(Quantity_Color(self.parent.color))
+		self.ais_shape.SetWidth(self.parent.width)
+		self.capture_center_point_list[0]=self.create_capture_point(p1)
+		self.redisplay()
+
+	def display_circel(self):
+		self.parent.parent.Displayshape_core.canva._display.Context.Display(self.ais_shape, False)  # 显示的物体
+		self.parent.parent.Displayshape_core.canva._display.Repaint()
+		self.parent.parent.Displayshape_core.canva._display.Context.UpdateCurrentViewer()
+	def dispaly_center_point(self):
+		self.parent.parent.Displayshape_core.canva._display.Context.Display(self.center_point[0], False)  # 显示的物体
+		self.parent.parent.Displayshape_core.canva._display.Repaint()
+		self.parent.parent.Displayshape_core.canva._display.Context.UpdateCurrentViewer()
+
+	def redisplay(self):
+		self.parent.parent.Displayshape_core.canva._display.Context.Redisplay(self.ais_shape, True,False)  # 重新计算更新已经显示的物体
+		self.parent.parent.Displayshape_core.canva._display.Repaint()
+		self.parent.parent.Displayshape_core.canva._display.Context.UpdateCurrentViewer()
+
+	def display_capture_point(self):#中心捕捉
+		self.parent.parent.Displayshape_core.canva._display.Context.Display(self.capture_center_point_list[0], False)  # 显示的物体
+		self.parent.parent.Displayshape_core.canva._display.Repaint()
+		self.parent.parent.Displayshape_core.canva._display.Context.UpdateCurrentViewer()
+
+	def remove_capture_point(self):#中心捕捉
+		self.parent.parent.Displayshape_core.canva._display.Context.Remove(self.capture_center_point_list[0], True)  #移除捕捉的任意点
+		self.parent.parent.Displayshape_core.canva._display.Repaint()
+		self.parent.parent.Displayshape_core.canva._display.Context.UpdateCurrentViewer()
+		self.isDone=True
 
 
 class sketch_circel(sketch_line):
@@ -35,25 +131,10 @@ class sketch_circel(sketch_line):
 	def draw_circel(self, shape=None):
 		if self.parent.InteractiveOperate.InteractiveModule == "SKETCH":
 			(x, y, z, vx, vy, vz) = self.parent.Displayshape_core.ProjReferenceAxe()
-			print(x,y,z)
-			
-			if shape != [] and isinstance(shape[0], TopoDS_Vertex):  # 捕捉端点
-				P = BRep_Tool.Pnt(shape[0])
-				x, y, z = P.X(), P.Y(), P.Z()
-				print(x,y,z)
-			
-			if shape != [] and isinstance(shape[0], TopoDS_Wire):  # 捕捉线上任意点
-				direction = gp_Dir(vx, vy, vz)
-				line = gp_Lin(gp_Pnt(x, y, z), direction)
-				ais_line = Geom_Line(line)
-				edge_builder = BRepBuilderAPI_MakeEdge(line)
-				edge = edge_builder.Edge()
-				extrema = BRepExtrema.BRepExtrema_DistShapeShape(shape[0], edge)
-				nearest_point = extrema.PointOnShape1(1)
-				x, y, z = nearest_point.X(), nearest_point.Y(), nearest_point.Z()
-			
+			self.parent.Displayshape_core.canva.mouse_move_Signal.trigger.connect(self.dynamics_draw_trance)
+			x, y, z, vx, vy, vz=self.catch_capure_point(shape)
+
 			if len(self.point_count) == 0:
-				self.draw_point(x, y, z)
 				self.point = (x, y, z)
 				self.point_count.append(self.point)
 				self.show_circel_dict[self.circel_id] = None
@@ -62,22 +143,12 @@ class sketch_circel(sketch_line):
 			
 			elif len(self.point_count) >= 1:
 				self.InteractiveModule = None
-				#self.draw_point(x, y, z)  # end point
 				p1=gp_Pnt(self.point_count[-1][0], self.point_count[-1][1], self.point_count[-1][2])
 				p2=gp_Pnt(x, y, z)
-				radius=p1.Distance(p2)
-				circel=GC_MakeCircle(p1,self.gp_Dir,radius).Value()
-				circel_builder = BRepBuilderAPI_MakeEdge(circel)
-				circel = circel_builder.Edge()
-				self.show_circel_dict[self.circel_id].SetShape(circel)  # 将已经显示的零件设置成另外一个新零件
-				self.show_circel_dict[self.circel_id].SetWidth(self.width)
-				self.show_circel_dict[self.circel_id].SetColor(Quantity_Color(self.color))
-				self.parent.Displayshape_core.canva._display.Context.Redisplay(self.show_circel_dict[self.circel_id],
-																			   True,
-																			   False)  # 重新计算更新已经显示的物体
-				
+				self.show_circel_dict[self.circel_id].set_ais_shape(p1,p2)  # 将已经显示的零件设置成另外一个新零件
 				self.circel_id += 1
 				self.point_count.clear()
+				self.show_element = self.parent.Sketcher.get_all_sketcher_element()
 	
 	def dynamics_drwa_circel(self):
 		_dragStartPosY = self.parent.Displayshape_core.canva.dragStartPosY
@@ -92,23 +163,11 @@ class sketch_circel(sketch_line):
 				z0 = self.point[2]
 				p1 = gp_Pnt(x0,y0,z0)
 				p2 = gp_Pnt(x, y, z)
-				radius = p1.Distance(p2)
-				circel = GC_MakeCircle(p1, self.gp_Dir, radius).Value()
-				circel_builder = BRepBuilderAPI_MakeEdge(circel)
-				circel = circel_builder.Edge()
 
-				
 				if self.show_circel_dict[self.circel_id] == None:
-					self.show_circel_dict[self.circel_id] = AIS_Shape(circel)
-					self.parent.Displayshape_core.canva._display.Context.Display(self.show_circel_dict[self.circel_id],True)  # 重新计算更新已经显示的物体
-
+					self.show_circel_dict[self.circel_id] = Brep_circel(self,p1,p2,self.gp_Dir)
 				else:
-					self.show_circel_dict[self.circel_id].SetShape(circel)  # 将已经显示的零件设置成另外一个新零件
-					self.show_circel_dict[self.circel_id].SetWidth(self.width)
-					self.show_circel_dict[self.circel_id].SetColor(Quantity_Color(self.color))
-				self.parent.Displayshape_core.canva._display.Context.Redisplay(self.show_circel_dict[self.circel_id],
-																			   True,
-																			   False)  # 重新计算更新已经显示的物体
+					self.show_circel_dict[self.circel_id].set_ais_shape(p1,p2)  # 将已经显示的零件设置成另外一个新零件
 				self.parent.Displayshape_core.canva._display.Context.UpdateCurrentViewer()
 			
 			
