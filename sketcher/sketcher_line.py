@@ -424,8 +424,12 @@ class sketch_line(object):
 			elif isinstance(element[shape_id],Brep_circel):#圆弧捕捉
 				if Distance > 15 or Distance == 0:
 					element[shape_id].remove_capture_point()
+					element[shape_id].remove_capture_any_point(self)
 
 				else:
+					P1=[x,y,z]
+					element[shape_id].create_capture_any_point(P1)
+					element[shape_id].display_capture_any_point()
 					element[shape_id].display_capture_point()
 				print("捕捉圆弧")
 				pass

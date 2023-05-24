@@ -73,6 +73,19 @@ class Brep_circel(object):
 		ais_point.SetAttributes(drawer)
 		return ais_point
 
+	def create_capture_any_point(self, p1):
+		x, y, z = p1
+		point_type = Aspect_TOM_O_POINT
+		p = Geom_CartesianPoint(gp_Pnt(x, y, z))
+		color = Quantity_Color(1, 1, 1, Quantity_TOC_RGB)
+		ais_point = AIS_Point(p)
+		drawer = ais_point.Attributes()
+		asp = Prs3d_PointAspect(point_type, color, 4)
+		drawer.SetPointAspect(asp)
+		ais_point.SetAttributes(drawer)
+		self.capture_any_point_list[0]=ais_point
+
+
 
 	def set_ais_shape(self,p1,p2):
 		radius = p1.Distance(p2)
@@ -107,6 +120,17 @@ class Brep_circel(object):
 
 	def remove_capture_point(self):#中心捕捉
 		self.parent.parent.Displayshape_core.canva._display.Context.Remove(self.capture_center_point_list[0], True)  #移除捕捉的任意点
+		self.parent.parent.Displayshape_core.canva._display.Repaint()
+		self.parent.parent.Displayshape_core.canva._display.Context.UpdateCurrentViewer()
+		self.isDone=True
+
+	def display_capture_any_point(self):#中心捕捉
+		self.parent.parent.Displayshape_core.canva._display.Context.Display(self.capture_any_point_list[0], False)  # 显示的物体
+		self.parent.parent.Displayshape_core.canva._display.Repaint()
+		self.parent.parent.Displayshape_core.canva._display.Context.UpdateCurrentViewer()
+
+	def remove_capture_any_point(self):#中心捕捉
+		self.parent.parent.Displayshape_core.canva._display.Context.Remove(self.capture_any_point_list[0], True)  #移除捕捉的任意点
 		self.parent.parent.Displayshape_core.canva._display.Repaint()
 		self.parent.parent.Displayshape_core.canva._display.Context.UpdateCurrentViewer()
 		self.isDone=True
