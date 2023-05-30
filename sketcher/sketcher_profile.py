@@ -13,7 +13,7 @@ from OCC.Core.TopExp import TopExp_Explorer
 from OCC.Core.TopoDS import TopoDS_Vertex, TopoDS_Wire, TopoDS_Shape, TopoDS_Edge
 from OCC.Core.Quantity import Quantity_Color, Quantity_TOC_RGB
 from PyQt5.QtGui import QCursor, QPixmap
-from numba import *
+#from numba import *
 from GUI.SelectWidget import SelectWidget
 import threading
 from OCC.Core.TopAbs import TopAbs_VERTEX

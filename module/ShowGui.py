@@ -16,7 +16,7 @@ from GUI.RibbonWidget import *
 from GUI.TittleBarWidget import *
 from GUI.TopBorderBarWidge import *
 from PyQt5.QtCore import  Qt
-from module import DisplayManager,ModelTree,OCAFModule,Ipython,InteractiveModule
+from module import DisplayManager,ModelTree,OCAFModule,InteractiveModule#,Ipython
 from sketcher import sketcher
 from PyQt5 import QtGui,QtWidgets
 
@@ -136,11 +136,11 @@ class Ui_MainWindow(MainGui.Ui_MainWindow):
 		self.items.setWidget(self.modeltree.tree)
 		
 		# Create PythonConsole
-		self.ipython = Ipython.ConsoleWidget(customBanner=None)
-		self.items_ipython = QDockWidget('PythonConsole', self)  # 新建QDockWidget
-		self.addDockWidget(Qt.BottomDockWidgetArea, self.items_ipython)  # 在主显示区域右侧显示
-		self.items_ipython.setMaximumHeight(150)  # 设置最小大小
-		self.items_ipython.setWidget(self.ipython)
+		#self.ipython = Ipython.ConsoleWidget(customBanner=None)
+		#self.items_ipython = QDockWidget('PythonConsole', self)  # 新建QDockWidget
+		#self.addDockWidget(Qt.BottomDockWidgetArea, self.items_ipython)  # 在主显示区域右侧显示
+		#self.items_ipython.setMaximumHeight(150)  # 设置最小大小
+		#self.items_ipython.setWidget(self.ipython)
 		
 
 	def closeEvent(self, close_event):

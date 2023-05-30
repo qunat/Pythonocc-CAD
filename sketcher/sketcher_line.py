@@ -13,7 +13,7 @@ from OCC.Core.TopExp import TopExp_Explorer
 from OCC.Core.TopoDS import TopoDS_Vertex, TopoDS_Wire, TopoDS_Shape, TopoDS_Edge
 from OCC.Core.Quantity import Quantity_Color, Quantity_TOC_RGB
 from PyQt5.QtGui import QCursor, QPixmap
-from numba import *
+#from numba import *
 from GUI.SelectWidget import SelectWidget
 import threading
 from OCC.Core.TopAbs import TopAbs_VERTEX
@@ -167,35 +167,6 @@ class Brep_line(object):
 		self.parent.parent.Displayshape_core.canva._display.Repaint()
 		self.parent.parent.Displayshape_core.canva._display.Context.UpdateCurrentViewer()
 
-	def display_capture_point(self):
-		self.parent.parent.Displayshape_core.canva._display.Context.Display(self.capture_point_list[0], False)  # 显示的物体
-		self.parent.parent.Displayshape_core.canva._display.Context.Display(self.capture_point_list[1], False)  # 显示的物体
-		self.parent.parent.Displayshape_core.canva._display.Context.Display(self.capture_point_list[2], False)  # 显示的物体
-		self.parent.parent.Displayshape_core.canva._display.Repaint()
-		self.parent.parent.Displayshape_core.canva._display.Context.UpdateCurrentViewer()
-
-
-	def remove_capture_point(self):
-		self.parent.parent.Displayshape_core.canva._display.Context.Remove(self.capture_point_list[0], True)  #移除捕捉的任意点
-		self.parent.parent.Displayshape_core.canva._display.Context.Remove(self.capture_point_list[1], True)  #移除捕捉的任意点
-		self.parent.parent.Displayshape_core.canva._display.Context.Remove(self.capture_point_list[2], True)  #移除捕捉的任意点
-		self.parent.parent.Displayshape_core.canva._display.Repaint()
-		self.parent.parent.Displayshape_core.canva._display.Context.UpdateCurrentViewer()
-		self.isDone=True
-
-
-	def display_capture_any_point(self):
-		self.parent.parent.Displayshape_core.canva._display.Context.Display(self.capture_any_point_list[0],
-																			False)  # 显示的物体
-		self.parent.parent.Displayshape_core.canva._display.Repaint()
-		self.parent.parent.Displayshape_core.canva._display.Context.UpdateCurrentViewer()
-
-	def remove_capture_any_point(self):
-		self.parent.parent.Displayshape_core.canva._display.Context.Remove(self.capture_any_point_list[0], False)  # 移除
-		self.parent.parent.Displayshape_core.canva._display.Repaint()
-		self.parent.parent.Displayshape_core.canva._display.Context.UpdateCurrentViewer()
-		self.isDone = True
-
 	def remove_ais_shape(self):
 		self.parent.parent.Displayshape_core.canva._display.Context.Remove(self.ais_shape, False)
 		self.parent.parent.Displayshape_core.canva._display.Context.UpdateCurrentViewer()
@@ -334,6 +305,7 @@ class sketch_line(object):
 					self.line_id+=1
 					self.point_count.clear()
 					self.show_element = self.parent.Sketcher.get_all_sketcher_element()
+					self.parent.Displayshape_core.canva.mouse_move_Signal.trigger.disconnect(self.dynamics_drwa_line)
 					#self.end_time=time.time()
 
 
@@ -342,8 +314,11 @@ class sketch_line(object):
 	@timer_decorator
 	def dynamics_draw_trance(self):
 		try:
-			self.draw_trance_element.remove_capture_point()
-			self.draw_trance_element.remove_capture_any_point()
+			self.parent.Displayshape_core.canva._display.Context.Remove(self.draw_trance_element.capture_any_point_list[0], False)  # 移除已经显示的任意点
+			self.parent.Displayshape_core.canva._display.Context.Remove(self.draw_trance_element.capture_point_list[0],False)  # 移除已经显示的端点
+			self.parent.Displayshape_core.canva._display.Context.Remove(self.draw_trance_element.capture_point_list[1],False)  # 移除已经显示的中点
+			self.parent.Displayshape_core.canva._display.Context.Remove(self.draw_trance_element.capture_point_list[2],False)  # 移除已经显示的端点
+
 		except:
 			pass
 		shape_id=0
@@ -383,22 +358,27 @@ class sketch_line(object):
 
 						self.draw_trance_element=element[shape_id]
 					elif Distance>20:
-						element[shape_id].remove_capture_point()
-						element[shape_id].remove_capture_any_point()
 
+						self.parent.Displayshape_core.canva._display.Context.Remove(element[shape_id].capture_point_list[0], False)  # 移除已经显示的端点
+						self.parent.Displayshape_core.canva._display.Context.Remove(element[shape_id].capture_point_list[1], False)  # 移除已经显示的中点
+						self.parent.Displayshape_core.canva._display.Context.Remove(element[shape_id].capture_point_list[2], False)  # 移除已经显示的端点
+						self.parent.Displayshape_core.canva._display.Context.Remove(element[shape_id].capture_any_point_list[0], False)  # 重移除已经显示的任意点
 					pass
 				except Exception as e:
 					print(e)
 					pass
-
+			if Distance>=25:
+				return 2
 			from sketcher.sketcher_circel import Brep_circel
 			if isinstance(element[shape_id],Brep_line):#直线捕捉
 				# 捕捉生产端点和中点,任意点
 				if Distance > 15 or Distance == 0:
 					self.capture_point_None = 0
 					try:
-						element[shape_id].remove_capture_point()
-						element[shape_id].remove_capture_any_point()
+						self.parent.Displayshape_core.canva._display.Context.Remove(element[shape_id].capture_point_list[0], False)  #移除已经显示的端点
+						self.parent.Displayshape_core.canva._display.Context.Remove(element[shape_id].capture_point_list[1], False)  #移除已经显示的中点
+						self.parent.Displayshape_core.canva._display.Context.Remove(element[shape_id].capture_point_list[2], False)  # 移除已经显示的端点
+						self.parent.Displayshape_core.canva._display.Context.Remove(element[shape_id].capture_any_point_list[0], False)#移除已经显示的任意点
 						self.parent.Displayshape_core.canva._display.Repaint()
 						self.parent.Displayshape_core.canva._display.Context.UpdateCurrentViewer()
 					except Exception as e:
@@ -406,7 +386,7 @@ class sketch_line(object):
 						pass
 				else:
 					try:
-						element[shape_id].remove_capture_any_point()
+						self.parent.Displayshape_core.canva._display.Context.Remove(element[shape_id].capture_any_point_list[0], False)  #移除已经显示的任意点
 						pnt = gp_Pnt(x, y, z)
 						pnt0 = element[shape_id].get_capture_point_pnt(0)
 						pnt1 = element[shape_id].get_capture_point_pnt(1)
@@ -414,26 +394,36 @@ class sketch_line(object):
 
 						if pnt.Distance(pnt0) >= 15 and pnt.Distance(pnt1) >= 15 and pnt.Distance(pnt2) >= 15:
 							element[shape_id].set_capture_any_point(x, y, z)
-							element[shape_id].display_capture_any_point()
+							self.parent.Displayshape_core.canva._display.Context.Display(element[shape_id].capture_any_point_list[0], False)  #移除已经显示的任意点
 
-						element[shape_id].display_capture_point()
+
+						self.parent.Displayshape_core.canva._display.Context.Display(
+							element[shape_id].capture_point_list[0], False)  #移除已经显示的端点
+						self.parent.Displayshape_core.canva._display.Context.Display(
+							element[shape_id].capture_point_list[1], False)  #移除已经显示的中点
+						self.parent.Displayshape_core.canva._display.Context.Display(
+							element[shape_id].capture_point_list[2], False)  #移除已经显示的端点
 						self.parent.Displayshape_core.canva._display.Repaint()
 						self.parent.Displayshape_core.canva._display.Context.UpdateCurrentViewer()
 					except Exception as e:
 						print(e)
 			elif isinstance(element[shape_id],Brep_circel):#圆弧捕捉
+				print("捕捉圆弧")
 				if Distance > 15 or Distance == 0:
-					element[shape_id].remove_capture_point()
-					element[shape_id].remove_capture_any_point(self)
+					#element[shape_id].remove_capture_point()
+					#element[shape_id].remove_capture_any_point(self)
+					self.parent.Displayshape_core.canva._display.Context.Remove(element[shape_id].capture_point_list[0], False)  #移除已经显示的圆心
+					self.parent.Displayshape_core.canva._display.Context.Remove(element[shape_id].capture_any_point_list[0], False) #移除已经显示的圆弧上的点
+					pass
+
 
 				else:
 					P1=[x,y,z]
 					element[shape_id].create_capture_any_point(P1)
-					element[shape_id].display_capture_any_point()
-					element[shape_id].display_capture_point()
-				print("捕捉圆弧")
-				pass
-
+					self.parent.Displayshape_core.canva._display.Context.Display(element[shape_id].capture_center_point_list[0],False)  # 移除已经显示的圆心
+					self.parent.Displayshape_core.canva._display.Context.Display(element[shape_id].capture_any_point_list[0],False)  # 移除已经显示的圆心
+					#element[shape_id].display_capture_any_point()
+					#element[shape_id].display_capture_point()
 		except:
 			pass
 
