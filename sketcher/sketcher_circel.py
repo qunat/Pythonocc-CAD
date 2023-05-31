@@ -46,8 +46,9 @@ class Brep_circel(object):
 		self.ais_shape.SetColor(Quantity_Color(self.parent.color))
 		self.ais_shape.SetWidth(self.parent.width)
 		self.center_point[0]=self.create_center_point(p1)
-		self.display_circel()
-		self.dispaly_center_point()
+		print("半径",radius)
+		#self.display_circel()
+		#self.dispaly_center_point()
 
 	def create_center_point(self,p1):
 		x, y, z = p1.Coord()
@@ -97,8 +98,8 @@ class Brep_circel(object):
 		self.ais_shape.SetColor(Quantity_Color(self.parent.color))
 		self.ais_shape.SetWidth(self.parent.width)
 		self.capture_center_point_list[0]=self.create_capture_point(p1)
-		self.redisplay()
-
+		#self.redisplay()
+	
 	def display_circel(self):
 		self.parent.parent.Displayshape_core.canva._display.Context.Display(self.ais_shape, False)  # 显示的物体
 		self.parent.parent.Displayshape_core.canva._display.Repaint()
@@ -112,28 +113,9 @@ class Brep_circel(object):
 		self.parent.parent.Displayshape_core.canva._display.Context.Redisplay(self.ais_shape, True,False)  # 重新计算更新已经显示的物体
 		self.parent.parent.Displayshape_core.canva._display.Repaint()
 		self.parent.parent.Displayshape_core.canva._display.Context.UpdateCurrentViewer()
+	
 
-	def display_capture_point(self):#中心捕捉
-		self.parent.parent.Displayshape_core.canva._display.Context.Display(self.capture_center_point_list[0], False)  # 显示的物体
-		self.parent.parent.Displayshape_core.canva._display.Repaint()
-		self.parent.parent.Displayshape_core.canva._display.Context.UpdateCurrentViewer()
 
-	def remove_capture_point(self):#中心捕捉
-		self.parent.parent.Displayshape_core.canva._display.Context.Remove(self.capture_center_point_list[0], True)  #移除捕捉的任意点
-		self.parent.parent.Displayshape_core.canva._display.Repaint()
-		self.parent.parent.Displayshape_core.canva._display.Context.UpdateCurrentViewer()
-		self.isDone=True
-
-	def display_capture_any_point(self):#中心捕捉
-		self.parent.parent.Displayshape_core.canva._display.Context.Display(self.capture_any_point_list[0], False)  # 显示的物体
-		self.parent.parent.Displayshape_core.canva._display.Repaint()
-		self.parent.parent.Displayshape_core.canva._display.Context.UpdateCurrentViewer()
-
-	def remove_capture_any_point(self):#中心捕捉
-		self.parent.parent.Displayshape_core.canva._display.Context.Remove(self.capture_any_point_list[0], True)  #移除捕捉的任意点
-		self.parent.parent.Displayshape_core.canva._display.Repaint()
-		self.parent.parent.Displayshape_core.canva._display.Context.UpdateCurrentViewer()
-		self.isDone=True
 
 
 class sketch_circel(sketch_line):
@@ -150,12 +132,16 @@ class sketch_circel(sketch_line):
 		self.show_circel_dict = {}
 		self.point_count = []
 		self.circel_id = 0
+		self.draw_circel_connect=None
 
 	
 	def draw_circel(self, shape=None):
 		if self.parent.InteractiveOperate.InteractiveModule == "SKETCH":
 			(x, y, z, vx, vy, vz) = self.parent.Displayshape_core.ProjReferenceAxe()
-			self.parent.Displayshape_core.canva.mouse_move_Signal.trigger.connect(self.dynamics_draw_trance)
+			if self.draw_circel_connect!=1:
+				self.parent.Displayshape_core.canva.mouse_move_Signal.trigger.connect(self.dynamics_draw_trance)
+			else:
+				self.draw_circel_connect=1
 			x, y, z, vx, vy, vz=self.catch_capure_point(shape)
 
 			if len(self.point_count) == 0:
@@ -170,8 +156,10 @@ class sketch_circel(sketch_line):
 				p1=gp_Pnt(self.point_count[-1][0], self.point_count[-1][1], self.point_count[-1][2])
 				p2=gp_Pnt(x, y, z)
 				self.show_circel_dict[self.circel_id].set_ais_shape(p1,p2)  # 将已经显示的零件设置成另外一个新零件
+				self.parent.Displayshape_core.canva._display.Context.Redisplay(self.show_circel_dict[self.circel_id].ais_shape, True, False)  # 重新计算更新已经显示的物体
 				self.circel_id += 1
 				self.point_count.clear()
+				self.parent.Displayshape_core.canva.mouse_move_Signal.trigger.disconnect(self.dynamics_drwa_circel)
 				self.show_element = self.parent.Sketcher.get_all_sketcher_element()
 	
 	def dynamics_drwa_circel(self):
@@ -188,15 +176,20 @@ class sketch_circel(sketch_line):
 				p1 = gp_Pnt(x0,y0,z0)
 				p2 = gp_Pnt(x, y, z)
 
-				if self.show_circel_dict[self.circel_id] == None:
+				if self.show_circel_dict[self.circel_id] == None and p1.Distance(p2)!=0:
 					self.show_circel_dict[self.circel_id] = Brep_circel(self,p1,p2,self.gp_Dir)
+					self.parent.Displayshape_core.canva._display.Context.Display(self.show_circel_dict[self.circel_id].ais_shape, False)  # 显示圆弧
+					self.parent.Displayshape_core.canva._display.Context.Display(self.show_circel_dict[self.circel_id].center_point[0],False)  # 显示圆心
+					self.parent.Displayshape_core.canva._display.Repaint()
+					self.parent.Displayshape_core.canva._display.Context.UpdateCurrentViewer()
 				else:
 					self.show_circel_dict[self.circel_id].set_ais_shape(p1,p2)  # 将已经显示的零件设置成另外一个新零件
+					self.parent.Displayshape_core.canva._display.Context.Redisplay(self.show_circel_dict[self.circel_id].ais_shape, True,False)  # 重新计算更新已经显示的物体
 				self.parent.Displayshape_core.canva._display.Context.UpdateCurrentViewer()
 			
 			
 			except Exception as e:
-				#print(e)
+				print(e)
 				pass
 		
 		self.dragStartPosX = _dragStartPosX

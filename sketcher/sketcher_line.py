@@ -37,8 +37,7 @@ from OCC.Core.Aspect import (Aspect_TOM_POINT,
 							 Aspect_TOM_RING3,
 							 Aspect_TOM_BALL)
 
-
-
+from sketcher import sketcher_circel
 
 class Brep_line(object):
 	def __init__(self,parent=None,point1=[],point2=[]):
@@ -50,7 +49,7 @@ class Brep_line(object):
 		self.capture_any_point_list = [None]
 		self.create_line(point1,point2)
 		self.isDone=None
-
+		
 	def create_line(self,p1=[],p2=[]):
 		x0,y0,z0=p1
 		x1,y1,z1=p2
@@ -314,12 +313,17 @@ class sketch_line(object):
 	@timer_decorator
 	def dynamics_draw_trance(self):
 		try:
-			self.parent.Displayshape_core.canva._display.Context.Remove(self.draw_trance_element.capture_any_point_list[0], False)  # 移除已经显示的任意点
-			self.parent.Displayshape_core.canva._display.Context.Remove(self.draw_trance_element.capture_point_list[0],False)  # 移除已经显示的端点
-			self.parent.Displayshape_core.canva._display.Context.Remove(self.draw_trance_element.capture_point_list[1],False)  # 移除已经显示的中点
-			self.parent.Displayshape_core.canva._display.Context.Remove(self.draw_trance_element.capture_point_list[2],False)  # 移除已经显示的端点
+			
+			if isinstance(self.draw_trance_element, Brep_line):  # 直线捕捉
+				self.parent.Displayshape_core.canva._display.Context.Remove(self.draw_trance_element.capture_point_list[0],False)  # 移除已经显示的端点
+				self.parent.Displayshape_core.canva._display.Context.Remove(self.draw_trance_element.capture_point_list[1],False)  # 移除已经显示的中点
+				self.parent.Displayshape_core.canva._display.Context.Remove(self.draw_trance_element.capture_point_list[2],False)  # 移除已经显示的端点
+			else: # 圆或圆弧捕捉
+				self.parent.Displayshape_core.canva._display.Context.Remove(self.draw_trance_element.capture_center_point_list[0], False)
+				self.parent.Displayshape_core.canva._display.Context.Remove(self.draw_trance_element.capture_any_point_list[0], False)  # 移除已经显示的任意点
 
 		except:
+			
 			pass
 		shape_id=0
 		Distance=0
@@ -368,8 +372,8 @@ class sketch_line(object):
 					print(e)
 					pass
 			if Distance>=25:
-				return 2
-			from sketcher.sketcher_circel import Brep_circel
+				pass
+			
 			if isinstance(element[shape_id],Brep_line):#直线捕捉
 				# 捕捉生产端点和中点,任意点
 				if Distance > 15 or Distance == 0:
@@ -407,12 +411,12 @@ class sketch_line(object):
 						self.parent.Displayshape_core.canva._display.Context.UpdateCurrentViewer()
 					except Exception as e:
 						print(e)
-			elif isinstance(element[shape_id],Brep_circel):#圆弧捕捉
+			elif isinstance(element[shape_id],sketcher_circel.Brep_circel):#圆弧捕捉
 				print("捕捉圆弧")
 				if Distance > 15 or Distance == 0:
 					#element[shape_id].remove_capture_point()
 					#element[shape_id].remove_capture_any_point(self)
-					self.parent.Displayshape_core.canva._display.Context.Remove(element[shape_id].capture_point_list[0], False)  #移除已经显示的圆心
+					self.parent.Displayshape_core.canva._display.Context.Remove(element[shape_id].capture_center_point_list[0], False)  #移除已经显示的圆心
 					self.parent.Displayshape_core.canva._display.Context.Remove(element[shape_id].capture_any_point_list[0], False) #移除已经显示的圆弧上的点
 					pass
 
