@@ -60,12 +60,17 @@ class sketch_rectangle(sketch_line):
 					for rectangle in rectangle_list:
 						try:
 							self.show_line_dict[self.line_id]=Brep_line(self,rectangle[0],rectangle[1])  # 将已经显示的零件设置成另外一个新零件
-							self.show_line_dict[self.line_id].set_ais_shape(rectangle[0],rectangle[1])
-							self.show_line_dict[self.line_id].redisplay_all()
-							self.parent.Displayshape_core.canva._display.Context.UpdateCurrentViewer()
+							#self.show_line_dict[self.line_id].set_ais_shape(rectangle[0],rectangle[1])
+							#self.show_line_dict[self.line_id].redisplay_all()
+							self.parent.Displayshape_core.canva._display.Context.Redisplay(self.show_line_dict[self.line_id].ais_shape, True, False)  # 重新计算更新已经显示的物体
+							#self.parent.Displayshape_core.canva._display.Context.Display(self.show_line_dict[self.line_id].ais_shape, False)  # 显示的物体
+							self.parent.Displayshape_core.canva._display.Context.Display(self.show_line_dict[self.line_id].edge_point_list[0], False)  # 显示的物体
+							self.parent.Displayshape_core.canva._display.Context.Display(self.show_line_dict[self.line_id].edge_point_list[1], False)  # 显示的物体
+							#self.parent.Displayshape_core.canva._display.Context.UpdateCurrentViewer()
 						except Exception as e:
 							print(e)
 						self.line_id+=1
+					self.parent.Displayshape_core.canva._display.Context.UpdateCurrentViewer()
 					self.point_count.clear()
 					self.show_element = self.parent.Sketcher.get_all_sketcher_element()
 					#print(self.show_line_dict)

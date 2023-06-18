@@ -140,7 +140,6 @@ class sketch_circel(sketch_line):
 			(x, y, z, vx, vy, vz) = self.parent.Displayshape_core.ProjReferenceAxe()
 			if self.draw_circel_connect!=1:
 				self.parent.Displayshape_core.canva.mouse_move_Signal.trigger.connect(self.dynamics_draw_trance)
-			else:
 				self.draw_circel_connect=1
 			x, y, z, vx, vy, vz=self.catch_capure_point(shape)
 

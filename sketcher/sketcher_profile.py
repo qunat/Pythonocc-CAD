@@ -105,7 +105,11 @@ class sketch_profile(sketch_line):
 						p1 = self.point
 						p2 = [x, y, z]
 						self.show_line_dict[self.line_id].set_ais_shape(p1, p2)
-						self.show_line_dict[self.line_id].redisplay_all()
+						self.parent.Displayshape_core.canva._display.Context.Redisplay(self.show_line_dict[self.line_id].ais_shape, True, False)  # 重新计算更新已经显示的物体
+						self.parent.Displayshape_core.canva._display.Context.Display(self.show_line_dict[self.line_id].ais_shape, False)  # 显示的物体
+						self.parent.Displayshape_core.canva._display.Context.Display(self.show_line_dict[self.line_id].edge_point_list[0], False)  # 显示的物体
+						self.parent.Displayshape_core.canva._display.Context.Display(self.show_line_dict[self.line_id].edge_point_list[1], False)  # 显示的物体
+						#self.show_line_dict[self.line_id].redisplay_all()
 						self.parent.Displayshape_core.canva.mouse_move_Signal.trigger.disconnect(self.dynamics_drwa_line)
 						self.line_id += 1
 						self.show_element = self.parent.Sketcher.get_all_sketcher_element()
@@ -115,7 +119,11 @@ class sketch_profile(sketch_line):
 						p1 = self.point
 						p2 = [x, y, z]
 						self.show_line_dict[self.line_id].set_ais_shape(p1, p2)
-						self.show_line_dict[self.line_id].redisplay_all()
+						#self.show_line_dict[self.line_id].redisplay_all()
+						self.parent.Displayshape_core.canva._display.Context.Redisplay(self.show_line_dict[self.line_id].ais_shape, True, False)  # 重新计算更新已经显示的物体
+						self.parent.Displayshape_core.canva._display.Context.Display(self.show_line_dict[self.line_id].ais_shape, False)  # 显示的物体
+						self.parent.Displayshape_core.canva._display.Context.Display(self.show_line_dict[self.line_id].edge_point_list[0], False)  # 显示的物体
+						self.parent.Displayshape_core.canva._display.Context.Display(self.show_line_dict[self.line_id].edge_point_list[1], False)  # 显示的物体
 						self.line_id += 1
 						self.point_count.append(p2)
 						self.point=p2
@@ -142,12 +150,10 @@ class sketch_profile(sketch_line):
 					if self.show_line_dict[self.line_id] == None :
 						self.show_line_dict[self.line_id]=Brep_line(self,p1,p2)
 					elif self.parent.InteractiveOperate.InteractiveClose=="finish":
-						self.show_line_dict[self.line_id].remove_ais_shape()
+						#self.show_line_dict[self.line_id].remove_ais_shape()
+						self.parent.Displayshape_core.canva._display.Context.Remove(self.show_line_dict[self.line_id].ais_shape, False)
 						self.parent.Displayshape_core.canva.mouse_move_Signal.trigger.disconnect(self.dynamics_drwa_line)
 						self.parent.InteractiveOperate.InteractiveClose = None
-
-
-
 					else:
 						self.show_line_dict[self.line_id].set_ais_shape(p1, p2)
 						pass

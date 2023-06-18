@@ -300,7 +300,11 @@ class sketch_line(object):
 					p1=self.point
 					p2=[x,y,z]
 					self.show_line_dict[self.line_id].set_ais_shape(p1,p2)
-					self.show_line_dict[self.line_id].redisplay_all()
+					self.parent.Displayshape_core.canva._display.Context.Redisplay(self.show_line_dict[self.line_id].ais_shape, True,False)  # 重新计算更新已经显示的物体
+					self.parent.Displayshape_core.canva._display.Context.Display(self.show_line_dict[self.line_id].ais_shape, False)  # 显示的物体
+					self.parent.Displayshape_core.canva._display.Context.Display(self.show_line_dict[self.line_id].edge_point_list[0],False)  # 显示的物体
+					self.parent.Displayshape_core.canva._display.Context.Display(self.show_line_dict[self.line_id].edge_point_list[1],False)  # 显示的物体
+					#self.show_line_dict[self.line_id].redisplay_all()
 					self.line_id+=1
 					self.point_count.clear()
 					self.show_element = self.parent.Sketcher.get_all_sketcher_element()
@@ -323,7 +327,7 @@ class sketch_line(object):
 				self.parent.Displayshape_core.canva._display.Context.Remove(self.draw_trance_element.capture_any_point_list[0], False)  # 移除已经显示的任意点
 
 		except:
-			
+			print("移除失败")
 			pass
 		shape_id=0
 		Distance=0
