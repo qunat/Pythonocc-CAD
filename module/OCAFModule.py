@@ -43,11 +43,19 @@ class Thread(QThread):     #继承QThread
 class OCAF(object):
 	def __init__(self,parent=None):
 		self.parent=parent
+		
 		pass
-	
+	def clicked_callback(self, shp, *kwargs):
+		try:
+			#print("右键单击有用",shp)
+			pass
+		except Exception as e:
+			print(e)
 	
 	def Open_part(self):
 		try:
+			id=0
+			self.parent.Displayshape_core.canva._display.register_select_callback(self.clicked_callback)
 			self.parent.Displayshape_core.canva._display.EraseAll()
 			self.parent.modeltree.Clear_tree_NodeList()
 			self.chose_document = QFileDialog.getOpenFileName(self.parent, '打开文件', './',
@@ -83,7 +91,9 @@ class OCAF(object):
 																								 c.Blue(),
 																								 Quantity_TOC_RGB),
 																							    update=True)
-					self.parent.Displayshape_core.shape_maneger_core_dict[label] = return_shape
+					#print(property,return_shape)
+					self.parent.Displayshape_core.shape_maneger_core_dict[id] = return_shape[0]
+					id+=1
 					
 				
 				self.parent.statusbar.showMessage("状态：打开成功")  ###

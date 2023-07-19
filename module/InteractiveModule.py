@@ -25,14 +25,13 @@ class InteractiveOperate(object):
 
 	def Setting(self):
 		HighlightStyle = self.parent.Displayshape_core.canva._display.Context.HighlightStyle()
-		HighlightStyle.SetColor(Quantity_Color(0 / 255, 128 / 255, 0 / 255, Quantity_TOC_RGB))
+		HighlightStyle.SetColor(Quantity_Color(255 / 255, 128 / 255, 0 / 255, Quantity_TOC_RGB))
 		SelectionStyle = self.parent.Displayshape_core.canva._display.Context.SelectionStyle()
 		HighlightStyle.SetMethod(Aspect_TOM_O)# 颜色显示方式
 		# SelectionStyle.SetMethod(Aspect_TOHM_COLOR)# 颜色显示方式
 		SelectionStyle.SetColor(Quantity_Color(0 / 255, 0 / 255, 0 / 255, Quantity_TOC_RGB))  # 设置选择后颜色
 		# SelectionStyle.t_select_style->SetDisplayMode(1)#整体高亮
 		# t_select_style->SetTransparency(0.1)
-
 		#高亮点的样式设置
 		#aspectMarker=Graphic3d_AspectMarker3d(Aspect_TOM_PLUS)
 		#aspectMarker.SetColor(Quantity_Color(1.0, 0.0, 0.0, Quantity_TOC_RGB))

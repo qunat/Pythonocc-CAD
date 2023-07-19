@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
-
-
+from OCC.Core import BRepExtrema
+from OCC.Core.BRepBuilderAPI import BRepBuilderAPI_MakeEdge
+from OCC.Core.gp import gp_Lin
 from OCC.Display.qtDisplay import qtViewer3d
 from PyQt5 import QtCore, QtGui, QtWidgets
 from ui import MainGui
@@ -12,6 +13,7 @@ from GUI.RibbonButton import RibbonButton
 from GUI.RibbonScrollarea import RibbonScrollarea
 from GUI.Icons import get_icon
 from GUI.RibbonTextbox import RibbonTextbox
+from OCC.Core.gp import gp_Pnt, gp_Dir, gp_Lin, gp_Ax2, gp_Dir, gp_Pln, gp_Origin, gp_Lin2d,gp_Pnt2d
 from GUI.RibbonWidget import *
 from GUI.TittleBarWidget import *
 from GUI.TopBorderBarWidge import *
@@ -184,14 +186,38 @@ class Ui_MainWindow(MainGui.Ui_MainWindow):
 				rightMenu.addAction(self.actionreboot_3)
 				rightMenu.addAction(self.actionreboot_4)
 
-				#self.actionreboot.triggered.connect(self.Measure_distance_fun)
+				self.actionreboot_2.triggered.connect(self.hide_part_rightMenuShow)
 				#self.actionreboot_1.triggered.connect(self.Measure_diameter_fun)
 				rightMenu.exec_(QtGui.QCursor.pos())
 
 		except Exception as e:
 			print(e)
 			pass
-	
+	def hide_part_rightMenuShow(self):
+		Distance=0
+		min_distance_id=0
+		(x, y, z, vx, vy, vz) = self.Displayshape_core.ProjReferenceAxe()
+		direction = gp_Dir(vx, vy, vz)
+		line = gp_Lin(gp_Pnt(x, y, z), direction)
+		edge_builder = BRepBuilderAPI_MakeEdge(line)
+		edge = edge_builder.Edge()
+		#print(self.Displayshape_core.shape_maneger_core_dict)
+		for key in self.Displayshape_core.shape_maneger_core_dict.keys():
+			try:
+				#print(key)
+				extrema = BRepExtrema.BRepExtrema_DistShapeShape(self.Displayshape_core.shape_maneger_core_dict[key].Shape(), edge)
+				nearest_point1 = extrema.PointOnShape1(1)
+				nearest_point2 = extrema.PointOnShape2(1)
+				if  nearest_point1.Distance(nearest_point2)== 0:
+					Distance = nearest_point1.Distance(nearest_point2)
+					min_distance_id=key
+		
+			except:
+				pass
+		self.Displayshape_core.canva._display.Context.Erase(self.Displayshape_core.shape_maneger_core_dict[min_distance_id],True)
+		print(min_distance_id)
+			
+		
 	def mousePressEvent(self, e):
 		if e.buttons() == Qt.LeftButton:
 			try:
