@@ -14,6 +14,7 @@ from sketcher.sketcher_line import sketch_line
 from sketcher.sketcher_rectangle import sketch_rectangle
 from sketcher.sketcher_profile import sketch_profile
 from sketcher.sketcher_trim import sketch_trim
+from sketcher.sketcher_dimension import Dimension_Manege
 from OCC.Core.GeomAPI import geomapi_To3d
 
 class SketchModule(object):
@@ -24,6 +25,8 @@ class SketchModule(object):
 		self.gp_Dir=None
 		self.new_do_draw_dict={"line":None,"circel":None,"rectangle":None,"arc":None,"profile":None}
 		self.parent.Displayshape_core.canva.mouse_move_Signal.trigger.connect(self.show_coordinate)
+		self.Dimension_Manege = Dimension_Manege(self.parent)
+	
 
 
 
@@ -100,12 +103,13 @@ class SketchModule(object):
 				self.new_do_draw_dict["rectangle"].draw_rectangle(shp)
 			elif self.sketch_type==1:
 				self.new_do_draw_dict["profile"].draw_line(shp)
-
 			elif self.sketch_type==8:
 				if shp!=[]:
 					self.new_do_trim.trim(shp)
 				pass
-
+			elif self.sketch_type==10:
+				self.do_diamension(shp=None)
+				print(shp)
 		except Exception as e:
 			print(e)
 	def do_draw(self):
@@ -118,6 +122,9 @@ class SketchModule(object):
 		elif self.sketch_type==1 and self.new_do_draw_dict["rectangle"]==None:
 			self.new_do_draw_dict["profile"] = sketch_profile(self.parent,self.gp_Dir)  # draw rectangle
 			
+	def do_diamension(self,shp):
+		self.Dimension_Manege.Create_Dimension(shp)
+		print("do_diamension")
 	def do_trim(self):
 		self.new_do_trim=sketch_trim(self.parent)
 
@@ -155,6 +162,12 @@ class SketchModule(object):
 	def sketch_trim(self):
 		self.sketch_type = 8  # sketch trim
 		self.do_trim()
+	def sketch_mirror(self):
+		self.sketch_type = 9
+	def sketch_diamension(self):
+		print("sketch_diamension")
+		self.sketch_type = 10
+		#self.
 		
 	
 	

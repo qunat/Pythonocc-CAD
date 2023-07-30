@@ -7,54 +7,59 @@ from OCC.Core.BRepTools import breptools_Write, breptools_Read, breptools_Triang
 from OCC.Core.Quantity import Quantity_Color, Quantity_TOC_RGB
 from OCC.Core.TopoDS import TopoDS_Face, TopoDS_Shape, TopoDS_Edge, TopoDS_Solid
 from PyQt5.QtCore import QThread
-from PyQt5.QtWidgets import QFileDialog,QWidget
+from PyQt5.QtWidgets import QFileDialog, QWidget
 from module import qtDisplay
-from OCC.Extend.DataExchange import read_step_file,read_iges_file,read_stl_file
-from module import Assemble,ProcessWidgets
-from module.DisplayManager import DumpProcess,NoDumpProcess
+from OCC.Extend.DataExchange import read_step_file, read_iges_file, read_stl_file
+from module import Assemble, ProcessWidgets
+from module.DisplayManager import DumpProcess, NoDumpProcess
 
 
 def Thread_derocate(fun):
 	def decorate():
-		#para=(i for i in args)
+		# para=(i for i in args)
 		t = threading.Thread(target=fun, args=())
 		t.start()
+	
 	return decorate
+
+
 
 
 def LoadProcessDerocate(parent):
 	def Decorate(*args):
-		newprocess=ProcessWidgets.ProcessWidget(parent)
+		newprocess = ProcessWidgets.ProcessWidget(parent)
 		newprocess.Show()
 		print(55555555)
+	
 	return Decorate()
 
-class Thread(QThread):     #继承QThread
-	def __init__(self,parent):
-		super(Thread,self).__init__()
-		self.newprocess = ProcessWidgets.ProcessWidget(parent)
-		
 
+class Thread(QThread):  # 继承QThread
+	def __init__(self, parent):
+		super(Thread, self).__init__()
+		self.newprocess = ProcessWidgets.ProcessWidget(parent)
+	
 	def run(self):
 		print(66666)
 		self.newprocess.Show()
 
 
 class OCAF(object):
-	def __init__(self,parent=None):
-		self.parent=parent
+	def __init__(self, parent=None):
+		self.parent = parent
 		
 		pass
+	
 	def clicked_callback(self, shp, *kwargs):
 		try:
-			#print("右键单击有用",shp)
+			# print("右键单击有用",shp)
 			pass
 		except Exception as e:
 			print(e)
 	
 	def Open_part(self):
 		try:
-			id=0
+			id = 0
 			self.parent.Displayshape_core.canva._display.register_select_callback(self.clicked_callback)
 			self.parent.Displayshape_core.canva._display.EraseAll()
 			self.parent.modeltree.Clear_tree_NodeList()
@@ -65,21 +70,21 @@ class OCAF(object):
 			end_with = str(filepath).lower()
 			
 			LoadProcessDerocate(self.parent)
-		
+			
 			if end_with.endswith(".step") or end_with.endswith("stp"):
 				self.import_shape, assemble_relation_list, DumpToString = Assemble.read_step_file_with_names_colors(
 					filepath)
 				print(DumpToString)
-				#print(self.import_shape)
+				# print(self.import_shape)
 				# 判断是否为标准的装配体结构
 				try:
 					root_dict = DumpProcess(DumpToString).root_dict
 				except:
-					root_dict=NoDumpProcess(self.import_shape.keys(),file=filepath).root_dict
+					root_dict = NoDumpProcess(self.import_shape.keys(), file=filepath).root_dict
 					pass
 				
 				for shpt_lbl_color in self.import_shape:
-				
+					
 					label, c, property = self.import_shape[shpt_lbl_color]
 					# color=Quantity_Color(c.Red(),c.Green(), c.Blue(),Quantity_TOC_RGB)
 					if not isinstance(shpt_lbl_color, TopoDS_Solid):  # 排除非solid
@@ -90,17 +95,16 @@ class OCAF(object):
 																								 c.Green(),
 																								 c.Blue(),
 																								 Quantity_TOC_RGB),
-																							    update=True)
-					#print(property,return_shape)
+																							 update=True)
+					# print(property,return_shape)
 					self.parent.Displayshape_core.shape_maneger_core_dict[id] = return_shape[0]
-					id+=1
-					
+					id += 1
 				
 				self.parent.statusbar.showMessage("状态：打开成功")  ###
 				self.parent.statusBar().showMessage('状态：软件运行正常')
 				
 				# 建立模型树
-				if root_dict!=None:
+				if root_dict != None:
 					self.parent.modeltree.Create_tree_NodeList(root_dict=root_dict)
 				else:
 					pass
@@ -110,9 +114,9 @@ class OCAF(object):
 				self.import_shape = read_iges_file(filepath)
 				self.parent.statusbar.showMessage("状态：打开成功")  ###
 				self.parent.statusBar().showMessage('状态：软件运行正常')
-				
-				
-				
+			
+			
+			
 			elif end_with.endswith(".stl") or end_with.endswith(".stl"):
 				self.import_shape = read_stl_file(filepath)
 				breptools_Triangulation()
@@ -126,10 +130,6 @@ class OCAF(object):
 		
 		except Exception as e:
 			print(e)
-		
-			
-		
-
 	
 	def Import_stp(self):
 		try:
@@ -143,10 +143,12 @@ class OCAF(object):
 				for shpt_lbl_color in self.import_shape:
 					label, c, property = self.import_shape[shpt_lbl_color]
 					# color=Quantity_Color(c.Red(),c.Green(), c.Blue(),Quantity_TOC_RGB)
-					return_shape = self.parent.Displayshape_core.canva._display.DisplayShape(shpt_lbl_color, color=Quantity_Color(c.Red(),
-																										 c.Green(),
-																										 c.Blue(),
-																										 Quantity_TOC_RGB))
+					return_shape = self.parent.Displayshape_core.canva._display.DisplayShape(shpt_lbl_color,
+																							 color=Quantity_Color(
+																								 c.Red(),
+																								 c.Green(),
+																								 c.Blue(),
+																								 Quantity_TOC_RGB))
 					self.parent.part_maneger_core_dict[label] = return_shape
 			print(self.parent.part_maneger_core_dict)
 			self.parent.statusbar.showMessage("状态：打开成功")  ###
@@ -184,4 +186,3 @@ class OCAF(object):
 			self.parent.statusBar().showMessage('状态：软件运行正常')
 		except:
 			pass
-	

@@ -288,6 +288,7 @@ class sketch_line(object):
 					self.point = [x, y, z]
 					self.point_count.append(self.point)
 					self.show_line_dict[self.line_id] = None
+					self.parent.Displayshape_core.canva.mouse_move_Signal.trigger.connect(self.dynamics_draw_trance)
 					self.parent.Displayshape_core.canva.mouse_move_Signal.trigger.connect(self.dynamics_drwa_line)
 
 
@@ -309,6 +310,7 @@ class sketch_line(object):
 					self.point_count.clear()
 					self.show_element = self.parent.Sketcher.get_all_sketcher_element()
 					self.parent.Displayshape_core.canva.mouse_move_Signal.trigger.disconnect(self.dynamics_drwa_line)
+					self.parent.Displayshape_core.canva.mouse_move_Signal.trigger.disconnect(self.dynamics_draw_trance)
 					#self.end_time=time.time()
 
 
