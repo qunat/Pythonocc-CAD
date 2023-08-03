@@ -159,7 +159,7 @@ class sketch_circel(sketch_line):
 				self.circel_id += 1
 				self.point_count.clear()
 				self.parent.Displayshape_core.canva.mouse_move_Signal.trigger.disconnect(self.dynamics_drwa_circel)
-				self.show_element = self.parent.Sketcher.get_all_sketcher_element()
+				#self.show_element = self.parent.Sketcher.get_all_sketcher_element()
 	
 	def dynamics_drwa_circel(self):
 		_dragStartPosY = self.parent.Displayshape_core.canva.dragStartPosY
