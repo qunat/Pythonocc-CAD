@@ -42,12 +42,13 @@ from sketcher import sketcher_circel
 class Brep_line(object):
 	def __init__(self,parent=None,point1=[],point2=[]):
 		self.parent=parent
-		self.pnt_endpoints_list=[gp_Pnt(point1),gp_Pnt(point2)]
+		self.pnt_endpoints_list=[gp_Pnt(point1[0],point1[1],point1[2]),gp_Pnt(point2[0],point2[1],point2[2])]
 		self.pnt_middlepoind_list=[None]
-		self.ais_shape_line=AIS_Shape()
+		self.ais_shape_line=None
 		self.capture_point_list=[None,None,None]
 		self.capture_any_point_list = [None]
 		self.isDone=None
+		self.create_line()
 		
 	def create_line(self):
 		aSegment = GC_MakeSegment(self.pnt_endpoints_list[0],self.pnt_endpoints_list[1])
@@ -57,114 +58,21 @@ class Brep_line(object):
 		self.ais_shape=AIS_Shape(line)
 		self.ais_shape.SetColor(Quantity_Color(self.parent.color))
 		self.ais_shape.SetWidth(self.parent.width)
-
-'''
-	def create_end_point(self,p):
-		x, y, z = p
-		point_type = Aspect_TOM_POINT
-		p = Geom_CartesianPoint(gp_Pnt(x, y, z))
-		color = Quantity_Color(0, 0, 0, Quantity_TOC_RGB)
-		ais_point = AIS_Point(p)
-		drawer = ais_point.Attributes()
-		asp = Prs3d_PointAspect(point_type, color, 4)
-		drawer.SetPointAspect(asp)
-		ais_point.SetAttributes(drawer)
-		return ais_point
-
-	def create_capture_point(self,*args):
-		if len(args)==1:
-			x,y,z=args[0]
-			point_type = Aspect_TOM_O_POINT
-			p = Geom_CartesianPoint(gp_Pnt(x, y, z))
-			color = Quantity_Color(1, 1, 1, Quantity_TOC_RGB)
-			ais_point = AIS_Point(p)
-			drawer = ais_point.Attributes()
-			asp = Prs3d_PointAspect(point_type, color, 4)
-			drawer.SetPointAspect(asp)
-			ais_point.SetAttributes(drawer)
-			return ais_point
-		elif len(args)==2:
-			x0, y0, z0 = args[0]
-			x1, y1, z1 = args[1]
-			x = (x0 + x1) / 2
-			y = (y0 + y1) / 2
-			z = (z0 + z1) / 2
-			point_type = Aspect_TOM_O_POINT
-			p = Geom_CartesianPoint(gp_Pnt(x, y, z))
-			color = Quantity_Color(1, 1, 1, Quantity_TOC_RGB)
-			ais_point = AIS_Point(p)
-			drawer = ais_point.Attributes()
-			asp = Prs3d_PointAspect(point_type, color, 4)
-			drawer.SetPointAspect(asp)
-			ais_point.SetAttributes(drawer)
-			return ais_point
-
-	def set_ais_shape(self,p1,p2):
-		x0, y0, z0 = p1
-		x1, y1, z1 = p2
-		aSegment = GC_MakeSegment(gp_Pnt(x0, y0, z0), gp_Pnt(x1, y1, z1))
-		anEdge = BRepBuilderAPI_MakeEdge(aSegment.Value())
-		aWire = BRepBuilderAPI_MakeWire(anEdge.Edge()).Shape()
+		
+	def rebuild_line(self):
+		aSegment = GC_MakeSegment(self.pnt_endpoints_list[0],self.pnt_endpoints_list[1])
 		plane = gp_Pln(gp_Origin(), self.parent.gp_Dir)
 		line = geomapi_To2d(aSegment.Value(), plane)
 		line = BRepBuilderAPI_MakeEdge(geomapi_To3d(line, plane)).Edge()
 		self.ais_shape.SetShape(line)
 		self.ais_shape.SetColor(Quantity_Color(self.parent.color))
 		self.ais_shape.SetWidth(self.parent.width)
-		self.parent.parent.Displayshape_core.canva._display.Context.Remove(self.edge_point_list[0], True)
-		self.parent.parent.Displayshape_core.canva._display.Context.Remove(self.edge_point_list[1], True)
-		self.edge_point_list[0] = self.create_end_point(p1)
-		self.edge_point_list[1] = self.create_end_point(p2)
-		self.capture_point_list[0]=self.create_capture_point(p1)
-		self.capture_point_list[1] = self.create_capture_point(p1,p2)
-		self.capture_point_list[2] = self.create_capture_point(p2)
+	def reset_endpoints(self,point1,point2):
+		self.pnt_endpoints_list=[gp_Pnt(point1[0],point1[1],point1[2]),gp_Pnt(point2[0],point2[1],point2[2])]
+		
+		
+		
 
-	def set_capture_any_point(self,x,y,z):
-		p1=[x,y,z]
-		self.capture_any_point_list[0] = self.create_capture_point(p1)
-
-	def get_end_point_pnt(self,point):
-		Vertex0 = self.edge_point_list[point].Vertex()
-		pnt = BRep_Tool.Pnt(Vertex0)
-		return pnt
-	def get_capture_point_pnt(self,point):
-		Vertex0 = self.capture_point_list[point].Vertex()
-		pnt = BRep_Tool.Pnt(Vertex0)
-		return pnt
-	def display_line(self):
-		#self.parent.parent.Displayshape_core.canva._display.Context.Display(self.ais_shape,False)#显示的物体
-		#self.parent.parent.Displayshape_core.canva._display.Repaint()
-		#self.parent.parent.Displayshape_core.canva._display.Context.UpdateCurrentViewer()
-		pass
-
-
-	def redisplay(self):
-		#self.parent.parent.Displayshape_core.canva._display.Context.Redisplay(self.ais_shape, True,False) #重新计算更新已经显示的物体
-		#self.parent.parent.Displayshape_core.canva._display.Repaint()
-		#self.parent.parent.Displayshape_core.canva._display.Context.UpdateCurrentViewer()
-		pass
-
-	def display_all(self):
-		#self.parent.parent.Displayshape_core.canva._display.Context.Display(self.ais_shape,False)#显示的物体
-		#self.parent.parent.Displayshape_core.canva._display.Context.Display(self.edge_point_list[0], False)  # 显示的物体
-		#self.parent.parent.Displayshape_core.canva._display.Context.Display(self.edge_point_list[1], False)  # 显示的物体
-		#self.parent.parent.Displayshape_core.canva._display.Repaint()
-		#self.parent.parent.Displayshape_core.canva._display.Context.UpdateCurrentViewer()
-		pass
-
-	def redisplay_all(self):
-		#self.parent.parent.Displayshape_core.canva._display.Context.Display(self.edge_point_list[0], False)  # 显示的物体
-		#self.parent.parent.Displayshape_core.canva._display.Context.Display(self.edge_point_list[1], False)  # 显示的物体
-		#self.parent.parent.Displayshape_core.canva._display.Context.Redisplay(self.ais_shape, True,False) #重新计算更新已经显示的物体
-		#self.parent.parent.Displayshape_core.canva._display.Repaint()
-		#self.parent.parent.Displayshape_core.canva._display.Context.UpdateCurrentViewer()
-		pass
-
-	def remove_ais_shape(self):
-		#self.parent.parent.Displayshape_core.canva._display.Context.Remove(self.ais_shape, False)
-		#self.parent.parent.Displayshape_core.canva._display.Context.UpdateCurrentViewer()
-		pass
-'''
 def timer_decorator(func):
 	def wrapper(*args, **kwargs):
 		start_time = time.time()
@@ -209,15 +117,18 @@ class sketch_line(object):
 	@timer_decorator
 	def draw_line(self,shape=None):
 			if self.parent.InteractiveOperate.InteractiveModule == "SKETCH":
+				print("draw_line")
 				if self.draw_line_connect!=1 or True:
-					self.parent.Displayshape_core.canva.mouse_move_Signal.trigger.connect(self.dynamics_draw_trance)
+					self.parent.Displayshape_core.canva.mouse_move_Signal.trigger.connect(self.parent.Sketcher.dynamics_draw_trance)
 					self.draw_line_connect=1
-				(x, y, z, vx, vy, vz)=self.catch_capure_point(shape)
+				(x, y, z, vx, vy, vz)=self.parent.Sketcher.catch_capure_point(shape)
+				
 				if len(self.point_count) == 0:
 					self.point = [x, y, z]
 					self.point_count.append(self.point)
+					print(x, y, z, vx, vy, vz)
 					self.show_line_dict[self.line_id] = None
-					self.parent.Displayshape_core.canva.mouse_move_Signal.trigger.connect(self.dynamics_draw_trance)
+					#self.parent.Displayshape_core.canva.mouse_move_Signal.trigger.connect(self.parent.Sketcher.dynamics_draw_trance)
 					self.parent.Displayshape_core.canva.mouse_move_Signal.trigger.connect(self.dynamics_drwa_line)
 					
 
@@ -230,23 +141,20 @@ class sketch_line(object):
 
 					p1=self.point
 					p2=[x,y,z]
-					self.show_line_dict[self.line_id].set_ais_shape(p1,p2)
+					self.show_line_dict[self.line_id].reset_endpoints(p1,p2)
+					self.show_line_dict[self.line_id].rebuild_line()
 					self.parent.Displayshape_core.canva._display.Context.Redisplay(self.show_line_dict[self.line_id].ais_shape, True,False)  # 重新计算更新已经显示的物体
-					self.parent.Displayshape_core.canva._display.Context.Display(self.show_line_dict[self.line_id].ais_shape, False)  # 显示的物体
-					self.parent.Displayshape_core.canva._display.Context.Display(self.show_line_dict[self.line_id].edge_point_list[0],False)  # 显示的物体
-					self.parent.Displayshape_core.canva._display.Context.Display(self.show_line_dict[self.line_id].edge_point_list[1],False)  # 显示的物体
+					#self.parent.Displayshape_core.canva._display.Context.Display(self.show_line_dict[self.line_id].ais_shape, False)  # 显示的物体
+					#self.parent.Displayshape_core.canva._display.Context.Display(self.show_line_dict[self.line_id].edge_point_list[0],False)  # 显示的物体
+					#self.parent.Displayshape_core.canva._display.Context.Display(self.show_line_dict[self.line_id].edge_point_list[1],False)  # 显示的物体
 					#self.show_line_dict[self.line_id].redisplay_all()
 					self.line_id+=1
 					self.point_count.clear()
-					start_time=time.time()
 					#self.show_element = self.parent.Sketcher.get_all_sketcher_element()
-					end_time=time.time()
-					print("获取所有的sketcher元素的时间",end_time-start_time)
 					self.parent.Displayshape_core.canva.mouse_move_Signal.trigger.disconnect(self.dynamics_drwa_line)
 					self.parent.Displayshape_core.canva.mouse_move_Signal.trigger.disconnect(self.dynamics_draw_trance)
 					self.parent.Displayshape_core.canva.mouse_move_Signal.trigger.disconnect()
 					print(self.parent.Displayshape_core.canva.mouse_move_Signal.trigger)
-					#self.end_time=time.time()
 
 
 
@@ -263,10 +171,14 @@ class sketch_line(object):
 				try:
 					p1 = self.point
 					p2 = [x, y, z]
+					
 					if self.show_line_dict[self.line_id] == None:
 						self.show_line_dict[self.line_id]=Brep_line(self,p1,p2)
+						self.parent.Displayshape_core.canva._display.Context.Display(self.show_line_dict[self.line_id].ais_shape, False)  # 显示的物体
 					else:
-						self.show_line_dict[self.line_id].pnt_endpoints_list=[gp_Pnt(p1),gp_Pnt(p2)]
+						self.show_line_dict[self.line_id].reset_endpoints(p1,p2)
+						self.show_line_dict[self.line_id].rebuild_line()
+						self.parent.Displayshape_core.canva._display.Context.Redisplay(self.show_line_dict[self.line_id].ais_shape, True,False)  # 重新计算更新已经显示的物体
 						pass
 				
 				except Exception as e:

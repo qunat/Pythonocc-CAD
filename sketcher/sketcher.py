@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import threading
 
+from OCC.Core import BRepExtrema
 from OCC.Core.BRepBuilderAPI import BRepBuilderAPI_MakeEdge
 
 from GUI.SelectWidget import SelectWidget
@@ -27,7 +28,7 @@ class SketchModule(object):
 		self.gp_Dir=None
 		self.new_do_draw_dict={"line":None,"circel":None,"rectangle":None,"arc":None,"profile":None}
 		self.parent.Displayshape_core.canva.mouse_move_Signal.trigger.connect(self.show_coordinate)
-		self.Dimension_Manege = Dimension_Manege(self.parent)
+		self.Dimension_Manege = Dimension_Manege(self)
 	
 
 
@@ -110,7 +111,7 @@ class SketchModule(object):
 					self.new_do_trim.trim(shp)
 				pass
 			elif self.sketch_type==10:
-				self.do_diamension(shp=None)
+				self.do_diamension(shp=shp)
 				print(shp)
 		except Exception as e:
 			print(e)
@@ -330,6 +331,7 @@ class SketchModule(object):
 			line = gp_Lin(gp_Pnt(x, y, z), direction)
 			edge_builder = BRepBuilderAPI_MakeEdge(line)
 			edge = edge_builder.Edge()
+			return x, y, z, vx, vy, vz
 			try:
 				for key in self.show_element.keys():
 					try:
