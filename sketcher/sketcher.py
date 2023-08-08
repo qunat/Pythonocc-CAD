@@ -26,9 +26,11 @@ class SketchModule(object):
 		self.sketch_type=None
 		self.select_shape_list = []
 		self.gp_Dir=None
+		self.show_element={}
 		self.new_do_draw_dict={"line":None,"circel":None,"rectangle":None,"arc":None,"profile":None}
 		self.parent.Displayshape_core.canva.mouse_move_Signal.trigger.connect(self.show_coordinate)
 		self.Dimension_Manege = Dimension_Manege(self)
+		
 	
 
 
@@ -51,6 +53,7 @@ class SketchModule(object):
 
 			except:
 				pass
+		self.show_element=sketch_element_dict
 		return sketch_element_dict
 
 	def show_coordinate(self):
@@ -184,8 +187,9 @@ class SketchModule(object):
 		#self.
 	
 	def dynamics_draw_trance(self):#公用的草绘动态捕捉
+		
+		
 		try:
-			
 			if isinstance(self.draw_trance_element, Brep_line):  # 直线捕捉
 				self.parent.Displayshape_core.canva._display.Context.Remove(
 					self.draw_trance_element.capture_point_list[0], False)  # 移除已经显示的端点
@@ -211,6 +215,7 @@ class SketchModule(object):
 		line = gp_Lin(gp_Pnt(x, y, z), direction)
 		edge_builder = BRepBuilderAPI_MakeEdge(line)
 		edge = edge_builder.Edge()
+		print("success",self.show_element)
 		try:
 			for key in self.show_element.keys():
 				try:
