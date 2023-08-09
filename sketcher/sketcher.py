@@ -219,10 +219,12 @@ class SketchModule(object):
 		try:
 			for key in self.show_element.keys():
 				try:
+					'''
 					if key == self.line_id and len(self.point_count) >= 1:
 						continue
 					if self.show_element == []:
 						continue
+					'''
 					extrema = BRepExtrema.BRepExtrema_DistShapeShape(self.show_element[key].ais_shape.Shape(), edge)
 					nearest_point1 = extrema.PointOnShape1(1)
 					nearest_point2 = extrema.PointOnShape2(1)
@@ -243,8 +245,8 @@ class SketchModule(object):
 							element = self.parent.Sketcher.new_do_draw_dict["circel"].show_circel_dict
 						
 						self.draw_trance_element = element[shape_id]
-					elif Distance > 20:
 						
+					elif Distance > 20:
 						self.parent.Displayshape_core.canva._display.Context.Remove(
 							element[shape_id].capture_point_list[0], False)  # 移除已经显示的端点
 						self.parent.Displayshape_core.canva._display.Context.Remove(

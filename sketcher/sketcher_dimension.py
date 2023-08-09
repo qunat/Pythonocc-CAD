@@ -52,8 +52,10 @@ class Dimension_Manege():
 																		 self.dimension_element.pnt_endpoints_list[1],
 																		 gp_Pln(gp_Origin(), dimension_direction))
 			self.Dimension_dict[self.dimension_ID].SetTextPosition(gp_Pnt(x, y, z))
-			self.parent.parent.Displayshape_core.canva._display.Context.Display(self.Dimension_dict[self.dimension_ID],
+			print(self.Dimension_dict[self.dimension_ID].GetFlyout())
+			a2=self.parent.parent.Displayshape_core.canva._display.Context.Display(self.Dimension_dict[self.dimension_ID],
 																				True)
+			print(a2)
 			self.dimension_ID += 1
 		
 		
