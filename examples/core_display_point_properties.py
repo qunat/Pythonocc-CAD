@@ -72,8 +72,8 @@ def pnt():
 				ais_point.SetAttributes(drawer)
 
 				display.Context.Display(ais_point, False)
-				display.Driver.SetMarkerSize(10)  # 设置捕捉点的大小为10个像素
-				display.Driver.SetMarkerStyle(2)  # 设置捕捉点的形状为圆形
+				#display.Driver.SetMarkerSize(10)  # 设置捕捉点的大小为10个像素
+				#display.Driver.SetMarkerStyle(2)  # 设置捕捉点的形状为圆形
 	display.FitAll()
 	start_display()
 

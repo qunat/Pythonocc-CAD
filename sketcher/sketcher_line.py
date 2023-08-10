@@ -119,7 +119,7 @@ class sketch_line(object):
 			if self.parent.InteractiveOperate.InteractiveModule == "SKETCH":
 				print("draw_line")
 				if self.draw_line_connect!=1 or True:
-					self.parent.Displayshape_core.canva.mouse_move_Signal.trigger.connect(self.parent.Sketcher.dynamics_draw_trance)
+					#self.parent.Displayshape_core.canva.mouse_move_Signal.trigger.connect(self.parent.Sketcher.dynamics_draw_trance)
 					self.draw_line_connect=1
 				(x, y, z, vx, vy, vz)=self.parent.Sketcher.catch_capure_point(shape)
 				
@@ -130,6 +130,7 @@ class sketch_line(object):
 					self.show_line_dict[self.line_id] = None
 					#self.parent.Displayshape_core.canva.mouse_move_Signal.trigger.connect(self.parent.Sketcher.dynamics_draw_trance)
 					self.parent.Displayshape_core.canva.mouse_move_Signal.trigger.connect(self.dynamics_drwa_line)
+					self.draw_point(self.point[0],self.point[1],self.point[2])
 					
 
 
@@ -144,16 +145,16 @@ class sketch_line(object):
 					self.show_line_dict[self.line_id].reset_endpoints(p1,p2)
 					self.show_line_dict[self.line_id].rebuild_line()
 					self.parent.Displayshape_core.canva._display.Context.Redisplay(self.show_line_dict[self.line_id].ais_shape, True,False)  # 重新计算更新已经显示的物体
-					#self.parent.Displayshape_core.canva._display.Context.Display(self.show_line_dict[self.line_id].ais_shape, False)  # 显示的物体
-					#self.parent.Displayshape_core.canva._display.Context.Display(self.show_line_dict[self.line_id].edge_point_list[0],False)  # 显示的物体
-					#self.parent.Displayshape_core.canva._display.Context.Display(self.show_line_dict[self.line_id].edge_point_list[1],False)  # 显示的物体
-					#self.show_line_dict[self.line_id].redisplay_all()
+					
+					self.draw_point(p2[0], 	p2[1], 	p2[2])
+					self.parent.InteractiveOperate.Setting()
 					self.line_id+=1
 					self.point_count.clear()
 					#self.show_element = self.parent.Sketcher.get_all_sketcher_element()
 					self.parent.Displayshape_core.canva.mouse_move_Signal.trigger.disconnect(self.dynamics_drwa_line)
 					self.parent.Displayshape_core.canva.mouse_move_Signal.trigger.disconnect(self.dynamics_draw_trance)
 					self.parent.Displayshape_core.canva.mouse_move_Signal.trigger.disconnect()
+					
 					print(self.parent.Displayshape_core.canva.mouse_move_Signal.trigger)
 
 
@@ -187,7 +188,7 @@ class sketch_line(object):
 			self.dragStartPosX = _dragStartPosX
 			self.dragStartPosY = _dragStartPosY
 
-	def draw_point(self,x,y,z,point_type=None,color=None):
+	def draw_point(self,x,y,z,point_type=0,color=None):
 
 		ALL_ASPECTS = [Aspect_TOM_POINT,
 					   Aspect_TOM_PLUS,
@@ -210,9 +211,25 @@ class sketch_line(object):
 			
 			drawer = ais_point.Attributes()
 			asp = Prs3d_PointAspect(point_type, color, 4)
+			a123 = asp.Aspect()
+			a123.SetType(Aspect_TOM_POINT)
+			asp.SetAspect(a123)
+			
+			asp.SetScale(10.0)
+			asp.SetTypeOfMarker(Aspect_TOM_POINT)
 			drawer.SetPointAspect(asp)
+			
+			
+			a123 = asp.Aspect()
+			a123.SetType(Aspect_TOM_POINT)
+			asp.SetAspect(a123)
+			ais_point.SetAspect(asp)
+			
 			ais_point.SetAttributes(drawer)
+			
 			#myMarker =Graphic3d_AspectMarker3d(Aspect_TOM_CIRCLE,Quantity_Color(1.0, 0.0, 0.0, Quantity_TOC_RGB),10.0 )
+	
+			
 
 			point = self.parent.Displayshape_core.canva._display.Context.Display(ais_point,
 																				 False)  # 重新计算更新已经显示的物

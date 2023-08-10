@@ -54,7 +54,7 @@ if __name__ == '__main__':
 															   background_gradient_color2)
 	win.Displayshape_core.Displaydatum()
 	#win.Displayshape_core.DisplayCube()
-	win.InteractiveOperate.Setting()
+	#win.InteractiveOperate.Setting()
 	#win.Displayshape_core.canva._display.register_select_callback(win.InteractiveOperate.clicked_callback)
 	# make the application float to the top
 	splash.finish(win)

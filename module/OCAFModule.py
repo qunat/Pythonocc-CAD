@@ -12,8 +12,7 @@ from module import qtDisplay
 from OCC.Extend.DataExchange import read_step_file, read_iges_file, read_stl_file
 from module import Assemble, ProcessWidgets
 from module.DisplayManager import DumpProcess, NoDumpProcess
-
-
+from OCC.Core.TopAbs import TopAbs_VERTEX,TopAbs_FACE
 def Thread_derocate(fun):
 	def decorate():
 		# para=(i for i in args)
@@ -108,6 +107,8 @@ class OCAF(object):
 					self.parent.modeltree.Create_tree_NodeList(root_dict=root_dict)
 				else:
 					pass
+				#self.parent.Displayshape_core.canva._display.SetSelectionMode(TopAbs_VERTEX)
+				self.parent.InteractiveOperate.Setting()
 				return root_dict
 			
 			elif end_with.endswith(".iges") or end_with.endswith(".igs"):
