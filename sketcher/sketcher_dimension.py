@@ -1,6 +1,8 @@
 #-*- coding:utf-8 -*-
 from OCC.Core.gp import gp_Dir, gp_Ax2, gp_Circ, gp_Pnt
 from OCC.Core.AIS import AIS_Shape, AIS_RadiusDimension,AIS_LengthDimension,AIS_DiameterDimension,AIS_AngleDimension
+from PyQt5.QtWidgets import QTextEdit
+
 from sketcher.sketcher_line import  Brep_line
 from OCC.Core.gp import gp_Pnt, gp_Dir, gp_Lin, gp_Ax2, gp_Dir, gp_Pln, gp_Origin, gp_Lin2d,gp_Pnt2d,gp_Ax1
 
@@ -35,9 +37,18 @@ class Dimension_Manege():
 			
 		elif self.clicked_count>=1:
 			self.parent.parent.Displayshape_core.canva.mouse_move_Signal.trigger.disconnect(self.dynamics_dimension)
-			self.parent.parent.Displayshape_core.canva._display.Context.Display(self.Dimension_dict[self.dimension_ID], True)
-			self.clicked_count=0
-			self.dimension_ID = 0
+			self.parent.parent.Displayshape_core.canva._display.Context.Display(self.Dimension_dict[self.dimension_ID-1], True)
+			try:
+				_dragStartPosY = self.parent.parent.Displayshape_core.canva.dragStartPosY#获取鼠标点击的位置
+				_dragStartPosX = self.parent.parent.Displayshape_core.canva.dragStartPosX#获取鼠标点击的位置
+				self.text_edit = QTextEdit(self.parent.parent.Displayshape_core.canva)#创建文本框
+				dimension_position=self.Dimension_dict[self.dimension_ID-1].GetTextPosition()#获取尺寸的位置
+				self.text_edit.setGeometry(_dragStartPosX-30, _dragStartPosY-10, 60, 20)
+				self.text_edit.show()
+				self.clicked_count=0
+				self.dimension_ID = 0
+			except Exception as e:
+				print(e)
 			
 		
 	def dynamics_dimension(self):
