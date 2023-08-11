@@ -13,6 +13,7 @@ class Dimension_Manege():
 		self.Dimension_list=[]
 		self.clicked_count=0
 		self.dimension_ID=0
+		self.text_inner_changed=False
 	
 	def Get_Dimension(self,shape):
 		#获取尺寸
@@ -43,14 +44,21 @@ class Dimension_Manege():
 				_dragStartPosX = self.parent.parent.Displayshape_core.canva.dragStartPosX#获取鼠标点击的位置
 				self.text_edit = QTextEdit(self.parent.parent.Displayshape_core.canva)#创建文本框
 				dimension_position=self.Dimension_dict[self.dimension_ID-1].GetTextPosition()#获取尺寸的位置
-				self.text_edit.setGeometry(_dragStartPosX-30, _dragStartPosY-10, 60, 20)
+				self.text_edit.setGeometry(_dragStartPosX-30, _dragStartPosY-10, 60, 20)#设置位置和大小
+				self.text_edit.setText(str(self.Dimension_dict[self.dimension_ID-1].GetValue()))#设置文本
 				self.text_edit.show()
+				#self.text_edit.textChanged.connect(self.text_changed)
 				self.clicked_count=0
 				self.dimension_ID = 0
 			except Exception as e:
 				print(e)
 			
-		
+	def text_changed(self):
+		print("change")
+		if self.text_changed=="finish":
+			print("finish")
+			self.text_edit.close()
+			
 	def dynamics_dimension(self):
 		if self.clicked_count==1:
 			try:

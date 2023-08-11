@@ -178,6 +178,9 @@ class qtViewer3d(qtBaseViewer):
 		code = event.key()
 		if code == QtCore.Qt.Key_Escape:
 			self.parent.InteractiveOperate.InteractiveClose= "finish"
+		if code == 16777220:
+			self.parent.Sketcher.Dimension_Manege.text_edit.close()
+			self._display.Repaint()
 
 		if code in self._key_map:
 			self._key_map[code]()
