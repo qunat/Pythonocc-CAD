@@ -114,7 +114,7 @@ class sketch_line(object):
 	
 
 
-	@timer_decorator
+	#@timer_decorator
 	def draw_line(self,shape=None):
 			if self.parent.InteractiveOperate.InteractiveModule == "SKETCH":
 				print("draw_line")
@@ -215,8 +215,8 @@ class sketch_line(object):
 			a123.SetType(Aspect_TOM_POINT)
 			asp.SetAspect(a123)
 			
-			asp.SetScale(10.0)
-			asp.SetTypeOfMarker(Aspect_TOM_POINT)
+			#asp.SetScale(4.0)
+			#asp.SetTypeOfMarker(Aspect_TOM_POINT)
 			drawer.SetPointAspect(asp)
 			
 			
@@ -226,7 +226,7 @@ class sketch_line(object):
 			ais_point.SetAspect(asp)
 			
 			ais_point.SetAttributes(drawer)
-			
+			self.parent.InteractiveOperate.Setting(drawer)
 			#myMarker =Graphic3d_AspectMarker3d(Aspect_TOM_CIRCLE,Quantity_Color(1.0, 0.0, 0.0, Quantity_TOC_RGB),10.0 )
 	
 			

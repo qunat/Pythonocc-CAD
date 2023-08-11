@@ -11,7 +11,7 @@ from OCC.Core.gp import gp_Pnt
 from OCC.Core.AIS import AIS_Shape
 from OCC.Core.Quantity import Quantity_Color, Quantity_TOC_RGB
 from OCC.Core.Aspect import Aspect_TOM_PLUS,Aspect_TOM_O,Aspect_TOM_X,Aspect_TOHM_COLOR,Aspect_TOM_BALL
-from OCC.Core.TopAbs import TopAbs_VERTEX,TopAbs_FACE
+from OCC.Core.TopAbs import TopAbs_VERTEX,TopAbs_FACE,TopAbs_EDGE,TopAbs_SOLID
 from OCC.Core.AIS import AIS_Shape, AIS_Shaded, AIS_TexturedShape, AIS_WireFrame, AIS_Shape_SelectionMode
 from OCC.Core.Graphic3d import Graphic3d_AspectMarker3d
 
@@ -26,7 +26,7 @@ class InteractiveOperate(object):
 		self.point_count=[]
 		self.InteractiveClose=None
 
-	def Setting(self,ais_shape=None):
+	def Setting(self,Prs3d_TypeOfHighlight=0):
 		
 		self.parent.Displayshape_core.canva._display.SetSelectionMode(TopAbs_VERTEX)
 		self.parent.Displayshape_core.canva._display.Context.Deactivate()
@@ -43,16 +43,17 @@ class InteractiveOperate(object):
 		SelectionStyle.SetDisplayMode(0)  # 整体高亮
 		#aspectMarker = Graphic3d_AspectMarker3d(Aspect_TOM_PLUS)
 		
-		asp = Prs3d_PointAspect(Aspect_TOM_BALL, Quantity_Color(1.0, 1.0, 1.0, Quantity_TOC_RGB), 100)
+		asp = Prs3d_PointAspect(Aspect_TOM_BALL, Quantity_Color(1.0, 0.5, 1.0, Quantity_TOC_RGB), 20)
 		#asp.SetTypeOfMarker(Prs3d_TOM_CIRCLE)
 		#SetTypeOfMarker(Prs3d_TypeOfMarker::Prs3d_TOM_CIRCLE)
-		asp.SetScale( 10)
+		asp.SetScale( 2)
 		HighlightStyle.SetPointAspect(asp)
-
-		self.parent.Displayshape_core.canva._display.Context.SetHighlightStyle(HighlightStyle)
+		print("应该有效果", HighlightStyle)
+		self.parent.Displayshape_core.canva._display.Context.SetHighlightStyle(0,HighlightStyle)
 		self.parent.Displayshape_core.canva._display.Context.SetSelectionStyle(SelectionStyle)
 		self.parent.Displayshape_core.canva._display.SetSelectionMode(TopAbs_VERTEX)
-		print("应该有效果",HighlightStyle.Method( ))
+		self.parent.Displayshape_core.canva._display.SetSelectionMode(-1)
+
 		# SelectionStyle.t_select_style->SetDisplayMode(1)#整体高亮
 		# t_select_style->SetTransparency(0.1)
 		# 高亮点的样式设置

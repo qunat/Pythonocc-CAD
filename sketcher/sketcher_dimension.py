@@ -21,7 +21,10 @@ class Dimension_Manege():
 	def Create_Dimension(self,shape):
 		#创建尺寸
 		pass
-		print(shape)
+		shape1=self.parent.parent.Displayshape_core.canva._display.Context.Current( )#通过此方法可以获取尺寸
+
+
+		print(id(shape1),shape1,AIS_LengthDimension.DownCast(shape1),shape)
 		if self.clicked_count==0:
 			elements = self.parent.get_all_sketcher_element()
 			for element in elements.values():
