@@ -17,6 +17,7 @@ class Dimension_Manege():
 		self.Prs3d_DimensionAspect=None
 		self.Prs3d_ArrowAspect=None
 		self.arrow_length=1
+		
 	
 	def setting_Prs3d_DimensionAspect(self,dimension_ID,dimension_alignment=0):
 		print("dimension_id",dimension_ID)
@@ -31,9 +32,10 @@ class Dimension_Manege():
 			method = __DimensionAspect.TextVerticalPosition()
 			__DimensionAspect.SetTextVerticalPosition(0)
 		#自动调整箭头大小
-		if dimension_ID==0:
-			text_size=self.Dimension_dict[0].GetValue()
-			self.arrow_length=text_size/30
+		if len(self.Dimension_dict.keys())==1:
+			for key in self.Dimension_dict.keys():
+				text_size=self.Dimension_dict[key].GetValue()
+				self.arrow_length=text_size/30
 			
 		__ArrowAspect.SetLength(self.arrow_length)  # 设置箭头长度
 		__DimensionAspect.SetArrowAspect(__ArrowAspect)  # 设置箭头样式
@@ -50,26 +52,30 @@ class Dimension_Manege():
 		print(id(shape1),shape1,AIS_LengthDimension.DownCast(shape1),shape)
 		if self.clicked_count==0:
 			elements = self.parent.get_all_sketcher_element()
-			for element in elements.values():
-				if element.ais_shape.Shape().IsEqual(shape[0]):
-					self.dimension_element = element
+			for element in elements.keys():
+				if elements[element].ais_shape.Shape().IsEqual(shape[0]):
+					self.dimension_element =elements[element]
+					self.dimension_ID=element
 			self.clicked_count += 1
 			self.parent.parent.Displayshape_core.canva.mouse_move_Signal.trigger.connect(self.dynamics_dimension)
 			
+			
 		elif self.clicked_count>=1:
 			self.parent.parent.Displayshape_core.canva.mouse_move_Signal.trigger.disconnect(self.dynamics_dimension)
-			self.parent.parent.Displayshape_core.canva._display.Context.Display(self.Dimension_dict[self.dimension_ID-1], True)
+			self.Dimension_dict[self.dimension_ID]=self.Dimension_list[-1]
+			self.Dimension_list.clear()
 			try:
 				_dragStartPosY = self.parent.parent.Displayshape_core.canva.dragStartPosY#获取鼠标点击的位置
 				_dragStartPosX = self.parent.parent.Displayshape_core.canva.dragStartPosX#获取鼠标点击的位置
-				self.setting_Prs3d_DimensionAspect(self.dimension_ID-1)
+				self.setting_Prs3d_DimensionAspect(self.dimension_ID)
+				self.parent.parent.Displayshape_core.canva._display.Context.Display(self.Dimension_dict[self.dimension_ID], True)
 				self.text_edit = QTextEdit(self.parent.parent.Displayshape_core.canva)#创建文本框
-				dimension_position=self.Dimension_dict[self.dimension_ID-1].GetTextPosition()#获取尺寸的位置
+				dimension_position=self.Dimension_dict[self.dimension_ID].GetTextPosition()#获取尺寸的位置
 				self.text_edit.setGeometry(_dragStartPosX-30, _dragStartPosY-10, 60, 20)#设置位置和大小
-				self.text_edit.setText(str(self.Dimension_dict[self.dimension_ID-1].GetValue()))#设置文本
+				self.text_edit.setText(str(self.Dimension_dict[self.dimension_ID].GetValue()))#设置文本
 				self.text_edit.show()
 				self.clicked_count=0
-				self.dimension_ID = 0
+				self.parent.parent.Displayshape_core.canva._display.canva.Repaint()
 			except Exception as e:
 				print(e)
 			
@@ -82,28 +88,27 @@ class Dimension_Manege():
 	def dynamics_dimension(self):
 		if self.clicked_count==1:
 			try:
-				self.parent.parent.Displayshape_core.canva._display.Context.Remove(
-					self.Dimension_dict[self.dimension_ID - 1], True)
+				self.parent.parent.Displayshape_core.canva._display.Context.Remove(self.Dimension_list[len(self.Dimension_list)-1], True)
 			except:
 				pass
 			(x, y, z, vx, vy, vz) = self.parent.parent.Displayshape_core.ProjReferenceAxe()
 			dimension_direction = self.parent.gp_Dir.Rotated(
 				gp_Ax1(self.dimension_element.pnt_endpoints_list[0], self.parent.gp_Dir),
 				3.14 / 2)
-			self.Dimension_dict[self.dimension_ID] = AIS_LengthDimension(self.dimension_element.pnt_endpoints_list[0],
+			dimension=AIS_LengthDimension(self.dimension_element.pnt_endpoints_list[0],
 																		 self.dimension_element.pnt_endpoints_list[1],
 																		 gp_Pln(gp_Origin(), dimension_direction))
-			self.Dimension_dict[self.dimension_ID].SetTextPosition(gp_Pnt(x, y, z))
+			self.Dimension_list.append(dimension)
+		
+			self.Dimension_list[-1].SetTextPosition(gp_Pnt(x, y, z))
 			"尺寸样式设置"
 			#__DimensionAspect=self.Dimension_dict[self.dimension_ID].DimensionAspect()#生成样式类 Prs3d_DimensionAspect
 			#__ArrowAspect=__DimensionAspect.ArrowAspect ()#生成箭头的样式类 Prs3d_ArrowAspect
 			#__ArrowAspect.SetLength(20)#设置箭头长度
 			#__DimensionAspect.SetArrowAspect(__ArrowAspect)#设置箭头样式
 			#self.Dimension_dict[self.dimension_ID].SetDimensionAspect(__DimensionAspect)#设置 尺寸样式
-
-			self.parent.parent.Displayshape_core.canva._display.Context.Display(self.Dimension_dict[self.dimension_ID],
-																				True)
-			self.dimension_ID += 1
+			self.parent.parent.Displayshape_core.canva._display.Context.Display(self.Dimension_list[-1],True)
+			#self.dimension_ID += 1
 		
 		
 
