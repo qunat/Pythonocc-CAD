@@ -14,13 +14,33 @@ class Dimension_Manege():
 		self.clicked_count=0
 		self.dimension_ID=0
 		self.text_inner_changed=False
+		self.Prs3d_DimensionAspect=None
+		self.Prs3d_ArrowAspect=None
+		self.arrow_length=1
 	
-	def Get_Dimension(self,shape):
-		#获取尺寸
-		pass
-	def Set_Dimension(self,shape):
-		#设置尺寸
-		pass
+	def setting_Prs3d_DimensionAspect(self,dimension_ID,dimension_alignment=0):
+		print("dimension_id",dimension_ID)
+		scale=0
+		__DimensionAspect = self.Dimension_dict[dimension_ID].DimensionAspect()  # 生成样式类 Prs3d_DimensionAspect
+		__ArrowAspect = __DimensionAspect.ArrowAspect()  # 生成箭头的样式类 Prs3d_ArrowAspect
+		#设置尺寸对齐方式
+		if dimension_alignment==0:
+			method=__DimensionAspect.TextHorizontalPosition()
+			__DimensionAspect.SetTextHorizontalPosition(3)
+		elif dimension_alignment==1:
+			method = __DimensionAspect.TextVerticalPosition()
+			__DimensionAspect.SetTextVerticalPosition(0)
+		#自动调整箭头大小
+		if dimension_ID==0:
+			text_size=self.Dimension_dict[0].GetValue()
+			self.arrow_length=text_size/30
+			
+		__ArrowAspect.SetLength(self.arrow_length)  # 设置箭头长度
+		__DimensionAspect.SetArrowAspect(__ArrowAspect)  # 设置箭头样式
+		
+		self.Dimension_dict[dimension_ID].SetDimensionAspect(__DimensionAspect)  # 设置 尺寸样式
+		
+	
 	def Create_Dimension(self,shape):
 		#创建尺寸
 		pass
@@ -42,12 +62,12 @@ class Dimension_Manege():
 			try:
 				_dragStartPosY = self.parent.parent.Displayshape_core.canva.dragStartPosY#获取鼠标点击的位置
 				_dragStartPosX = self.parent.parent.Displayshape_core.canva.dragStartPosX#获取鼠标点击的位置
+				self.setting_Prs3d_DimensionAspect(self.dimension_ID-1)
 				self.text_edit = QTextEdit(self.parent.parent.Displayshape_core.canva)#创建文本框
 				dimension_position=self.Dimension_dict[self.dimension_ID-1].GetTextPosition()#获取尺寸的位置
 				self.text_edit.setGeometry(_dragStartPosX-30, _dragStartPosY-10, 60, 20)#设置位置和大小
 				self.text_edit.setText(str(self.Dimension_dict[self.dimension_ID-1].GetValue()))#设置文本
 				self.text_edit.show()
-				#self.text_edit.textChanged.connect(self.text_changed)
 				self.clicked_count=0
 				self.dimension_ID = 0
 			except Exception as e:
@@ -74,10 +94,15 @@ class Dimension_Manege():
 																		 self.dimension_element.pnt_endpoints_list[1],
 																		 gp_Pln(gp_Origin(), dimension_direction))
 			self.Dimension_dict[self.dimension_ID].SetTextPosition(gp_Pnt(x, y, z))
-			print(self.Dimension_dict[self.dimension_ID].GetFlyout())
-			a2=self.parent.parent.Displayshape_core.canva._display.Context.Display(self.Dimension_dict[self.dimension_ID],
+			"尺寸样式设置"
+			#__DimensionAspect=self.Dimension_dict[self.dimension_ID].DimensionAspect()#生成样式类 Prs3d_DimensionAspect
+			#__ArrowAspect=__DimensionAspect.ArrowAspect ()#生成箭头的样式类 Prs3d_ArrowAspect
+			#__ArrowAspect.SetLength(20)#设置箭头长度
+			#__DimensionAspect.SetArrowAspect(__ArrowAspect)#设置箭头样式
+			#self.Dimension_dict[self.dimension_ID].SetDimensionAspect(__DimensionAspect)#设置 尺寸样式
+
+			self.parent.parent.Displayshape_core.canva._display.Context.Display(self.Dimension_dict[self.dimension_ID],
 																				True)
-			print(a2)
 			self.dimension_ID += 1
 		
 		
