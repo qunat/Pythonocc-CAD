@@ -5,7 +5,7 @@ from PyQt5.QtWidgets import QTextEdit
 
 from sketcher.sketcher_line import  Brep_line
 from OCC.Core.gp import gp_Pnt, gp_Dir, gp_Lin, gp_Ax2, gp_Dir, gp_Pln, gp_Origin, gp_Lin2d,gp_Pnt2d,gp_Ax1
-
+import functools
 class Dimension_Manege():
 	def __init__(self,parent=None):
 		self.parent=parent
@@ -20,8 +20,6 @@ class Dimension_Manege():
 		
 	
 	def setting_Prs3d_DimensionAspect(self,dimension_ID,dimension_alignment=0):
-		print("dimension_id",dimension_ID)
-		scale=0
 		__DimensionAspect = self.Dimension_dict[dimension_ID].DimensionAspect()  # 生成样式类 Prs3d_DimensionAspect
 		__ArrowAspect = __DimensionAspect.ArrowAspect()  # 生成箭头的样式类 Prs3d_ArrowAspect
 		#设置尺寸对齐方式
@@ -36,11 +34,19 @@ class Dimension_Manege():
 			for key in self.Dimension_dict.keys():
 				text_size=self.Dimension_dict[key].GetValue()
 				self.arrow_length=text_size/30
+				__DimensionAspect.SetExtensionSize(50.0)
+		else:
+			self.arrow_length=self.arrow_length(1/self.parent.parent.Displayshape_core.canva.scaling_ratio)
+			__DimensionAspect.SetExtensionSize(50.0)
+			
 			
 		__ArrowAspect.SetLength(self.arrow_length)  # 设置箭头长度
 		__DimensionAspect.SetArrowAspect(__ArrowAspect)  # 设置箭头样式
 		
 		self.Dimension_dict[dimension_ID].SetDimensionAspect(__DimensionAspect)  # 设置 尺寸样式
+		self.Dimension_dict[dimension_ID].Redisplay(True)
+		print(86666, self.parent.parent.Displayshape_core.canva.scaling_ratio)
+		self.parent.parent.Displayshape_core.canva._display.Repaint()
 		
 	
 	def Create_Dimension(self,shape):
@@ -75,7 +81,8 @@ class Dimension_Manege():
 				self.text_edit.setText(str(self.Dimension_dict[self.dimension_ID].GetValue()))#设置文本
 				self.text_edit.show()
 				self.clicked_count=0
-				self.parent.parent.Displayshape_core.canva._display.canva.Repaint()
+				self.parent.parent.Displayshape_core.canva.wheelEvent_Signal.trigger.connect(functools.partial(self.setting_Prs3d_DimensionAspect,self.dimension_ID))
+			
 			except Exception as e:
 				print(e)
 			

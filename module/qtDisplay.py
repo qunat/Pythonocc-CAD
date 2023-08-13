@@ -99,7 +99,23 @@ class Foo(QObject):
 		#print("very nice")
 
 		pass
+	
+class wheelEvent_Foo(QObject):
+	# Define a new signal called 'trigger' that has no arguments.
+	trigger = pyqtSignal()
+	def connect_and_emit_trigger(self):
+		# Connect the trigger signal to a slot.
+		self.trigger.connect(self.handle_trigger)
+		# Emit the signal.
+		self.trigger.emit()
 
+	def handle_trigger(self):
+		# Show that the slot has been called.
+		#print("very nice")
+
+		pass
+	
+	
 class qtViewer3d(qtBaseViewer):
 
 	# emit signal when selection is changed
@@ -110,7 +126,6 @@ class qtViewer3d(qtBaseViewer):
 
 	def __init__(self, *kargs):
 		qtBaseViewer.__init__(self, *kargs)
-
 		self.setObjectName("qt_viewer_3d")
 		self.parent=kargs[0]
 		self._drawbox = False
@@ -129,6 +144,8 @@ class qtViewer3d(qtBaseViewer):
 		self.dragStartPosX=0
 		self.dragStartPosY=0
 		self.mouse_move_Signal=Foo()
+		self.wheelEvent_Signal=wheelEvent_Foo()
+		self.scaling_ratio=1
 
 	@property
 	def qApp(self):
@@ -212,10 +229,12 @@ class qtViewer3d(qtBaseViewer):
 		except:  # PyQt5
 			delta = event.angleDelta().y()
 		if delta > 0:
-			zoom_factor = 1.2
+			zoom_factor = 1.1
 		else:
-			zoom_factor = 0.8
+			zoom_factor = 0.9
 		self._display.ZoomFactor(zoom_factor)
+		self.scaling_ratio*=zoom_factor
+		self.wheelEvent_Signal.connect_and_emit_trigger()
 
 	@property
 	def cursor(self):
