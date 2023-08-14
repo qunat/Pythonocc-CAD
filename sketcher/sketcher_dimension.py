@@ -17,37 +17,66 @@ class Dimension_Manege():
 		self.Prs3d_DimensionAspect=None
 		self.Prs3d_ArrowAspect=None
 		self.arrow_length=1
+		self.text_height=1
+		self.text_size=1
 		
 	
-	def setting_Prs3d_DimensionAspect(self,dimension_ID,dimension_alignment=0):
-		__DimensionAspect = self.Dimension_dict[dimension_ID].DimensionAspect()  # 生成样式类 Prs3d_DimensionAspect
-		__ArrowAspect = __DimensionAspect.ArrowAspect()  # 生成箭头的样式类 Prs3d_ArrowAspect
-		#设置尺寸对齐方式
-		if dimension_alignment==0:
-			method=__DimensionAspect.TextHorizontalPosition()
+	def setting_Prs3d_DimensionAspect(self,mode=0,dimension_ID=0,dimension_alignment=0):
+		if mode==0:
+			__DimensionAspect = self.Dimension_list[dimension_ID].DimensionAspect()  # 生成样式类 Prs3d_DimensionAspect
+			__ArrowAspect = __DimensionAspect.ArrowAspect()  # 生成箭头的样式类 Prs3d_ArrowAspect
+			__TextAspect = __DimensionAspect.TextAspect()  # 生成文字的样式类 Prs3d_TextAspect
+			
+		elif mode==1:
+			__DimensionAspect = self.Dimension_dict[dimension_ID].DimensionAspect()  # 生成样式类 Prs3d_DimensionAspect
+			__ArrowAspect = __DimensionAspect.ArrowAspect()  # 生成箭头的样式类 Prs3d_ArrowAspect
+			__TextAspect = __DimensionAspect.TextAspect()  # 生成文字的样式类 Prs3d_TextAspect
+		# 设置尺寸对齐方式
+		if dimension_alignment == 0:
+			method = __DimensionAspect.TextHorizontalPosition()
 			__DimensionAspect.SetTextHorizontalPosition(3)
-		elif dimension_alignment==1:
+		elif dimension_alignment == 1:
 			method = __DimensionAspect.TextVerticalPosition()
 			__DimensionAspect.SetTextVerticalPosition(0)
-		#自动调整箭头大小
-		if len(self.Dimension_dict.keys())==1 :
+		# 自动调整箭头大小/文本高度
+		if len(self.Dimension_dict.keys()) == 1 and mode==1:#如果是第一次创建尺寸
 			for key in self.Dimension_dict.keys():
-				text_size=self.Dimension_dict[key].GetValue()
-				self.arrow_length=text_size/30
-				__DimensionAspect.SetExtensionSize(50.0)
-		else:
-			pass
-			#__DimensionAspect.SetExtensionSize(50.0)
-
-			
-		__ArrowAspect.SetLength(self.arrow_length*(1/self.parent.parent.Displayshape_core.canva.scaling_ratio))  # 设置箭头长度
-		__DimensionAspect.SetArrowAspect(__ArrowAspect)  # 设置箭头样式
+				self.text_size = self.Dimension_dict[key].GetValue()
+				if self.text_size < 100:
+					self.arrow_length = 30 * 1.25
+					self.text_height = 12 * 1.25
+					__TextAspect.SetHeight(self.text_height)
+				elif self.text_size > 100:
+					self.arrow_length = 30 * (1 + (self.text_size - 100 * (int(self.text_size / 100))) / 100) * 0.75
+					self.text_height = 12 * (1 + (self.text_size - 100 * (int(self.text_size / 100))) / 100) * 0.75
+					__TextAspect.SetHeight(self.text_height)
 		
-		self.Dimension_dict[dimension_ID].SetDimensionAspect(__DimensionAspect)  # 设置 尺寸样式
-
-		#Type()
-		self.parent.parent.Displayshape_core.canva._display.Context.Redisplay(5,1,True)
-		print(86666, self.parent.parent.Displayshape_core.canva.scaling_ratio, self.Dimension_dict[dimension_ID].Type())
+		elif mode==0 and dimension_ID==-1:#如动态创建尺寸设置
+			self.text_size = self.Dimension_list[dimension_ID].GetValue()
+			if self.text_size < 100:
+				self.arrow_length = 30 * 1.25
+				self.text_height = 12 * 1.25
+				__TextAspect.SetHeight(self.text_height)
+			elif self.text_size > 100:
+				self.arrow_length = 30 * (1 + (self.text_size - 100 * (int(self.text_size / 100))) / 100) * 0.75
+				self.text_height = 12 * (1 + (self.text_size - 100 * (int(self.text_size / 100))) / 100) * 0.75
+				__TextAspect.SetHeight(self.text_height)
+				
+		__ArrowAspect.SetLength(self.arrow_length * (1 / self.parent.parent.Displayshape_core.canva.scaling_ratio))  # 设置箭头长度
+		__TextAspect.SetHeight(self.text_height)  # 设置文字高度
+		__DimensionAspect.SetArrowAspect(__ArrowAspect)  # 设置箭头样式
+		__DimensionAspect.SetTextAspect(__TextAspect)  # 设置文字样式
+		
+		if mode == 0:
+			self.Dimension_list[dimension_ID].SetDimensionAspect(__DimensionAspect)  # 设置尺寸样式
+			self.parent.parent.Displayshape_core.canva._display.Context.Redisplay(5, 1, True)  # 更新所有尺寸显示
+		elif mode == 1:
+			self.Dimension_dict[dimension_ID].SetDimensionAspect(__DimensionAspect)  # 设置尺寸样式
+			self.parent.parent.Displayshape_core.canva._display.Context.Redisplay(5, 1, True)  # 更新所有尺寸显示
+		
+		
+			
+				
 
 	
 	def Create_Dimension(self,shape):
@@ -74,7 +103,7 @@ class Dimension_Manege():
 			try:
 				_dragStartPosY = self.parent.parent.Displayshape_core.canva.dragStartPosY#获取鼠标点击的位置
 				_dragStartPosX = self.parent.parent.Displayshape_core.canva.dragStartPosX#获取鼠标点击的位置
-				self.setting_Prs3d_DimensionAspect(self.dimension_ID)
+				self.setting_Prs3d_DimensionAspect(1,self.dimension_ID,0)
 				self.parent.parent.Displayshape_core.canva._display.Context.Display(self.Dimension_dict[self.dimension_ID], True)
 				self.text_edit = QTextEdit(self.parent.parent.Displayshape_core.canva)#创建文本框
 				dimension_position=self.Dimension_dict[self.dimension_ID].GetTextPosition()#获取尺寸的位置
@@ -82,7 +111,7 @@ class Dimension_Manege():
 				self.text_edit.setText(str(self.Dimension_dict[self.dimension_ID].GetValue()))#设置文本
 				self.text_edit.show()
 				self.clicked_count=0
-				self.parent.parent.Displayshape_core.canva.wheelEvent_Signal.trigger.connect(functools.partial(self.setting_Prs3d_DimensionAspect,self.dimension_ID))
+				self.parent.parent.Displayshape_core.canva.wheelEvent_Signal.trigger.connect(functools.partial(self.setting_Prs3d_DimensionAspect,1,self.dimension_ID,0))
 
 			except Exception as e:
 				print(e)
@@ -110,13 +139,8 @@ class Dimension_Manege():
 		
 			self.Dimension_list[-1].SetTextPosition(gp_Pnt(x, y, z))
 			"尺寸样式设置"
-			#__DimensionAspect=self.Dimension_dict[self.dimension_ID].DimensionAspect()#生成样式类 Prs3d_DimensionAspect
-			#__ArrowAspect=__DimensionAspect.ArrowAspect ()#生成箭头的样式类 Prs3d_ArrowAspect
-			#__ArrowAspect.SetLength(20)#设置箭头长度
-			#__DimensionAspect.SetArrowAspect(__ArrowAspect)#设置箭头样式
-			#self.Dimension_dict[self.dimension_ID].SetDimensionAspect(__DimensionAspect)#设置 尺寸样式
+			self.setting_Prs3d_DimensionAspect(0,-1,0)
 			self.parent.parent.Displayshape_core.canva._display.Context.Display(self.Dimension_list[-1],True)
-			#self.dimension_ID += 1
 		
 		
 
