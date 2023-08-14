@@ -31,6 +31,7 @@ class Dimension_Manege():
 			__DimensionAspect = self.Dimension_dict[dimension_ID].DimensionAspect()  # 生成样式类 Prs3d_DimensionAspect
 			__ArrowAspect = __DimensionAspect.ArrowAspect()  # 生成箭头的样式类 Prs3d_ArrowAspect
 			__TextAspect = __DimensionAspect.TextAspect()  # 生成文字的样式类 Prs3d_TextAspect
+			
 		# 设置尺寸对齐方式
 		if dimension_alignment == 0:
 			method = __DimensionAspect.TextHorizontalPosition()
@@ -38,8 +39,12 @@ class Dimension_Manege():
 		elif dimension_alignment == 1:
 			method = __DimensionAspect.TextVerticalPosition()
 			__DimensionAspect.SetTextVerticalPosition(0)
+			
+			
 		# 自动调整箭头大小/文本高度
 		if len(self.Dimension_dict.keys()) == 1 and mode==1:#如果是第一次创建尺寸
+			print("第一次创建尺寸")
+			"""
 			for key in self.Dimension_dict.keys():
 				self.text_size = self.Dimension_dict[key].GetValue()
 				if self.text_size < 100:
@@ -50,17 +55,20 @@ class Dimension_Manege():
 					self.arrow_length = 30 * (1 + (self.text_size - 100 * (int(self.text_size / 100))) / 100) * 0.75
 					self.text_height = 12 * (1 + (self.text_size - 100 * (int(self.text_size / 100))) / 100) * 0.75
 					__TextAspect.SetHeight(self.text_height)
-		
+			"""
 		elif mode==0 and dimension_ID==-1:#如动态创建尺寸设置
-			self.text_size = self.Dimension_list[dimension_ID].GetValue()
-			if self.text_size < 100:
-				self.arrow_length = 30 * 1.25
-				self.text_height = 12 * 1.25
-				__TextAspect.SetHeight(self.text_height)
-			elif self.text_size > 100:
-				self.arrow_length = 30 * (1 + (self.text_size - 100 * (int(self.text_size / 100))) / 100) * 0.75
-				self.text_height = 12 * (1 + (self.text_size - 100 * (int(self.text_size / 100))) / 100) * 0.75
-				__TextAspect.SetHeight(self.text_height)
+			print("动态创建尺寸设置")
+			if len(self.Dimension_dict.keys()) == 0:
+				self.text_size = self.Dimension_list[dimension_ID].GetValue()
+				if self.text_size < 100:
+					self.arrow_length = 30 * 1.25
+					self.text_height = 12 * 1.25
+					__TextAspect.SetHeight(self.text_height)
+				elif self.text_size > 100:
+					self.arrow_length = 30 * (1 + (self.text_size - 100 * (int(self.text_size / 100))) / 100) * 1
+					self.text_height = 12 * (1 + (self.text_size - 100 * (int(self.text_size / 100))) / 100) * 1
+					__TextAspect.SetHeight(self.text_height)
+			
 				
 		__ArrowAspect.SetLength(self.arrow_length * (1 / self.parent.parent.Displayshape_core.canva.scaling_ratio))  # 设置箭头长度
 		__TextAspect.SetHeight(self.text_height)  # 设置文字高度
