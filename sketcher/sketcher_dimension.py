@@ -30,24 +30,25 @@ class Dimension_Manege():
 			method = __DimensionAspect.TextVerticalPosition()
 			__DimensionAspect.SetTextVerticalPosition(0)
 		#自动调整箭头大小
-		if len(self.Dimension_dict.keys())==1:
+		if len(self.Dimension_dict.keys())==1 :
 			for key in self.Dimension_dict.keys():
 				text_size=self.Dimension_dict[key].GetValue()
 				self.arrow_length=text_size/30
 				__DimensionAspect.SetExtensionSize(50.0)
 		else:
-			self.arrow_length=self.arrow_length(1/self.parent.parent.Displayshape_core.canva.scaling_ratio)
-			__DimensionAspect.SetExtensionSize(50.0)
+			pass
+			#__DimensionAspect.SetExtensionSize(50.0)
+
 			
-			
-		__ArrowAspect.SetLength(self.arrow_length)  # 设置箭头长度
+		__ArrowAspect.SetLength(self.arrow_length*(1/self.parent.parent.Displayshape_core.canva.scaling_ratio))  # 设置箭头长度
 		__DimensionAspect.SetArrowAspect(__ArrowAspect)  # 设置箭头样式
 		
 		self.Dimension_dict[dimension_ID].SetDimensionAspect(__DimensionAspect)  # 设置 尺寸样式
-		self.Dimension_dict[dimension_ID].Redisplay(True)
-		print(86666, self.parent.parent.Displayshape_core.canva.scaling_ratio)
-		self.parent.parent.Displayshape_core.canva._display.Repaint()
-		
+
+		#Type()
+		self.parent.parent.Displayshape_core.canva._display.Context.Redisplay(5,1,True)
+		print(86666, self.parent.parent.Displayshape_core.canva.scaling_ratio, self.Dimension_dict[dimension_ID].Type())
+
 	
 	def Create_Dimension(self,shape):
 		#创建尺寸
@@ -82,7 +83,7 @@ class Dimension_Manege():
 				self.text_edit.show()
 				self.clicked_count=0
 				self.parent.parent.Displayshape_core.canva.wheelEvent_Signal.trigger.connect(functools.partial(self.setting_Prs3d_DimensionAspect,self.dimension_ID))
-			
+
 			except Exception as e:
 				print(e)
 			
