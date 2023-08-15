@@ -1,7 +1,7 @@
 #-*- coding:utf-8 -*-
 from OCC.Core.gp import gp_Dir, gp_Ax2, gp_Circ, gp_Pnt
 from OCC.Core.AIS import AIS_Shape, AIS_RadiusDimension,AIS_LengthDimension,AIS_DiameterDimension,AIS_AngleDimension
-from PyQt5.QtWidgets import QTextEdit
+from PyQt5.QtWidgets import QTextEdit, QLineEdit
 
 from sketcher.sketcher_line import  Brep_line
 from OCC.Core.gp import gp_Pnt, gp_Dir, gp_Lin, gp_Ax2, gp_Dir, gp_Pln, gp_Origin, gp_Lin2d,gp_Pnt2d,gp_Ax1
@@ -19,6 +19,7 @@ class Dimension_Manege():
 		self.arrow_length=1
 		self.text_height=1
 		self.text_size=1
+		self.parent.parent.Displayshape_core.canva.keyPressEvent_Signal.trigger.connect(self.text_changed)
 		
 	
 	def setting_Prs3d_DimensionAspect(self,mode=0,dimension_ID=0,dimension_alignment=0):
@@ -44,32 +45,15 @@ class Dimension_Manege():
 		# 自动调整箭头大小/文本高度
 		if len(self.Dimension_dict.keys()) == 1 and mode==1:#如果是第一次创建尺寸
 			print("第一次创建尺寸")
-			"""
-			for key in self.Dimension_dict.keys():
-				self.text_size = self.Dimension_dict[key].GetValue()
-				if self.text_size < 100:
-					self.arrow_length = 30 * 1.25
-					self.text_height = 12 * 1.25
-					__TextAspect.SetHeight(self.text_height)
-				elif self.text_size > 100:
-					self.arrow_length = 30 * (1 + (self.text_size - 100 * (int(self.text_size / 100))) / 100) * 0.75
-					self.text_height = 12 * (1 + (self.text_size - 100 * (int(self.text_size / 100))) / 100) * 0.75
-					__TextAspect.SetHeight(self.text_height)
-			"""
 		elif mode==0 and dimension_ID==-1:#如动态创建尺寸设置
 			print("动态创建尺寸设置")
 			if len(self.Dimension_dict.keys()) == 0:
 				self.text_size = self.Dimension_list[dimension_ID].GetValue()
-				if self.text_size < 100:
-					self.arrow_length = 30 * 1.25
-					self.text_height = 12 * 1.25
+				if self.text_size < 1400:
+					self.arrow_length = 4*5*1.5
+					self.text_height =10*1.5
 					__TextAspect.SetHeight(self.text_height)
-				elif self.text_size > 100:
-					self.arrow_length = 30 * (1 + (self.text_size - 100 * (int(self.text_size / 100))) / 100) * 1
-					self.text_height = 12 * (1 + (self.text_size - 100 * (int(self.text_size / 100))) / 100) * 1
-					__TextAspect.SetHeight(self.text_height)
-			
-				
+	
 		__ArrowAspect.SetLength(self.arrow_length * (1 / self.parent.parent.Displayshape_core.canva.scaling_ratio))  # 设置箭头长度
 		__TextAspect.SetHeight(self.text_height)  # 设置文字高度
 		__DimensionAspect.SetArrowAspect(__ArrowAspect)  # 设置箭头样式
@@ -83,10 +67,6 @@ class Dimension_Manege():
 			self.parent.parent.Displayshape_core.canva._display.Context.Redisplay(5, 1, True)  # 更新所有尺寸显示
 		
 		
-			
-				
-
-	
 	def Create_Dimension(self,shape):
 		#创建尺寸
 		pass
@@ -113,22 +93,19 @@ class Dimension_Manege():
 				_dragStartPosX = self.parent.parent.Displayshape_core.canva.dragStartPosX#获取鼠标点击的位置
 				self.setting_Prs3d_DimensionAspect(1,self.dimension_ID,0)
 				self.parent.parent.Displayshape_core.canva._display.Context.Display(self.Dimension_dict[self.dimension_ID], True)
-				self.text_edit = QTextEdit(self.parent.parent.Displayshape_core.canva)#创建文本框
-				dimension_position=self.Dimension_dict[self.dimension_ID].GetTextPosition()#获取尺寸的位置
-				self.text_edit.setGeometry(_dragStartPosX-30, _dragStartPosY-10, 60, 20)#设置位置和大小
-				self.text_edit.setText(str(self.Dimension_dict[self.dimension_ID].GetValue()))#设置文本
-				self.text_edit.show()
+				self.line_edit = QLineEdit(self.parent.parent.Displayshape_core.canva)#创建文本框
+				self.line_edit.setGeometry(_dragStartPosX-30, _dragStartPosY-10, 60, 20)#设置位置和大小
+				self.line_edit.setText(str("{:.2f}".format(self.Dimension_dict[self.dimension_ID].GetValue())))#设置文本
+				self.line_edit.show()
 				self.clicked_count=0
 				self.parent.parent.Displayshape_core.canva.wheelEvent_Signal.trigger.connect(functools.partial(self.setting_Prs3d_DimensionAspect,1,self.dimension_ID,0))
-
+				
 			except Exception as e:
 				print(e)
 			
 	def text_changed(self):
 		print("change")
-		if self.text_changed=="finish":
-			print("finish")
-			self.text_edit.close()
+		#self.Dimension_dict[self.dimension_ID].SetValue(float(self.line_edit.text()))
 			
 	def dynamics_dimension(self):
 		if self.clicked_count==1:

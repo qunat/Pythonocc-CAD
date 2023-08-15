@@ -114,7 +114,20 @@ class wheelEvent_Foo(QObject):
 		#print("very nice")
 
 		pass
-	
+class keyPressEvent_Foo(QObject):
+	# Define a new signal called 'trigger' that has no arguments.
+	trigger = pyqtSignal()
+	def connect_and_emit_trigger(self):
+		# Connect the trigger signal to a slot.
+		self.trigger.connect(self.handle_trigger)
+		# Emit the signal.
+		self.trigger.emit()
+
+	def handle_trigger(self):
+		# Show that the slot has been called.
+		#print("very nice")
+
+		pass
 	
 class qtViewer3d(qtBaseViewer):
 
@@ -145,6 +158,7 @@ class qtViewer3d(qtBaseViewer):
 		self.dragStartPosY=0
 		self.mouse_move_Signal=Foo()
 		self.wheelEvent_Signal=wheelEvent_Foo()
+		self.keyPressEvent_Signal=keyPressEvent_Foo()
 		self.scaling_ratio=1
 
 	@property
@@ -196,7 +210,8 @@ class qtViewer3d(qtBaseViewer):
 		if code == QtCore.Qt.Key_Escape:
 			self.parent.InteractiveOperate.InteractiveClose= "finish"
 		if code == 16777220:
-			self.parent.Sketcher.Dimension_Manege.text_edit.close()
+			self.keyPressEvent_Signal.connect_and_emit_trigger()
+			self.parent.Sketcher.Dimension_Manege.line_edit.close()
 			self._display.Repaint()
 
 		if code in self._key_map:
