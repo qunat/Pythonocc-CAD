@@ -211,8 +211,7 @@ class qtViewer3d(qtBaseViewer):
 			self.parent.InteractiveOperate.InteractiveClose= "finish"
 		if code == 16777220:
 			self.keyPressEvent_Signal.connect_and_emit_trigger()
-			self.parent.Sketcher.Dimension_Manege.line_edit.close()
-			self._display.Repaint()
+			
 
 		if code in self._key_map:
 			self._key_map[code]()

@@ -104,7 +104,10 @@ class Dimension_Manege():
 				print(e)
 			
 	def text_changed(self):
-		print("change")
+		self.Dimension_dict[self.dimension_ID].SetCustomValue(float(self.line_edit.text()))
+		self.parent.parent.Displayshape_core.canva._display.Context.Redisplay(5, 1, True)
+		self.line_edit.close()
+		self.parent.parent.Displayshape_core.canva._display.Repaint()
 		#self.Dimension_dict[self.dimension_ID].SetValue(float(self.line_edit.text()))
 			
 	def dynamics_dimension(self):
@@ -130,7 +133,8 @@ class Dimension_Manege():
 		
 
 		
-		
+	def GB_Dimension(self,shape):
+			pass
 	# 创建尺寸
 	def Delete_Dimension(self,shape):
 		#删除尺寸
