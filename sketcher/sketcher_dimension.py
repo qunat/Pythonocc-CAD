@@ -80,6 +80,7 @@ class Dimension_Manege():
 		except Exception as e:
 			print(e)
 			pass
+			pass
 		
 		# 创建尺寸
 		if self.clicked_count==0:
