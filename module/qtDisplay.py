@@ -85,7 +85,7 @@ class qtBaseViewer(QtOpenGL.QGLWidget):
 			super(qtBaseViewer, self).resizeEvent(event)
 			self._display.OnResize()
 
-class Foo(QObject):
+class mouse_move_Signal_Foo(QObject):
 	# Define a new signal called 'trigger' that has no arguments.
 	trigger = pyqtSignal()
 	def connect_and_emit_trigger(self):
@@ -126,7 +126,19 @@ class keyPressEvent_Foo(QObject):
 	def handle_trigger(self):
 		# Show that the slot has been called.
 		#print("very nice")
+		pass
+class mousePressEvent_Foo(QObject):
+	# Define a new signal called 'trigger' that has no arguments.
+	trigger = pyqtSignal()
+	def connect_and_emit_trigger(self):
+		# Connect the trigger signal to a slot.
+		self.trigger.connect(self.handle_trigger)
+		# Emit the signal.
+		self.trigger.emit()
 
+	def handle_trigger(self):
+		# Show that the slot has been called.
+		#print("very nice")
 		pass
 	
 class qtViewer3d(qtBaseViewer):
@@ -156,9 +168,10 @@ class qtViewer3d(qtBaseViewer):
 		self._available_cursors = {}
 		self.dragStartPosX=0
 		self.dragStartPosY=0
-		self.mouse_move_Signal=Foo()
+		self.mouse_move_Signal=mouse_move_Signal_Foo()
 		self.wheelEvent_Signal=wheelEvent_Foo()
 		self.keyPressEvent_Signal=keyPressEvent_Foo()
+		self.mousePressEvent_Signal=mousePressEvent_Foo()
 		self.scaling_ratio=1
 
 	@property
@@ -209,7 +222,7 @@ class qtViewer3d(qtBaseViewer):
 		code = event.key()
 		if code == QtCore.Qt.Key_Escape:
 			self.parent.InteractiveOperate.InteractiveClose= "finish"
-		if code == 16777220:
+		if code == QtCore.Qt.Key_Enter:
 			self.keyPressEvent_Signal.connect_and_emit_trigger()
 			
 

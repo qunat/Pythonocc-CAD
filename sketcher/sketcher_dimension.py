@@ -68,12 +68,20 @@ class Dimension_Manege():
 		
 		
 	def Create_Dimension(self,shape):
-		#创建尺寸
-		pass
-		shape1=self.parent.parent.Displayshape_core.canva._display.Context.Current( )#通过此方法可以获取尺寸
-
-
-		print(id(shape1),shape1,AIS_LengthDimension.DownCast(shape1),shape)
+		
+		# 拖动/重新设置尺寸数值IsEqual()
+		try:
+			dimension_shape = self.parent.parent.Displayshape_core.canva._display.Context.Current()  # 通过此方法可以获取尺寸
+			dimension = AIS_LengthDimension.DownCast(dimension_shape)
+			dimension_elements=self.Dimension_dict.keys()
+			for element in dimension_elements:
+				if dimension.GetTextPosition().IsEqual(self.Dimension_dict[element].GetTextPosition(),0.001) :
+					print("真相同啊",element)
+		except Exception as e:
+			print(e)
+			pass
+		
+		# 创建尺寸
 		if self.clicked_count==0:
 			elements = self.parent.get_all_sketcher_element()
 			for element in elements.keys():
@@ -132,7 +140,8 @@ class Dimension_Manege():
 		
 		
 
-		
+	def drag_dimension(self):
+		pass
 	def GB_Dimension(self,shape):
 			pass
 	# 创建尺寸
