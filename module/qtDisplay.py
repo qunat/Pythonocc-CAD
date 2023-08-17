@@ -141,6 +141,20 @@ class mousePressEvent_Foo(QObject):
 		#print("very nice")
 		pass
 	
+class mouseReleaseEvent_Foo(QObject):
+	# Define a new signal called 'trigger' that has no arguments.
+	trigger = pyqtSignal()
+	def connect_and_emit_trigger(self):
+		# Connect the trigger signal to a slot.
+		# Emit the signal.
+		self.trigger.emit()
+
+	def handle_trigger(self):
+		# Show that the slot has been called.
+		#print("very nice")
+		pass
+	
+	
 class qtViewer3d(qtBaseViewer):
 
 	# emit signal when selection is changed
@@ -172,6 +186,8 @@ class qtViewer3d(qtBaseViewer):
 		self.wheelEvent_Signal=wheelEvent_Foo()
 		self.keyPressEvent_Signal=keyPressEvent_Foo()
 		self.mousePressEvent_Signal=mousePressEvent_Foo()
+		self.mouseReleaseEvent_Signal=mouseReleaseEvent_Foo()
+		
 		self.scaling_ratio=1
 
 	@property
@@ -297,7 +313,7 @@ class qtViewer3d(qtBaseViewer):
 	def mouseReleaseEvent(self, event):
 		pt = event.pos()
 		modifiers = event.modifiers()
-
+		self.mouseReleaseEvent_Signal.connect_and_emit_trigger()
 		if event.button() == QtCore.Qt.LeftButton:
 			if self._select_area:
 				[Xmin, Ymin, dx, dy] = self._drawbox

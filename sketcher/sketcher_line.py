@@ -117,7 +117,6 @@ class sketch_line(object):
 	#@timer_decorator
 	def draw_line(self,shape=None):
 			if self.parent.InteractiveOperate.InteractiveModule == "SKETCH":
-				print("draw_line")
 				if self.draw_line_connect!=1 or True:
 					#self.parent.Displayshape_core.canva.mouse_move_Signal.trigger.connect(self.parent.Sketcher.dynamics_draw_trance)
 					self.draw_line_connect=1

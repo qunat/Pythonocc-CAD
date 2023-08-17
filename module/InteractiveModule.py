@@ -48,7 +48,6 @@ class InteractiveOperate(object):
 		#SetTypeOfMarker(Prs3d_TypeOfMarker::Prs3d_TOM_CIRCLE)
 		asp.SetScale( 2)
 		HighlightStyle.SetPointAspect(asp)
-		print("应该有效果", HighlightStyle)
 		self.parent.Displayshape_core.canva._display.Context.SetHighlightStyle(0,HighlightStyle)
 		self.parent.Displayshape_core.canva._display.Context.SetSelectionStyle(SelectionStyle)
 		self.parent.Displayshape_core.canva._display.SetSelectionMode(TopAbs_VERTEX)
