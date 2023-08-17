@@ -238,7 +238,7 @@ class qtViewer3d(qtBaseViewer):
 		code = event.key()
 		if code == QtCore.Qt.Key_Escape:
 			self.parent.InteractiveOperate.InteractiveClose= "finish"
-		if code == QtCore.Qt.Key_Enter:
+		if code == QtCore.Qt.Key_Enter or code == 16777220:
 			self.keyPressEvent_Signal.connect_and_emit_trigger()
 			
 

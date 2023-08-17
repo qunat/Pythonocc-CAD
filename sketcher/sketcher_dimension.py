@@ -129,14 +129,21 @@ class Dimension_Manege():
 		# 拖动/重新设置尺寸数值IsEqual()
 		try:
 			#dimension_shape = self.parent.parent.Displayshape_core.canva._display.Context.SelectedInteractive() # 通过此方法可以获取尺寸
-			dimension_shape = self.parent.parent.Displayshape_core.canva._display.Context.Current()
+			print(1)
+			dimension_shape = self.parent.parent.Displayshape_core.canva._display.Context.Current()# 通过此方法可以获取尺寸
+			print(7777, dimension_shape)
 			dimension = AIS_LengthDimension.DownCast(dimension_shape)
-			dimension_elements = self.Dimension_dict.keys()
-			for element in dimension_elements:
-				if dimension.GetTextPosition().IsEqual(self.Dimension_dict[element].GetTextPosition(), 0.001):
-					self.parent.parent.Displayshape_core.canva.mouse_move_Signal.trigger.connect(self.move_dimension)
-					self.parent.parent.Displayshape_core.canva.mouseReleaseEvent_Signal.trigger.connect(self.move_dimension_end)
-					self.selected_dimension_ID = element
+			print(888888, dimension)
+			if dimension is not None:
+				dimension_elements = self.Dimension_dict.keys()
+				for element in dimension_elements:
+					if dimension.GetTextPosition().IsEqual(self.Dimension_dict[element].GetTextPosition(), 0.001):
+						self.parent.parent.Displayshape_core.canva.mouse_move_Signal.trigger.connect(
+							self.move_dimension)
+						self.parent.parent.Displayshape_core.canva.mouseReleaseEvent_Signal.trigger.connect(
+							self.move_dimension_end)
+						self.selected_dimension_ID = element
+			
 		except Exception as e:
 			print(e)
 			pass
