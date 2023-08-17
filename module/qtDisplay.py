@@ -90,6 +90,7 @@ class mouse_move_Signal_Foo(QObject):
 	trigger = pyqtSignal()
 	def connect_and_emit_trigger(self):
 		# Connect the trigger signal to a slot.
+
 		self.trigger.connect(self.handle_trigger)
 		# Emit the signal.
 		self.trigger.emit()
@@ -132,7 +133,6 @@ class mousePressEvent_Foo(QObject):
 	trigger = pyqtSignal()
 	def connect_and_emit_trigger(self):
 		# Connect the trigger signal to a slot.
-		self.trigger.connect(self.handle_trigger)
 		# Emit the signal.
 		self.trigger.emit()
 
@@ -280,6 +280,8 @@ class qtViewer3d(qtBaseViewer):
 				self.qApp.restoreOverrideCursor()
 
 	def mousePressEvent(self, event):
+
+		self.mousePressEvent_Signal.connect_and_emit_trigger()
 		self.setFocus()
 		ev = event.pos()
 		self.dragStartPosX = ev.x()

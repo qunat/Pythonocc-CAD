@@ -19,7 +19,8 @@ class Dimension_Manege():
 		self.arrow_length=1
 		self.text_height=1
 		self.text_size=1
-		self.parent.parent.Displayshape_core.canva.keyPressEvent_Signal.trigger.connect(self.text_changed)
+		self.parent.parent.Displayshape_core.canva.keyPressEvent_Signal.trigger.connect(self.dimension_changed)
+		self.parent.parent.Displayshape_core.canva.mousePressEvent_Signal.trigger.connect(self.sayhello)
 		
 	
 	def setting_Prs3d_DimensionAspect(self,mode=0,dimension_ID=0,dimension_alignment=0):
@@ -68,20 +69,7 @@ class Dimension_Manege():
 		
 		
 	def Create_Dimension(self,shape):
-		
-		# 拖动/重新设置尺寸数值IsEqual()
-		try:
-			dimension_shape = self.parent.parent.Displayshape_core.canva._display.Context.Current()  # 通过此方法可以获取尺寸
-			dimension = AIS_LengthDimension.DownCast(dimension_shape)
-			dimension_elements=self.Dimension_dict.keys()
-			for element in dimension_elements:
-				if dimension.GetTextPosition().IsEqual(self.Dimension_dict[element].GetTextPosition(),0.001) :
-					print("真相同啊",element)
-		except Exception as e:
-			print(e)
-			pass
-			pass
-		
+
 		# 创建尺寸
 		if self.clicked_count==0:
 			elements = self.parent.get_all_sketcher_element()
@@ -111,13 +99,7 @@ class Dimension_Manege():
 				
 			except Exception as e:
 				print(e)
-			
-	def text_changed(self):
-		self.Dimension_dict[self.dimension_ID].SetCustomValue(float(self.line_edit.text()))
-		self.parent.parent.Displayshape_core.canva._display.Context.Redisplay(5, 1, True)
-		self.line_edit.close()
-		self.parent.parent.Displayshape_core.canva._display.Repaint()
-		#self.Dimension_dict[self.dimension_ID].SetValue(float(self.line_edit.text()))
+
 			
 	def dynamics_dimension(self):
 		if self.clicked_count==1:
@@ -138,11 +120,34 @@ class Dimension_Manege():
 			"尺寸样式设置"
 			self.setting_Prs3d_DimensionAspect(0,-1,0)
 			self.parent.parent.Displayshape_core.canva._display.Context.Display(self.Dimension_list[-1],True)
-		
-		
+
+	def dimension_changed(self):
+		(x, y, z, vx, vy, vz) = self.parent.parent.Displayshape_core.ProjReferenceAxe()
+
+		self.Dimension_dict[self.dimension_ID].SetCustomValue(float(self.line_edit.text()))
+		self.parent.parent.Displayshape_core.canva._display.Context.Redisplay(5, 1, True)
+		self.line_edit.close()
+		self.parent.parent.Displayshape_core.canva._display.Repaint()
+
+	# self.Dimension_dict[self.dimension_ID].SetValue(float(self.line_edit.text()))
+	def sayhello(self):
+		print("hello")
 
 	def drag_dimension(self):
-		pass
+		print("enter")
+		# 拖动/重新设置尺寸数值IsEqual()
+		#self.parent.parent.Displayshape_core.canva.keyPressEvent_Signal.trigger.connect(self.dimension_changed)
+		try:
+			dimension_shape = self.parent.parent.Displayshape_core.canva._display.Context.Current()  # 通过此方法可以获取尺寸
+			dimension = AIS_LengthDimension.DownCast(dimension_shape)
+			dimension_elements = self.Dimension_dict.keys()
+			for element in dimension_elements:
+				if dimension.GetTextPosition().IsEqual(self.Dimension_dict[element].GetTextPosition(), 0.001):
+					print("真相同啊", element)
+		except Exception as e:
+			print(e)
+			pass
+			pass
 	def GB_Dimension(self,shape):
 			pass
 	# 创建尺寸
