@@ -13,6 +13,7 @@ class Dimension_Manege():
 		self.Dimension_list=[]
 		self.clicked_count=0
 		self.dimension_ID=0
+		self.selected_dimension=None
 		self.text_inner_changed=False
 		self.Prs3d_DimensionAspect=None
 		self.Prs3d_ArrowAspect=None
@@ -111,8 +112,14 @@ class Dimension_Manege():
 			
 	
 	def dimension_changed(self):
-		(x, y, z, vx, vy, vz) = self.parent.parent.Displayshape_core.ProjReferenceAxe()
-		self.Dimension_dict[self.dimension_ID].SetCustomValue(float(self.line_edit.text()))
+		if self.selected_dimension==None:#第一次创建尺寸的回车事件
+			(x, y, z, vx, vy, vz) = self.parent.parent.Displayshape_core.ProjReferenceAxe()
+			self.Dimension_dict[self.dimension_ID].SetCustomValue(float(self.line_edit.text()))
+			self.Dimension_dict[self.dimension_ID].SetTextPosition(gp_Pnt(x, y, z))
+		else:#修改尺寸的回车事件
+			self.selected_dimension.SetCustomValue(float(self.line_edit.text()))
+			self.selected_dimension=None
+			
 		self.parent.parent.Displayshape_core.canva._display.Context.Redisplay(5, 1, True)
 		self.line_edit.close()
 		self.parent.parent.Displayshape_core.canva._display.Repaint()
@@ -125,6 +132,7 @@ class Dimension_Manege():
 			dimension_shape = self.parent.parent.Displayshape_core.canva._display.Context.Current()  # 通过此方法可以获取尺寸
 			dimension = AIS_LengthDimension.DownCast(dimension_shape)
 			position = dimension.GetTextPosition()
+			self.selected_dimension=dimension
 			self.line_edit = QLineEdit(self.parent.parent.Displayshape_core.canva)  # 创建文本框
 			(xp,yp)=self.parent.parent.Displayshape_core.Convert(position.Coord())#将三维点变成像素点
 			self.line_edit.setGeometry(xp-30, yp-10, 60, 20)  # 设置位置和大小
