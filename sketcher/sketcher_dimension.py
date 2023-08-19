@@ -21,6 +21,7 @@ class Dimension_Manege():
 		self.text_size=1
 		self.parent.parent.Displayshape_core.canva.keyPressEvent_Signal.trigger.connect(self.dimension_changed)
 		self.parent.parent.Displayshape_core.canva.mousePressEvent_Signal.trigger.connect(self.drag_dimension)
+		self.parent.parent.Displayshape_core.canva.mouseDoubleClickEvent_Signal.trigger.connect(self.edit_dimension)
 		
 	
 	def setting_Prs3d_DimensionAspect(self,dimension_ID=0,dimension_alignment=0):
@@ -115,7 +116,25 @@ class Dimension_Manege():
 		self.parent.parent.Displayshape_core.canva._display.Context.Redisplay(5, 1, True)
 		self.line_edit.close()
 		self.parent.parent.Displayshape_core.canva._display.Repaint()
-
+		
+	def edit_dimension(self):#双击修改尺寸数值
+		#_dragStartPosY = self.parent.parent.Displayshape_core.canva.dragStartPosY  # 获取鼠标点击的位置
+		#_dragStartPosX = self.parent.parent.Displayshape_core.canva.dragStartPosX  # 获取鼠标点击的位置
+		
+		try:
+			dimension_shape = self.parent.parent.Displayshape_core.canva._display.Context.Current()  # 通过此方法可以获取尺寸
+			dimension = AIS_LengthDimension.DownCast(dimension_shape)
+			position = dimension.GetTextPosition()
+			self.line_edit = QLineEdit(self.parent.parent.Displayshape_core.canva)  # 创建文本框
+			(xp,yp)=self.parent.parent.Displayshape_core.Convert(position.Coord())#将三维点变成像素点
+			self.line_edit.setGeometry(xp-30, yp-10, 60, 20)  # 设置位置和大小
+			self.line_edit.show()
+			self.parent.parent.Displayshape_core.canva._display.Context.Redisplay(5, 1, True)
+			self.parent.parent.Displayshape_core.canva._display.Repaint()
+		except Exception as e:
+			print(e)
+			
+		
 	
 	def move_dimension(self):
 		(x, y, z, vx, vy, vz) = self.parent.parent.Displayshape_core.ProjReferenceAxe()
@@ -129,12 +148,9 @@ class Dimension_Manege():
 		# 拖动/重新设置尺寸数值IsEqual()
 		try:
 			#dimension_shape = self.parent.parent.Displayshape_core.canva._display.Context.SelectedInteractive() # 通过此方法可以获取尺寸
-			print(1)
 			dimension_shape = self.parent.parent.Displayshape_core.canva._display.Context.Current()# 通过此方法可以获取尺寸
-			print(7777, dimension_shape)
 			dimension = AIS_LengthDimension.DownCast(dimension_shape)
-			print(888888, dimension)
-			if dimension is not None:
+			if dimension is not None or True:
 				dimension_elements = self.Dimension_dict.keys()
 				for element in dimension_elements:
 					if dimension.GetTextPosition().IsEqual(self.Dimension_dict[element].GetTextPosition(), 0.001):

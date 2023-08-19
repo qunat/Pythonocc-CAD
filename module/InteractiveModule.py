@@ -27,7 +27,7 @@ class InteractiveOperate(object):
 		self.InteractiveClose=None
 
 	def Setting(self,Prs3d_TypeOfHighlight=0):
-		
+		self.parent.Displayshape_core.canva._display.Context.SetAutomaticHilight(True)
 		self.parent.Displayshape_core.canva._display.SetSelectionMode(TopAbs_VERTEX)
 		self.parent.Displayshape_core.canva._display.Context.Deactivate()
 		self.parent.Displayshape_core.canva._display.Context.Activate(AIS_Shape_SelectionMode(TopAbs_FACE),True)

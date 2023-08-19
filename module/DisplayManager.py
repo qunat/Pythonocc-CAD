@@ -147,7 +147,10 @@ class DisplayManager(object):
 			z=0
 		return x,y,z,vx, vy, vz
 
-			
+	def Convert(self,point=()):#
+		(pixel_x,pixel_y)=self.parent.Displayshape_core.canva._display.View.Convert(point[0],point[1])
+		
+		return pixel_x,pixel_y
 	def Dispalyshape(self):
 		self.canva._display.DisplayColoredShape()
 		
