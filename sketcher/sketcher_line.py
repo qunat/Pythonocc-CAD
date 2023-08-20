@@ -9,6 +9,7 @@ from OCC.Core.Geom import Geom_CartesianPoint, Geom_Line
 from OCC.Core.Graphic3d import Graphic3d_AspectMarker3d
 from OCC.Core.Prs3d import Prs3d_PointAspect
 from OCC.Core.Quantity import Quantity_Color
+from OCC.Core.StdSelect import StdSelect_ShapeTypeFilter
 from OCC.Core.TopExp import TopExp_Explorer
 from OCC.Core.TopoDS import TopoDS_Vertex, TopoDS_Wire, TopoDS_Shape, TopoDS_Edge
 from OCC.Core.Quantity import Quantity_Color, Quantity_TOC_RGB
@@ -16,7 +17,7 @@ from PyQt5.QtGui import QCursor, QPixmap
 #from numba import *
 from GUI.SelectWidget import SelectWidget
 import threading
-from OCC.Core.TopAbs import TopAbs_VERTEX
+from OCC.Core.TopAbs import TopAbs_VERTEX, TopAbs_EDGE, TopAbs_FACE, TopAbs_SOLID, TopAbs_SHELL, TopAbs_COMPOUND, TopAbs_WIRE
 from OCC.Core.GeomAPI import geomapi_To3d,geomapi_To2d
 from OCC.Core.Quantity import Quantity_Color, Quantity_NOC_BLACK
 from OCC.Core.BRepBuilderAPI import BRepBuilderAPI_MakeEdge, BRepBuilderAPI_MakeWire
@@ -108,6 +109,8 @@ class sketch_line(object):
 		self.capture_middle_point_list = []
 		self.draw_line_connect=0
 		self.draw_trance_element=None
+		solidFilter=StdSelect_ShapeTypeFilter(TopAbs_EDGE)#选择过滤器
+		self.parent.Displayshape_core.canva._display.Context.AddFilter(solidFilter)#设置过滤器
 
 
 
@@ -127,7 +130,7 @@ class sketch_line(object):
 					self.point_count.append(self.point)
 					print(x, y, z, vx, vy, vz)
 					self.show_line_dict[self.line_id] = None
-					#self.parent.Displayshape_core.canva.mouse_move_Signal.trigger.connect(self.parent.Sketcher.dynamics_draw_trance)
+					self.parent.Displayshape_core.canva.mouse_move_Signal.trigger.connect(self.parent.Sketcher.dynamics_draw_trance)
 					self.parent.Displayshape_core.canva.mouse_move_Signal.trigger.connect(self.dynamics_drwa_line)
 					self.draw_point(self.point[0],self.point[1],self.point[2])
 					
@@ -149,12 +152,13 @@ class sketch_line(object):
 					self.parent.InteractiveOperate.Setting()
 					self.line_id+=1
 					self.point_count.clear()
-					#self.show_element = self.parent.Sketcher.get_all_sketcher_element()
+					self.show_element = self.parent.Sketcher.get_all_sketcher_element()
 					self.parent.Displayshape_core.canva.mouse_move_Signal.trigger.disconnect(self.dynamics_drwa_line)
-					self.parent.Displayshape_core.canva.mouse_move_Signal.trigger.disconnect(self.dynamics_draw_trance)
+					self.parent.Displayshape_core.canva.mouse_move_Signal.trigger.disconnect(self.parent.Sketcher.dynamics_draw_trance)
 					self.parent.Displayshape_core.canva.mouse_move_Signal.trigger.disconnect()
 					
-					print(self.parent.Displayshape_core.canva.mouse_move_Signal.trigger)
+					
+					
 
 
 
@@ -213,6 +217,7 @@ class sketch_line(object):
 			a123 = asp.Aspect()
 			a123.SetType(Aspect_TOM_POINT)
 			asp.SetAspect(a123)
+			#ais_point.SetAutoHilight(False)
 			
 			#asp.SetScale(4.0)
 			#asp.SetTypeOfMarker(Aspect_TOM_POINT)
@@ -230,10 +235,10 @@ class sketch_line(object):
 	
 			
 
-			point = self.parent.Displayshape_core.canva._display.Context.Display(ais_point,
+			self.parent.Displayshape_core.canva._display.Context.Display(ais_point,
 																				 False)  # 重新计算更新已经显示的物
 		else:
-			point = self.parent.Displayshape_core.canva._display.DisplayShape(gp_Pnt(x,y,z),color="YELLOW",
+			self.parent.Displayshape_core.canva._display.DisplayShape(gp_Pnt(x,y,z),color="YELLOW",
 																			update=False	 )  # 重新计算更新已经显示的物
 			self.parent.Displayshape_core.canva._display.Context.UpdateCurrentViewer()
 			self.parent.Displayshape_core.canva._display.Repaint()

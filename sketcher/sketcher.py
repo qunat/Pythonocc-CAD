@@ -187,8 +187,7 @@ class SketchModule(object):
 		#self.
 	
 	def dynamics_draw_trance(self):#公用的草绘动态捕捉
-		
-		
+		print("dynamics_draw_trance")
 		try:
 			if isinstance(self.draw_trance_element, Brep_line):  # 直线捕捉
 				self.parent.Displayshape_core.canva._display.Context.Remove(
@@ -203,9 +202,9 @@ class SketchModule(object):
 				self.parent.Displayshape_core.canva._display.Context.Remove(
 					self.draw_trance_element.capture_any_point_list[0], False)  # 移除已经显示的任意点
 		
-		except:
-			print("移除失败")
-			pass
+		except Exception as e:
+			print(e)
+			
 		shape_id = 0
 		Distance = 0
 		_dragStartPosY = self.parent.Displayshape_core.canva.dragStartPosY
@@ -215,9 +214,9 @@ class SketchModule(object):
 		line = gp_Lin(gp_Pnt(x, y, z), direction)
 		edge_builder = BRepBuilderAPI_MakeEdge(line)
 		edge = edge_builder.Edge()
-		print("success",self.show_element)
 		try:
 			for key in self.show_element.keys():
+				print(22222222222222,key)
 				try:
 					'''
 					if key == self.line_id and len(self.point_count) >= 1:
@@ -245,6 +244,7 @@ class SketchModule(object):
 							element = self.parent.Sketcher.new_do_draw_dict["circel"].show_circel_dict
 						
 						self.draw_trance_element = element[shape_id]
+						print(shape_id, 666)
 						
 					elif Distance > 20:
 						self.parent.Displayshape_core.canva._display.Context.Remove(
@@ -338,7 +338,7 @@ class SketchModule(object):
 			line = gp_Lin(gp_Pnt(x, y, z), direction)
 			edge_builder = BRepBuilderAPI_MakeEdge(line)
 			edge = edge_builder.Edge()
-			return x, y, z, vx, vy, vz
+			#return x, y, z, vx, vy, vz
 			try:
 				for key in self.show_element.keys():
 					try:
