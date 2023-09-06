@@ -96,10 +96,10 @@ class Ui_MainWindow(MainGui.Ui_MainWindow):
 		self.setupUi(self)
 		self.setWindowFlags(Qt.FramelessWindowHint)
 		self.Displayshape_core=DisplayManager.DisplayManager(self)
-		self.OCAF=OCAFModule.OCAF(parent=self)
+		self.OCAF=OCAFModule.OCAF(self)
 		self.modeltree=ModelTree.ModelTree()
 		self.InteractiveOperate=InteractiveModule.InteractiveOperate(self)
-		self.Sketcher=sketcher.SketchModule(parent=self)
+		self.Sketcher=sketcher.SketchModule(self)
 		self.setCentralWidget(self.Displayshape_core.canva)
 
 		

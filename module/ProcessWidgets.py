@@ -20,12 +20,16 @@ class ProcessWidget(QtWidgets.QMainWindow):
 		y=parent.geometry().y()+parent.geometry().height()/2
 		self.setGeometry(x,y,350,40)
 		self.setWindowTitle('零件载入中.......')
+		self.button.clicked.connect(self.Close)
 		
 	
 	def setupUi(self):
-		button=QtWidgets.QPushButton(self)
-		button.setText("零件载入请稍等(点击终止载入)")
-		self.setCentralWidget(button)
+		self.button=QtWidgets.QPushButton(self)
+		self.button.setText("零件载入请稍等(点击终止载入)")
+		self.setCentralWidget(self.button)
 	
 	def Show(self):
 		self.show()
+	
+	def Close(self):
+		self.close()

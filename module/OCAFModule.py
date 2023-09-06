@@ -23,65 +23,43 @@ def Thread_derocate(fun):
 
 
 
-
-def LoadProcessDerocate(parent):
-	def Decorate(*args):
-		newprocess = ProcessWidgets.ProcessWidget(parent)
-		newprocess.Show()
-		print(55555555)
-	
-	return Decorate()
-
-
-class Thread(QThread):  # 继承QThread
-	def __init__(self, parent):
-		super(Thread, self).__init__()
-		self.newprocess = ProcessWidgets.ProcessWidget(parent)
-	
-	def run(self):
-		print(66666)
-		self.newprocess.Show()
-
-
 class OCAF(object):
 	def __init__(self, parent=None):
 		self.parent = parent
-		
 		pass
-	
 	def clicked_callback(self, shp, *kwargs):
 		try:
 			# print("右键单击有用",shp)
 			pass
 		except Exception as e:
 			print(e)
-	
 	def Open_part(self):
 		try:
 			id = 0
 			self.parent.Displayshape_core.canva._display.register_select_callback(self.clicked_callback)
-			self.parent.Displayshape_core.canva._display.EraseAll()
+			#self.parent.Displayshape_core.canva._display.EraseAll()
 			self.parent.modeltree.Clear_tree_NodeList()
 			self.chose_document = QFileDialog.getOpenFileName(self.parent, '打开文件', './',
 															  " STP files(*.stp , *.step);;(*.iges);;(*.stl)")  # 选择转换的文价夹
 			filepath = self.chose_document[0]  # 获取打开文件夹路径
 			# 判断文件类型 选择对应的导入函数
 			end_with = str(filepath).lower()
-			
-			LoadProcessDerocate(self.parent)
+			self.parent.statusbar.showMessage("状态：正在打开，请稍后......")  ###
+			Loadprocess=ProcessWidgets.ProcessWidget(self.parent)
+			Loadprocess.Show()
 			
 			if end_with.endswith(".step") or end_with.endswith("stp"):
 				self.import_shape, assemble_relation_list, DumpToString = Assemble.read_step_file_with_names_colors(
 					filepath)
 				print(DumpToString)
-				# print(self.import_shape)
+
 				# 判断是否为标准的装配体结构
 				try:
 					root_dict = DumpProcess(DumpToString).root_dict
 				except:
 					root_dict = NoDumpProcess(self.import_shape.keys(), file=filepath).root_dict
 					pass
-				
+				print("root_dict",root_dict)
 				for shpt_lbl_color in self.import_shape:
 					
 					label, c, property = self.import_shape[shpt_lbl_color]
@@ -95,20 +73,22 @@ class OCAF(object):
 																								 c.Blue(),
 																								 Quantity_TOC_RGB),
 																							 update=True)
-					# print(property,return_shape)
 					self.parent.Displayshape_core.shape_maneger_core_dict[id] = return_shape[0]
 					id += 1
 				
-				self.parent.statusbar.showMessage("状态：打开成功")  ###
-				self.parent.statusBar().showMessage('状态：软件运行正常')
-				
 				# 建立模型树
-				if root_dict != None:
-					self.parent.modeltree.Create_tree_NodeList(root_dict=root_dict)
-				else:
+				try:
+					if root_dict != None:
+						self.parent.modeltree.Create_tree_NodeList(root_dict=root_dict)
+					else:
+						pass
+				except:
 					pass
-				#self.parent.Displayshape_core.canva._display.SetSelectionMode(TopAbs_VERTEX)
+				
 				self.parent.InteractiveOperate.Setting()
+				Loadprocess.Close()
+				self.parent.statusbar.showMessage("状态：打开成功")  ###
+				self.parent.statusBar.showMessage('状态：软件运行正常')
 				return root_dict
 			
 			elif end_with.endswith(".iges") or end_with.endswith(".igs"):

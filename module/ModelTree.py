@@ -21,6 +21,7 @@ class ModelTree(QtWidgets.QWidget):
 		self.tree_Node_dict={}
 		self.root_dict={}
 		self.node_dict={}
+		
 		# 设置根节点
 		self.history_model_root = QTreeWidgetItem(self.tree)
 		self.history_model_root.setText(0, '历史模型记录')
@@ -32,6 +33,23 @@ class ModelTree(QtWidgets.QWidget):
 		self.wcs_root.setText(0, '坐标系')
 		self.wcs_root.setIcon(0, QIcon('sync.ico'))
 		self.wcs_root.setCheckState(0, Qt.Checked)
+		
+		#基准面X
+		self.datum_root_x = QTreeWidgetItem(self.history_model_root)
+		self.datum_root_x.setText(0, 'X基准面')
+		self.datum_root_x.setIcon(0, QIcon('./icons/datumplane.png'))
+		self.datum_root_x.setCheckState(0, Qt.Checked)
+		# 基准面Y
+		self.datum_root_y = QTreeWidgetItem(self.history_model_root)
+		self.datum_root_y.setText(0, 'Y基准面')
+		self.datum_root_y.setIcon(0, QIcon('./icons/datumplane.png'))
+		self.datum_root_y.setCheckState(0, Qt.Checked)
+		# 基准面Z
+		self.datum_root_z = QTreeWidgetItem(self.history_model_root)
+		self.datum_root_z.setText(0, 'Z基准面')
+		self.datum_root_z.setIcon(0, QIcon('./icons/datumplane.png'))
+		self.datum_root_z.setCheckState(0, Qt.Checked)
+		
 
 		# todo 优化2 设置根节点的背景颜色
 		#brush_red = QBrush(Qt.red)
@@ -50,8 +68,8 @@ class ModelTree(QtWidgets.QWidget):
 			(item.parent() or root).removeChild(item)
 
 	def Create_tree_NodeList(self,root_dict={}):
+		root_order=None
 		for part_property in root_dict.values():
-			
 			if part_property.name==None:
 				continue
 			elif  part_property.struct=="ASSEMBLY":
