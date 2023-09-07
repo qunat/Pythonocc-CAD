@@ -1,0 +1,13 @@
+prefix=d:/Users/Administrator/anaconda3/envs/3Dsource/Library
+exec_prefix=d:/Users/Administrator/anaconda3/envs/3Dsource/Library
+libdir=d:/Users/Administrator/anaconda3/envs/3Dsource/Library/lib
+sharedlibdir=d:/Users/Administrator/anaconda3/envs/3Dsource/Library/lib
+includedir=d:/Users/Administrator/anaconda3/envs/3Dsource/Library/include
+
+Name: zlib
+Description: zlib compression library
+Version: 1.2.11
+
+Requires:
+Libs: -L${libdir} -L${sharedlibdir} -lz
+Cflags: -I${includedir}

@@ -1,0 +1,3 @@
+#!f:\宁波莱布尼茨项目\pythonocc维护项目\test\pythonocc-cad\python3.7\python.exe
+from numba.pycc import main
+main()

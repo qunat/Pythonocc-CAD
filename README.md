@@ -51,14 +51,17 @@ git clone https://github.com/qunat/Pythonocc-CAD.git
 conda activate your environment
 cd pythonocc-CAD
 python BaseGui.py
-```
-#  also download the exe installation package, which includes the Pythonnocc environment and source code
+also clcik the BrepCAD.exe
 
-setup.exe: [http://cad-upyun.test.upcdn.net/pythonocc-CAD/setup.exe](http://cad-upyun.test.upcdn.net/pythonocc-CAD/setup.exe)
 ```
-install setup.exe
-cd BrepCAD
-start.bat
+# update it 
+```
+git pull
+this can get the latest version
+```
+
+```
+
 ```
 
 

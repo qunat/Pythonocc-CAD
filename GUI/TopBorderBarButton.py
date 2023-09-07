@@ -23,7 +23,7 @@ class TittleBarButton(QToolButton,QPushButton,QAction):
 		
 	def Create_IconButton(self,parent=None,object_name=None,icon_name=None,icon_size=None,action_tip=None,action=None):
 		self.setObjectName(object_name)
-		self.setFlat(True)
+		#self.setFlat(True)
 		icon = QtGui.QIcon()
 		icon.addPixmap(QtGui.QPixmap("icons/{}.png".format(icon_name)), QtGui.QIcon.Normal, QtGui.QIcon.Off)
 		self.setIcon(icon)

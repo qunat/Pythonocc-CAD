@@ -1,0 +1,8 @@
+#!f:\宁波莱布尼茨项目\pythonocc维护项目\test\pythonocc-cad\python3.7\python.exe
+# -*- coding: UTF-8 -*-
+from __future__ import print_function, division, absolute_import
+
+from numba.misc.numba_entry import main
+
+if __name__ == "__main__":
+    main()
