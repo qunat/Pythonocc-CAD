@@ -216,7 +216,6 @@ class SketchModule(object):
 		edge = edge_builder.Edge()
 		try:
 			for key in self.show_element.keys():
-				print(22222222222222,key)
 				try:
 					'''
 					if key == self.line_id and len(self.point_count) >= 1:

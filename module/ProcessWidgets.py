@@ -30,6 +30,7 @@ class ProcessWidget(QtWidgets.QMainWindow):
 	
 	def Show(self):
 		self.show()
+		print("show ")
 	
 	def Close(self):
 		self.close()
