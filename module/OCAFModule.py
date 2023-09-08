@@ -7,7 +7,7 @@ from OCC.Core.BRepTools import breptools_Write, breptools_Read, breptools_Triang
 from OCC.Core.Quantity import Quantity_Color, Quantity_TOC_RGB
 from OCC.Core.TopoDS import TopoDS_Face, TopoDS_Shape, TopoDS_Edge, TopoDS_Solid
 from PyQt5.QtCore import QThread
-from PyQt5.QtWidgets import QFileDialog, QWidget
+from PyQt5.QtWidgets import QFileDialog, QWidget,QApplication
 from module import qtDisplay
 from OCC.Extend.DataExchange import read_step_file, read_iges_file, read_stl_file
 from module import Assemble, ProcessWidgets
@@ -36,7 +36,7 @@ class OCAF(object):
 			pass
 		except Exception as e:
 			print(e)
-
+	
 	def Open_part(self):
 		try:
 			id = 0
@@ -51,7 +51,7 @@ class OCAF(object):
 				self.parent.statusbar.showMessage("状态：正在打开，请稍后......")  ###
 				Loadprocess=ProcessWidgets.ProcessWidget(self.parent)
 				Loadprocess.Show()
-				print(Loadprocess.button.isEnabled())
+				QApplication.processEvents()
 
 				
 				# 判断文件类型 选择对应的导入函数
@@ -68,7 +68,6 @@ class OCAF(object):
 						root_dict = NoDumpProcess(self.import_shape.keys(), file=filepath).root_dict
 						pass
 					print("root_dict",root_dict)
-					'''
 					for shpt_lbl_color in self.import_shape:
 						
 						label, c, property = self.import_shape[shpt_lbl_color]
@@ -78,8 +77,13 @@ class OCAF(object):
 						return_shape = self.parent.Displayshape_core.canva._display.DisplayShape(shpt_lbl_color,color=Quantity_Color(c.Red(),c.Green(),c.Blue(),Quantity_TOC_RGB),update=True)
 						self.parent.Displayshape_core.shape_maneger_core_dict[id] = return_shape[0]
 						id += 1
+						QApplication.processEvents()
+
 					
+
 					# 建立模型树
+
+					
 					try:
 						if root_dict != None:
 							self.parent.modeltree.Create_tree_NodeList(root_dict=root_dict)
@@ -111,10 +115,11 @@ class OCAF(object):
 					self.parent.canva._display.DisplayShape(read_box)
 					self.parent.statusbar.showMessage("状态：打开成功")  ###
 					self.parent.statusBar.showMessage('状态：软件运行正常')
-				'''
+				
 			
 			else:
 				self.parent.statusbar.showMessage("错误：文件不存在")  ###
+				Loadprocess.Close()
 
 	
 		except Exception as e:
