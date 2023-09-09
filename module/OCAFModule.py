@@ -79,11 +79,7 @@ class OCAF(object):
 						id += 1
 						QApplication.processEvents()
 
-					
-
 					# 建立模型树
-
-					
 					try:
 						if root_dict != None:
 							self.parent.modeltree.Create_tree_NodeList(root_dict=root_dict)
@@ -115,7 +111,6 @@ class OCAF(object):
 					self.parent.canva._display.DisplayShape(read_box)
 					self.parent.statusbar.showMessage("状态：打开成功")  ###
 					self.parent.statusBar.showMessage('状态：软件运行正常')
-				
 			
 			else:
 				self.parent.statusbar.showMessage("错误：文件不存在")  ###
@@ -127,27 +122,54 @@ class OCAF(object):
 	
 	def Import_stp(self):
 		try:
-			self.chose_document = QFileDialog.getOpenFileName(self.parent, '打开文件', './',
+			self.chose_document = QFileDialog.getOpenFileName(self.parent, '导入文件', './',
 															  " STP files(*.stp , *.step);;(*.iges);;(*.stl)")  # 选择转换的文价夹
 			filepath = self.chose_document[0]  # 获取打开文件夹路径
-			# 判断文件类型 选择对应的导入函数
-			end_with = str(filepath).lower()
-			if end_with.endswith(".step") or end_with.endswith("stp"):
-				self.import_shape, assemble_relation_list = Assemble.read_step_file_with_names_colors(filepath)
-				for shpt_lbl_color in self.import_shape:
-					label, c, property = self.import_shape[shpt_lbl_color]
-					# color=Quantity_Color(c.Red(),c.Green(), c.Blue(),Quantity_TOC_RGB)
-					return_shape = self.parent.Displayshape_core.canva._display.DisplayShape(shpt_lbl_color,
-																							 color=Quantity_Color(
-																								 c.Red(),
-																								 c.Green(),
-																								 c.Blue(),
-																								 Quantity_TOC_RGB))
-					self.parent.part_maneger_core_dict[label] = return_shape
-			print(self.parent.part_maneger_core_dict)
-			self.parent.statusbar.showMessage("状态：打开成功")  ###
-			self.parent.statusBar().showMessage('状态：软件运行正常')
-			return assemble_relation_list
+			if os.path.exists(filepath):
+				end_with = str(filepath).lower()
+				self.parent.statusbar.showMessage("状态：正在导入，请稍后......")  ###
+				Loadprocess=ProcessWidgets.ProcessWidget(self.parent)
+				Loadprocess.Show()
+				QApplication.processEvents()
+
+				
+				# 判断文件类型 选择对应的导入函数
+				if end_with.endswith(".step") or end_with.endswith("stp"):#stp格式导入
+					self.import_shape, assemble_relation_list, DumpToString = Assemble.read_step_file_with_names_colors(
+						filepath)
+					#print(DumpToString)
+
+					# 判断是否为标准的装配体结构
+					
+					try:
+						root_dict = DumpProcess(DumpToString).root_dict
+					except:
+						root_dict = NoDumpProcess(self.import_shape.keys(), file=filepath).root_dict
+						pass
+					print("root_dict",root_dict)
+					for shpt_lbl_color in self.import_shape:
+						
+						label, c, property = self.import_shape[shpt_lbl_color]
+						# color=Quantity_Color(c.Red(),c.Green(), c.Blue(),Quantity_TOC_RGB)
+						if not isinstance(shpt_lbl_color, TopoDS_Solid):  # 排除非solid
+							continue
+						return_shape = self.parent.Displayshape_core.canva._display.DisplayShape(shpt_lbl_color,color=Quantity_Color(c.Red(),c.Green(),c.Blue(),Quantity_TOC_RGB),update=True)
+						self.parent.Displayshape_core.shape_maneger_core_dict[id] = return_shape[0]
+						QApplication.processEvents()
+
+					# 建立模型树
+					try:
+						if root_dict != None:
+							self.parent.modeltree.Create_tree_NodeList(root_dict=root_dict)
+						else:
+							pass
+					except:
+						pass
+					
+					self.parent.InteractiveOperate.Setting()
+					Loadprocess.Close()
+					self.parent.statusbar.showMessage("状态：打开成功")  ###
+					self.parent.statusBar.showMessage('状态：软件运行正常')
 		except Exception as e:
 			print(e)
 	

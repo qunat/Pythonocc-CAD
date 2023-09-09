@@ -762,7 +762,8 @@ class Viewer3d(Display3d):
     def DynamicZoom(self, X1, Y1, X2, Y2):
         self.View.Zoom(X1, Y1, X2, Y2)
 
-    def ZoomFactor(self, zoom_factor):
+    def ZoomFactor(self,zoom_factor):
+        #self.View.SetCenter(Xp,Yp)
         self.View.SetZoom(zoom_factor)
 
     def ZoomArea(self, X1, Y1, X2, Y2):
@@ -774,6 +775,8 @@ class Viewer3d(Display3d):
     def StartRotation(self, X, Y):
         self.View.StartRotation(X, Y)
 
+    def SetCenter(self,Xp,Yp):
+        self.View.SetCenter(Xp,Yp)
 
 class OffscreenRenderer(Viewer3d):
     """ The offscreen renderer is inherited from Viewer3d.
