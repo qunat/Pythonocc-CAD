@@ -777,6 +777,9 @@ class Viewer3d(Display3d):
 
     def SetCenter(self,Xp,Yp):
         self.View.SetCenter(Xp,Yp)
+       
+    def Reset(self):
+        self.View.Reset()
 
 class OffscreenRenderer(Viewer3d):
     """ The offscreen renderer is inherited from Viewer3d.

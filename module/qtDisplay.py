@@ -287,14 +287,24 @@ class qtViewer3d(qtBaseViewer):
 		except:  # PyQt5
 			delta = event.angleDelta().y()
 		if delta > 0:
-			zoom_factor = 1.01
+			zoom_factor = 1.05
 		else:
-			zoom_factor = 0.99
+			zoom_factor = 0.95
+
+		dx =592/2 - pt.x()
+		dy = 473/2 - pt.y()
+		self._display.Pan(int(-dx), int(dy))
+		self._drawbox = False
+
 		pt = event.pos()
+		self._display.SetCenter(int(pt.x()), int(pt.y()))
 		self._display.ZoomFactor(zoom_factor)
+		#self._display.ResetView()
+
+		
+
 		print("缩放后的点坐标",event.x(),event.y())
 		self.scaling_ratio*=zoom_factor
-		#self._display.SetCenter(int(pt.x()), int(pt.y()))
 		self.wheelEvent_Signal.connect_and_emit_trigger()
 
 	@property
@@ -441,4 +451,5 @@ class qtViewer3d(qtBaseViewer):
 
 		self.dragStartPosX = evt.x()
 		self.dragStartPosY = evt.y()
+		print(self.dragStartPosX,self.dragStartPosY)
 		#self._display.SetCenter(int(pt.x()),int(pt.x()))

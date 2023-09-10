@@ -44,7 +44,7 @@ class OCAF(object):
 			#self.parent.Displayshape_core.canva._display.EraseAll()
 			self.parent.modeltree.Clear_tree_NodeList()
 			self.chose_document = QFileDialog.getOpenFileName(self.parent, '打开文件', './',
-															  " STP files(*.stp , *.step);;(*.iges);;(*.stl)")  # 选择转换的文价夹
+															  " STP files(*.stp , *.step);;IGES files(*.iges);;STL files(*.stl)")  # 选择转换的文价夹
 			filepath = self.chose_document[0]  # 获取打开文件夹路径
 			if os.path.exists(filepath):
 				end_with = str(filepath).lower()
@@ -103,12 +103,12 @@ class OCAF(object):
 				
 				elif end_with.endswith(".stl") or end_with.endswith(".stl"):#stl格式导入
 					self.import_shape = read_stl_file(filepath)
-					breptools_Triangulation()
-					breptools_Write(self.import_shape, 'box.brep')
-					read_box = TopoDS_Shape()
-					builder = BRep_Builder()
-					breptools_Read(read_box, 'box.brep', builder)
-					self.parent.canva._display.DisplayShape(read_box)
+					#breptools_Triangulation()
+					#breptools_Write(self.import_shape, 'box.brep')
+					#read_box = TopoDS_Shape()
+					#builder = BRep_Builder()
+					#breptools_Read(read_box, 'box.brep', builder)
+					self.parent.Displayshape_core.canva._display.DisplayShape(self.import_shape)
 					self.parent.statusbar.showMessage("状态：打开成功")  ###
 					self.parent.statusBar.showMessage('状态：软件运行正常')
 			
