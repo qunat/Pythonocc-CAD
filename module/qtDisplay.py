@@ -286,24 +286,21 @@ class qtViewer3d(qtBaseViewer):
 			delta = event.delta()
 		except:  # PyQt5
 			delta = event.angleDelta().y()
-		if delta > 0:
+		if delta < 0:
 			zoom_factor = 1.05
 		else:
 			zoom_factor = 0.95
 
-		dx =592/2 - pt.x()
-		dy = 473/2 - pt.y()
-		self._display.Pan(int(-dx), int(dy))
-		self._drawbox = False
-
-		pt = event.pos()
-		self._display.SetCenter(int(pt.x()), int(pt.y()))
-		self._display.ZoomFactor(zoom_factor)
-		#self._display.ResetView()
-
+		#dx =int(592/2) - pt.x()
+		#dy = int(474/2) - pt.y()
+		#self._display.Pan(dx, -dy,zoom_factor,False)
+		#self._drawbox = False
 		
-
-		print("缩放后的点坐标",event.x(),event.y())
+		#self._display.SetCenter(int(pt.x()), int(pt.y()))
+		#self._display.ResetView()
+		pt = event.pos()
+		self._display.ZoomFactor(zoom_factor)
+		#print("缩放后的点坐标",event.x(),event.y())
 		self.scaling_ratio*=zoom_factor
 		self.wheelEvent_Signal.connect_and_emit_trigger()
 
@@ -409,7 +406,8 @@ class qtViewer3d(qtBaseViewer):
 			self._drawbox = False
 
 			# PAN 1
-		elif buttons == QtCore.Qt.LeftButton and self.parent.InteractiveOperate.InteractiveModule!="SKETCH":
+		elif evt.buttons() == QtCore.Qt.MidButton | QtCore.Qt.RightButton and  self.parent.InteractiveOperate.InteractiveModule!="SKETCH":
+			print("这里没问题")
 			dx = pt.x() - self.dragStartPosX
 			dy = pt.y() - self.dragStartPosY
 			self.dragStartPosX = pt.x()
@@ -451,5 +449,5 @@ class qtViewer3d(qtBaseViewer):
 
 		self.dragStartPosX = evt.x()
 		self.dragStartPosY = evt.y()
-		print(self.dragStartPosX,self.dragStartPosY)
+		#print(self.dragStartPosX,self.dragStartPosY)
 		#self._display.SetCenter(int(pt.x()),int(pt.x()))

@@ -126,8 +126,8 @@ class Ui_MainWindow(MainGui.Ui_MainWindow):
 		self.menuBar = QtWidgets.QMenuBar()
 		self.menuBar.setGeometry(QtCore.QRect(0, 0, 606 , 26))
 		self.menuBar.setObjectName("menuBar")
-		self.Displayshape_core.canva.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
-		self.Displayshape_core.canva.customContextMenuRequested['QPoint'].connect(self.rightMenuShow)
+		#self.Displayshape_core.canva.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
+		#self.Displayshape_core.canva.customContextMenuRequested['QPoint'].connect(self.rightMenuShow)
 		#self.Displayshape_core.canva.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
 		#self.Displayshape_core.canva.customContextMenuRequested['QPoint'].connect(self.rightMenuShow)
 		

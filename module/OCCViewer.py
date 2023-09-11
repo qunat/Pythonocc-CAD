@@ -680,8 +680,8 @@ class Viewer3d(Display3d):
     def Tumble(self, num_images, animation=True):
         self.View.Tumble(num_images, animation)
 
-    def Pan(self, dx, dy):
-        self.View.Pan(dx, dy)
+    def Pan(self, dx, dy,scale=1,tostart=True):
+        self.View.Pan(dx, dy,scale,True)
 
     def SetSelectionMode(self, mode=None):
         topo_level = next(modes)
