@@ -86,6 +86,8 @@ class ModelTree(QtWidgets.QWidget):
 		self.root_dict=root_dict
 		self.Create_ModelTree(self.node_dict["0:1:1:1"])
 		self.tree.expandAll()  # 节点全部展开
+
+
 				
 	def Create_ModelTree(self,Nodelist=[]):
 		# 设置总装配体根节点/子装配体根节点
@@ -146,7 +148,6 @@ class ModelTree(QtWidgets.QWidget):
 		#print(self.tree_root_dict)
 			
 
-					
 					
 	def Create_Child(self):
 		pass

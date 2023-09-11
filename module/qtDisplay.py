@@ -280,8 +280,6 @@ class qtViewer3d(qtBaseViewer):
 
 	def wheelEvent(self, event):
 		pt = event.pos()
-		print("缩放前的点坐标",event.x(),event.y())
-		print("缩放前的点坐标",pt.x(),pt.y())
 		try:  # PyQt4/PySide
 			delta = event.delta()
 		except:  # PyQt5
@@ -295,12 +293,11 @@ class qtViewer3d(qtBaseViewer):
 		#dy = int(474/2) - pt.y()
 		#self._display.Pan(dx, -dy,zoom_factor,False)
 		#self._drawbox = False
-		
 		#self._display.SetCenter(int(pt.x()), int(pt.y()))
 		#self._display.ResetView()
+
 		pt = event.pos()
 		self._display.ZoomFactor(zoom_factor)
-		#print("缩放后的点坐标",event.x(),event.y())
 		self.scaling_ratio*=zoom_factor
 		self.wheelEvent_Signal.connect_and_emit_trigger()
 
@@ -362,10 +359,14 @@ class qtViewer3d(qtBaseViewer):
 
 
 		elif event.button() == QtCore.Qt.RightButton:
+
+			''' catia operate
 			if self._zoom_area:
 				[Xmin, Ymin, dx, dy] = self._drawbox
 				self._display.ZoomArea(Xmin, Ymin, Xmin + dx, Ymin + dy)
 				self._zoom_area = False
+			'''
+			pass
 
 		self.cursor = "arrow"
 
@@ -392,10 +393,12 @@ class qtViewer3d(qtBaseViewer):
 			self.cursor = "rotate"
 			self._display.Rotation(pt.x(), pt.y())
 			self._drawbox = False
-		# DYNAMIC ZOOM
+
+		# DYNAMIC ZOOM catia operate
 
 		elif (buttons == QtCore.Qt.RightButton and
-			  not modifiers == QtCore.Qt.ShiftModifier ):#删掉了恢复
+			  not modifiers == QtCore.Qt.ShiftModifier ) and False:#暂时无用
+
 			self.cursor = "zoom"
 			self._display.Repaint()
 			self._display.DynamicZoom(abs(self.dragStartPosX),
@@ -404,10 +407,10 @@ class qtViewer3d(qtBaseViewer):
 			self.dragStartPosX = pt.x()
 			self.dragStartPosY = pt.y()
 			self._drawbox = False
+		
 
-			# PAN 1
+		# PAN 1
 		elif evt.buttons() == QtCore.Qt.MidButton | QtCore.Qt.RightButton and  self.parent.InteractiveOperate.InteractiveModule!="SKETCH":
-			print("这里没问题")
 			dx = pt.x() - self.dragStartPosX
 			dy = pt.y() - self.dragStartPosY
 			self.dragStartPosX = pt.x()
@@ -428,6 +431,7 @@ class qtViewer3d(qtBaseViewer):
 			self._drawbox = False
 
 		# DRAW BOX
+
 		# ZOOM WINDOW
 		elif (buttons == QtCore.Qt.RightButton and
 			  modifiers == QtCore.Qt.ShiftModifier):
@@ -435,6 +439,7 @@ class qtViewer3d(qtBaseViewer):
 			self.cursor = "zoom-area"
 			self.DrawBox(evt)
 			self.update()
+			
 		# SELECT AREA
 		elif (buttons == QtCore.Qt.LeftButton and
 			  modifiers == QtCore.Qt.ShiftModifier):
@@ -442,10 +447,11 @@ class qtViewer3d(qtBaseViewer):
 			self.DrawBox(evt)
 			self.update()
 		else:
+			
 			self._drawbox = False
 			self._display.MoveTo(pt.x(), pt.y())
 			self.cursor = "arrow"
-
+			
 
 		self.dragStartPosX = evt.x()
 		self.dragStartPosY = evt.y()

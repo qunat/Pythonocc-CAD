@@ -7,7 +7,7 @@ from OCC.Core.BRepPrimAPI import BRepPrimAPI_MakeBox
 from OCC.Core.BRepTools import breptools_Write, breptools_Read, breptools_Triangulation
 from OCC.Core.Geom import Geom_Axis2Placement, Geom_Plane
 from OCC.Core.Prs3d import Prs3d_LineAspect
-from OCC.Core.TopoDS import TopoDS_Face, TopoDS_Shape, TopoDS_Edge, TopoDS_Solid
+from OCC.Core.TopoDS import TopoDS_Face, TopoDS_Shape, TopoDS_Edge, TopoDS_Solid,TopoDS_Shell
 from PyQt5.QtWidgets import QFileDialog
 from module import qtDisplay
 from OCC.Extend.DataExchange import read_step_file,read_iges_file,read_stl_file
@@ -97,21 +97,28 @@ class NoDumpProcess(object):
 
 		except:
 			name = file.split("\\")[-1].split(".")[0]
-			
+		print("name",name)	
 		DumpToString="ASSEMBLY COMPOUND 0:1:1:1 \"{}\" ".format(name)
 		self.DumpToString_list.append(DumpToString)
 		code=1
+
 		for i in import_shape:
+			print("yes",str(i))
 			if not isinstance(i, TopoDS_Solid):  # 排除非solid
+				if "Shell" in str(i):
+					DumpToString = "PART SHELL 0:1:1:1:{} \"{}\" ".format(code,"SHELL")
+					self.DumpToString_list.append(DumpToString)
+					code+=1
+
 				continue
-			DumpToString = "PART SOLID 0:1:1:1:{} \"{}\" ".format(code,"SOLID")
-			self.DumpToString_list.append(DumpToString)
-			code+=1
-		#print(self.DumpToString_list)
+			else:
+				DumpToString = "PART SOLID 0:1:1:1:{} \"{}\" ".format(code,"SOLID")
+				self.DumpToString_list.append(DumpToString)
+				code+=1
+
 		
 	def Process(self):
 		for j in self.DumpToString_list:
-			#print(j)
 			a=AssembleNode(j)
 			if a.struct=="None":
 				continue

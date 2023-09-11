@@ -58,7 +58,7 @@ class OCAF(object):
 				if end_with.endswith(".step") or end_with.endswith("stp"):#stp格式导入
 					self.import_shape, assemble_relation_list, DumpToString = Assemble.read_step_file_with_names_colors(
 						filepath)
-					#print(DumpToString)
+					print("我主要是看这里",self.import_shape)
 
 					# 判断是否为标准的装配体结构
 					
@@ -66,8 +66,9 @@ class OCAF(object):
 						root_dict = DumpProcess(DumpToString).root_dict
 					except:
 						root_dict = NoDumpProcess(self.import_shape.keys(), file=filepath).root_dict
-						pass
-					print("root_dict",root_dict)
+				
+
+					#print("root_dict",root_dict)
 					for shpt_lbl_color in self.import_shape:
 						
 						label, c, property = self.import_shape[shpt_lbl_color]
@@ -80,6 +81,7 @@ class OCAF(object):
 						QApplication.processEvents()
 
 					# 建立模型树
+					print("显示",root_dict)
 					try:
 						if root_dict != None:
 							self.parent.modeltree.Create_tree_NodeList(root_dict=root_dict)
@@ -89,26 +91,28 @@ class OCAF(object):
 						pass
 					
 					self.parent.InteractiveOperate.Setting()
-					Loadprocess.Close()
 					self.parent.statusbar.showMessage("状态：打开成功")  ###
 					self.parent.statusBar.showMessage('状态：软件运行正常')
 					return root_dict
 				
 				elif end_with.endswith(".iges") or end_with.endswith(".igs"):#stp格式导入
-					self.import_shape = read_iges_file(filepath)
+					import_shape = read_iges_file(filepath)
+					self.parent.Displayshape_core.canva._display.DisplayShape(import_shape)
+					self.import_shape={import_shape:None}
+					root_dict = NoDumpProcess(self.import_shape.keys(), file=filepath).root_dict
+					self.parent.modeltree.Create_tree_NodeList(root_dict=root_dict)
 					self.parent.statusbar.showMessage("状态：打开成功")  ###
 					self.parent.statusBar.showMessage('状态：软件运行正常')
 				
 				
-				
 				elif end_with.endswith(".stl") or end_with.endswith(".stl"):#stl格式导入
-					self.import_shape = read_stl_file(filepath)
-					#breptools_Triangulation()
-					#breptools_Write(self.import_shape, 'box.brep')
-					#read_box = TopoDS_Shape()
-					#builder = BRep_Builder()
-					#breptools_Read(read_box, 'box.brep', builder)
-					self.parent.Displayshape_core.canva._display.DisplayShape(self.import_shape)
+					import_shape = read_stl_file(filepath)
+					print(type(import_shape))
+					print(333333333)
+					self.parent.Displayshape_core.canva._display.DisplayShape(import_shape)
+					self.import_shape={import_shape:None}
+					root_dict = NoDumpProcess(self.import_shape.keys(), file=filepath).root_dict
+					self.parent.modeltree.Create_tree_NodeList(root_dict=root_dict)
 					self.parent.statusbar.showMessage("状态：打开成功")  ###
 					self.parent.statusBar.showMessage('状态：软件运行正常')
 			
@@ -119,6 +123,10 @@ class OCAF(object):
 	
 		except Exception as e:
 			print(e)
+
+		finally:
+			Loadprocess.Close()
+
 	
 	def Import_stp(self):
 		try:
