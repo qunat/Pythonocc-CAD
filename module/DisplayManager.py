@@ -97,13 +97,11 @@ class NoDumpProcess(object):
 
 		except:
 			name = file.split("\\")[-1].split(".")[0]
-		print("name",name)	
 		DumpToString="ASSEMBLY COMPOUND 0:1:1:1 \"{}\" ".format(name)
 		self.DumpToString_list.append(DumpToString)
 		code=1
 
 		for i in import_shape:
-			print("yes",str(i))
 			if not isinstance(i, TopoDS_Solid):  # 排除非solid
 				if "Shell" in str(i):
 					DumpToString = "PART SHELL 0:1:1:1:{} \"{}\" ".format(code,"SHELL")
