@@ -130,7 +130,7 @@ class sketch_line(object):
 					self.point_count.append(self.point)
 					print(x, y, z, vx, vy, vz)
 					self.show_line_dict[self.line_id] = None
-					self.parent.Displayshape_core.canva.mouse_move_Signal.trigger.connect(self.parent.Sketcher.dynamics_draw_trance)
+					self.parent.Displayshape_core.canva.mouse_move_Signal.trigger.connect(self.parent.Sketcher.sketcher_capture.dynamics_point_highlight)
 					self.parent.Displayshape_core.canva.mouse_move_Signal.trigger.connect(self.dynamics_drwa_line)
 					self.draw_point(self.point[0],self.point[1],self.point[2])
 					
@@ -156,16 +156,8 @@ class sketch_line(object):
 					self.parent.Displayshape_core.canva.mouse_move_Signal.trigger.disconnect(self.dynamics_drwa_line)
 					self.parent.Displayshape_core.canva.mouse_move_Signal.trigger.disconnect(self.parent.Sketcher.dynamics_draw_trance)
 					self.parent.Displayshape_core.canva.mouse_move_Signal.trigger.disconnect()
-					
-					
-					
 
-
-
-
-	
-
-	@timer_decorator
+	#@timer_decorator
 	def dynamics_drwa_line(self):
 			_dragStartPosY = self.parent.Displayshape_core.canva.dragStartPosY
 			_dragStartPosX = self.parent.Displayshape_core.canva.dragStartPosX
@@ -192,7 +184,6 @@ class sketch_line(object):
 			self.dragStartPosY = _dragStartPosY
 
 	def draw_point(self,x,y,z,point_type=0,color=None):
-
 		ALL_ASPECTS = [Aspect_TOM_POINT,
 					   Aspect_TOM_PLUS,
 					   Aspect_TOM_STAR,

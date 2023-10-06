@@ -118,7 +118,7 @@ class OCAF(object):
 			
 			else:
 				self.parent.statusbar.showMessage("错误：文件不存在")  ###
-				Loadprocess.Close()
+				
 
 	
 		except Exception as e:
@@ -213,4 +213,4 @@ class OCAF(object):
 			self.parent.Displayshape_core.canva._display.DisplayShape(result_shape, update=True)
 		except Exception as e:
 			print(e)
-		
+	

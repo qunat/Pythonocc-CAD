@@ -51,7 +51,7 @@ class SelectWidget(QtWidgets.QMainWindow):
 		self.pushbutton_cancel = QtWidgets.QPushButton("取消")
 		HBOX_button.addWidget(self.pushbutton_ok)
 		HBOX_button.addWidget(self.pushbutton_cancel)
-		self.statusBar.showMessage("请选择草绘平面")
+		self.parent.statusBar.showMessage("请选择草绘平面")
 
 	def ok(self):
 		self.parent.Sketcher.uptoplane()

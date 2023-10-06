@@ -10,6 +10,8 @@ from OCC.Core.gp import (gp_Pnt2d, gp_Ax2d, gp_Dir2d, gp_Circ2d, gp_Origin2d, gp
                          gp_Ax2, gp_OX2d, gp_Lin2d, gp_Trsf, gp_XOY,
                          gp_Pnt, gp_Vec, gp_Ax3, gp_Pln, gp_Origin, gp_DX, gp_DY,
                          gp_DZ, gp_OZ)
+
+from sketcher.skecther_capture import sketcher_capture
 from sketcher.sketcher_circel import sketch_circel
 from sketcher.sketcher_line import sketch_line
 from sketcher.sketcher_rectangle import sketch_rectangle
@@ -30,6 +32,7 @@ class SketchModule(object):
 		self.new_do_draw_dict={"line":None,"circel":None,"rectangle":None,"arc":None,"profile":None}
 		self.parent.Displayshape_core.canva.mouse_move_Signal.trigger.connect(self.show_coordinate)
 		self.Dimension_Manege = Dimension_Manege(self)
+		self.sketcher_capture=sketcher_capture(self.parent)
 		
 	
 
@@ -64,6 +67,7 @@ class SketchModule(object):
 		
 	def select_sketch_plane(self):
 		self.select_windows=SelectWidget(parent=self.parent)
+		print("select_sketch_plane")
 		self.select_windows.Show()
 		#self.parent.Displayshape_core.canva._display.SetSelectionModeEdge()
 		#self.parent.change_ribbon(init_name="Ribbon_sketcher")

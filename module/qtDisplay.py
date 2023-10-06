@@ -193,6 +193,7 @@ class qtViewer3d(qtBaseViewer):
 		self._available_cursors = {}
 		self.dragStartPosX=0
 		self.dragStartPosY=0
+		self.mousepresstype = None
 		self.mouse_move_Signal=mouse_move_Signal_Foo()
 		self.wheelEvent_Signal=wheelEvent_Foo()
 		self.keyPressEvent_Signal=keyPressEvent_Foo()
@@ -322,6 +323,7 @@ class qtViewer3d(qtBaseViewer):
 		self.mousePressEvent_Signal.connect_and_emit_trigger()
 		self.setFocus()
 		ev = event.pos()
+		self.mousepresstype = event.button()
 		self.dragStartPosX = ev.x()
 		self.dragStartPosY = ev.y()
 		self._display.StartRotation(self.dragStartPosX, self.dragStartPosY)

@@ -100,6 +100,7 @@ class Ui_MainWindow(MainGui.Ui_MainWindow):
 		self.modeltree=ModelTree.ModelTree()
 		self.InteractiveOperate=InteractiveModule.InteractiveOperate(self)
 		self.Sketcher=sketcher.SketchModule(self)
+		self.statusBar=QtWidgets.QStatusBar()
 		self.setCentralWidget(self.Displayshape_core.canva)
 
 		
