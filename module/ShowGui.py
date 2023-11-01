@@ -20,6 +20,7 @@ from GUI.TopBorderBarWidge import *
 from PyQt5.QtCore import  Qt
 from module import DisplayManager,ModelTree,OCAFModule,InteractiveModule#,Ipython
 from sketcher import sketcher
+from surface import swept
 from PyQt5 import QtGui,QtWidgets
 
 class Auto_create_ribbon(object):
@@ -100,6 +101,7 @@ class Ui_MainWindow(MainGui.Ui_MainWindow):
 		self.modeltree=ModelTree.ModelTree()
 		self.InteractiveOperate=InteractiveModule.InteractiveOperate(self)
 		self.Sketcher=sketcher.SketchModule(self)
+		self.Surface=swept.Surface(self)
 		self.statusBar=QtWidgets.QStatusBar()
 		self.setCentralWidget(self.Displayshape_core.canva)
 
