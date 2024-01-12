@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from PyQt5.QtWidgets import QFileDialog
+from PyQt5.QtWidgets import QFileDialog, QVBoxLayout
 import threading
 import time,re
 from OCC.Core.AIS import AIS_Shape
@@ -22,35 +22,160 @@ from PyQt5 import QtCore, QtWidgets,Qt
 import math
 
 
-class DialogWidget(QtWidgets.QWidget):
-	def __init__(self,parant=None):
-		super().__init__()
-		self.textBrowser = None
-		self.initUI()
-	
-	def initUI(self):
-		# 创建QTextBrowser
-		#self.textBrowser = QTextBrowser()
-		# 创建垂直布局管理器
-		#layout = QVBoxLayout()
-		
-		# 将QTextBrowser添加到布局管理器
-		#layout.addWidget(self.textBrowser)
-		
-		# 设置布局管理器为QWidget的布局
-		#self.setLayout(layout)
-		
-		# 设置QWidget的窗口标题和大小
-		self.setGeometry(100, 100, 800, 600)
-		#self.textBrowser.append("交互控制台")
-		
-		# 设置字体大小
-		#self.textBrowser.setFontPointSize(12)
+class DialogWidget(QtWidgets.QMainWindow):
+	def __init__(self,parent=None):
+		super(DialogWidget,self).__init__(parent)
+		self.parent = parent
+		self.DialogFinish=False
+		self.setupUi()
+		x = parent.geometry().x() + parent.geometry().width() / 2
+		y = parent.geometry().y() + parent.geometry().height() / 2
+		self.setGeometry(x, y, 250, 80)
+		self.setWindowTitle('创建几何体')
+		self.pushbutton_ok.clicked.connect(self.ok)
+		self.pushbutton_cancel.clicked.connect(self.cancel)
 
+	
+	def setupUi(self):
+		self.widget = QtWidgets.QWidget(self)
+		self.setCentralWidget(self.widget)
+		HBOX = QVBoxLayout()
+		HBOX_comboBOX = QVBoxLayout()
+		HBOX_text1 = QHBoxLayout()
+		HBOX_text2 = QHBoxLayout()
+		HBOX_text3 = QHBoxLayout()
+		HBOX_button = QHBoxLayout()
+		self.widget.setLayout(HBOX)
+		HBOX.addLayout(HBOX_comboBOX)
+		HBOX.addLayout(HBOX_text1)
+		HBOX.addLayout(HBOX_text2)
+		HBOX.addLayout(HBOX_text3)
+		HBOX.addLayout(HBOX_button)
+
+
+		#设置combobox
+		self.comboBox = QtWidgets.QComboBox(self.widget)
+		self.comboBox.setGeometry(QtCore.QRect(80, 100, 221, 500))
+		self.comboBox.setObjectName("comboBox")
+		self.comboBox.addItem("原点和边长")
+		self.comboBox.addItem("两点和高度")
+		self.comboBox.addItem("两个对角点")
+		HBOX_comboBOX.addWidget(self.comboBox, 0, QtCore.Qt.AlignTop)
+
+		#设置label,text
+		self.label1=QtWidgets.QLabel(self.widget)
+		self.label1.setText("长度(XC):")
+		self.label2 = QtWidgets.QLabel(self.widget)
+		self.label2.setText("宽度(YC):")
+		self.label3 = QtWidgets.QLabel(self.widget)
+		self.label3.setText("高度(ZC):")
+		HBOX_text1.addWidget(self.label1)
+		HBOX_text2.addWidget(self.label2)
+		HBOX_text3.addWidget(self.label3)
+
+
+		self.text1=QtWidgets.QLineEdit(self.widget)
+		self.text1.setMaximumHeight(20)
+		self.text2 = QtWidgets.QLineEdit(self.widget)
+		self.text2.setMaximumHeight(20)
+		self.text3 = QtWidgets.QLineEdit(self.widget)
+		self.text3.setMaximumHeight(20)
+		HBOX_text1.addWidget(self.text1)
+		HBOX_text2.addWidget(self.text2)
+		HBOX_text3.addWidget(self.text3)
+
+		self.pushbutton_ok = QtWidgets.QPushButton("确定")
+		self.pushbutton_cancel = QtWidgets.QPushButton("取消")
+		HBOX_button.addWidget(self.pushbutton_ok)
+		HBOX_button.addWidget(self.pushbutton_cancel)
+		self.parent.statusBar.showMessage("请设置参数")
+
+	def ok(self):
+		self.close()
+
+
+	def cancel(self):
+		self.close()
+		self.DialogFinish = True
+
+	def Show(self):
+		self.show()
+
+
+
+class CreateToolDialog(QtWidgets.QMainWindow):
+	def __init__(self, parent=None):
+		super(CreateToolDialog, self).__init__(parent)
+		self.parent = parent
+		self.setupUi()
+
+		x = parent.geometry().x() + parent.geometry().width() / 2
+		y = parent.geometry().y() + parent.geometry().height() / 2
+		self.setGeometry(x, y, 250, 80)
+		self.setWindowTitle('创建几何体')
+
+	# self.pushbutton_ok.clicked.connect(self.ok)
+	# self.pushbutton_cancel.clicked.connect(self.cancel)
+
+	def setupUi(self):
+		self.widget = QtWidgets.QWidget(self)
+		# self.setMovable(False)
+		# self.addWidget(self.widget)
+		# self.setStyleSheet("background-color: rgb(14, 162, 185);")
+		self.setCentralWidget(self.widget)
+		HBOX = QVBoxLayout()
+		HBOX_comboBOX = QVBoxLayout()
+		HBOX_text1 = QHBoxLayout()
+		HBOX_text2 = QHBoxLayout()
+		HBOX_text3 = QHBoxLayout()
+		HBOX_button = QHBoxLayout()
+		self.widget.setLayout(HBOX)
+		HBOX.addLayout(HBOX_comboBOX)
+		HBOX.addLayout(HBOX_text1)
+		HBOX.addLayout(HBOX_text2)
+		HBOX.addLayout(HBOX_text3)
+		HBOX.addLayout(HBOX_button)
+
+		# 设置combobox
+		self.comboBox = QtWidgets.QComboBox(self.widget)
+		self.comboBox.setGeometry(QtCore.QRect(80, 100, 221, 500))
+		self.comboBox.setObjectName("comboBox")
+		self.comboBox.addItem("原点和边长")
+		self.comboBox.addItem("两点和高度")
+		self.comboBox.addItem("两个对角点")
+		HBOX_comboBOX.addWidget(self.comboBox, 0, QtCore.Qt.AlignTop)
+
+		# 设置label,text
+		self.label1 = QtWidgets.QLabel(self.widget)
+		self.label1.setText("长度(XC):")
+		self.label2 = QtWidgets.QLabel(self.widget)
+		self.label2.setText("宽度(YC):")
+		self.label3 = QtWidgets.QLabel(self.widget)
+		self.label3.setText("高度(ZC):")
+		HBOX_text1.addWidget(self.label1)
+		HBOX_text2.addWidget(self.label2)
+		HBOX_text3.addWidget(self.label3)
+
+		self.text1 = QtWidgets.QTextEdit(self.widget)
+		self.text1.setMaximumHeight(20)
+		self.text2 = QtWidgets.QTextEdit(self.widget)
+		self.text2.setMaximumHeight(20)
+		self.text3 = QtWidgets.QTextEdit(self.widget)
+		self.text3.setMaximumHeight(20)
+		HBOX_text1.addWidget(self.text1)
+		HBOX_text2.addWidget(self.text2)
+		HBOX_text3.addWidget(self.text3)
+
+		self.pushbutton_ok = QtWidgets.QPushButton("确定")
+		self.pushbutton_cancel = QtWidgets.QPushButton("取消")
+		HBOX_button.addWidget(self.pushbutton_ok)
+		HBOX_button.addWidget(self.pushbutton_cancel)
+		self.parent.statusBar.showMessage("请设置参数")
 class manufacturing(object):
 	def __init__(self,parent=None):
 		pass
 		self.parent=parent
+		self.pause = 1
 		self.interpreter_G_code = G_Code_interpreter.G_code_interpreter()
 
 	def Import_NC_Code(self):  # 导入NC程序
@@ -119,8 +244,8 @@ class manufacturing(object):
 		# 清除之前数据
 		try:
 			try:
-				self.Machine_spindle_shape = read_step_file("./machine/仿真机床/Machine_spindle.stp")
-				self.Machine_work_table = read_step_file("./machine/仿真机床/Machine_work_table.stp")
+				self.Machine_spindle_shape = read_step_file("./manufacture/machine/仿真机床/Machine_spindle.stp")
+				self.Machine_work_table = read_step_file("./manufacture/machine/仿真机床/Machine_work_table.stp")
 				# self.parent.Displayshape_core.canva._display.Context.Remove(self.show[0], True)
 				# self.acompound=self.import_shape
 				self.parent.Displayshape_core.canva._display.EraseAll()
@@ -215,7 +340,7 @@ class manufacturing(object):
 					x1 = float(code[1])  # 目标X坐标
 					y1 = float(code[2])  # 目标X坐标
 					z1 = float(code[3])  # 目标X坐标
-					path_pnt_list = Get_Linear_interpolation_point([x0, y0, z0], [x1, y1, z1], step=0.31)
+					path_pnt_list = Get_Linear_interpolation_point([x0, y0, z0], [x1, y1, z1], step=0.8)
 				# print(path_pnt_list)
 				elif code[0] == "G00":
 					x0 = float(self.machining["x0"])  # 当前X坐标
@@ -272,6 +397,7 @@ class manufacturing(object):
 		self.my_cylinder = BRepPrimAPI_MakeCylinder(10, 50).Shape()
 		self.tool = TopoDS_Shape(self.my_cylinder)  # 建立刀具
 		print("开始切削")
+
 		for code, G_Ccode in zip(self.interpreter_G_code.Out_NC_simple, self.textBrowser_list):
 			try:
 				if self.pause == -1:
@@ -281,7 +407,7 @@ class manufacturing(object):
 						if self.pause == 1 or self.finish == -1 or self.clear_path == -1:
 							break
 					if self.finish == -1 or self.clear_path == -1:
-						self.pushButton_4.setText("暂停")
+						#self.pushButton_4.setText("暂停")
 						break
 				# time.sleep(0.03)
 				if code == []:
@@ -498,30 +624,28 @@ class manufacturing(object):
 			self.parent.statusbar.showMessage('错误：请确认机床组件已经导入')
 	
 	def Create_Blank(self):
-		try:
-			# self.Delete_Blank()
-			Blank_dialog=DialogWidget(self.parent)
-			Blank_dialog.show()
-			'''
-			L = float(self.lineEdit_8.text())
-			W = float(self.lineEdit_9.text())
-			H = float(self.lineEdit_10.text())
+		def func():
+			L = float(Blank_dialog.text1.text())
+			W = float(Blank_dialog.text2.text())
+			H = float(Blank_dialog.text3.text())
 			self.Blank = BRepPrimAPI_MakeBox(L, W, H).Shape()
 			self.Blank = TopoDS_Shape(self.Blank)
 			T = gp_Trsf()
-			location_X = -L / 2  # 把键槽移动到合适的位置
-			location_Y = -W / 2  # 把键槽移动到合适的位置
+			location_X = -L / 2
+			location_Y = -W / 2
 			T.SetTranslation(gp_Vec(location_X, location_Y, 0))
 			loc = TopLoc_Location(T)
 			self.Blank.Location(loc)
 			self.show_Blank = self.parent.Displayshape_core.canva._display.DisplayShape(self.Blank, transparency=0.5,
 																						update=True)
-			
 			change = self.show_Blank[0].Shape()
-			
 			self.offset_Z = H
 			print(self.offset_Z)
-			'''
+
+		try:
+			Blank_dialog=DialogWidget(self.parent)
+			Blank_dialog.show()
+			Blank_dialog.pushbutton_ok.clicked.connect(func)
 		except Exception as e:
 			print(e)
 	

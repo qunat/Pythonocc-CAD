@@ -1,0 +1,89 @@
+﻿STEP to UG
+! INFO-     NX STEP AP203 - V1926
+! INFO-      
+! INFO-     Start of Translation: 19-OCT-2023  9:56:22 PM
+! INFO-      
+! STATUS-   Converting Part: F:\宁波莱布尼茨项目\Pythonocc-vericut\machine\仿真机床\Machine_spindle.stp
+! SUMMARY-   
+! SUMMARY-    STEP Header Information
+! SUMMARY-   
+! SUMMARY-  Description      Unknown
+! SUMMARY-  Imp_Level        2;1
+! SUMMARY-  File_Name        Machine_spindle.stp
+! SUMMARY-  Date             2022-05-18T06:24:31+08:00
+! SUMMARY-  Author           Unknown
+! SUMMARY-  Organization     Unknown
+! SUMMARY-  Pre_Version      ST-DEVELOPER v16
+! SUMMARY-  Orig_System      SIEMENS PLM Software NX 10.0
+! SUMMARY-  Authorization    Unknown
+! SUMMARY-  Schema_ID        automotive_design
+! SUMMARY-   
+! SUMMARY-    Summary of STEP Entities
+! SUMMARY-   
+! SUMMARY-  Entity Type                                                   Count
+! SUMMARY-  -----------                                                   ------
+! SUMMARY-  advanced_face ..............................................:    287
+! SUMMARY-  application_context ........................................:      1
+! SUMMARY-  axis2_placement_3d .........................................:    547
+! SUMMARY-  b_spline_curve_with_knots ..................................:     10
+! SUMMARY-  cartesian_point ............................................:   1745
+! SUMMARY-  circle .....................................................:    259
+! SUMMARY-  closed_shell ...............................................:      3
+! SUMMARY-  conical_surface ............................................:     40
+! SUMMARY-  conversion_based_unit_and_plane_angle_unit .................:      1
+! SUMMARY-  cylindrical_surface ........................................:    145
+! SUMMARY-  dimensional_exponents ......................................:      1
+! SUMMARY-  direction ..................................................:   1468
+! SUMMARY-  edge_curve .................................................:    643
+! SUMMARY-  edge_loop ..................................................:    390
+! SUMMARY-  face_bound .................................................:    132
+! SUMMARY-  face_outer_bound ...........................................:    258
+! SUMMARY-  geometric_representation_context_and_global_uncertainty_a ..:      1
+! SUMMARY-  length_unit_and_si_unit ....................................:      1
+! SUMMARY-  line .......................................................:    374
+! SUMMARY-  manifold_solid_brep ........................................:      3
+! SUMMARY-  oriented_edge ..............................................:   1286
+! SUMMARY-  plane ......................................................:     94
+! SUMMARY-  plane_angle_measure_with_unit ..............................:      1
+! SUMMARY-  plane_angle_unit_and_si_unit ...............................:      1
+! SUMMARY-  product ....................................................:      1
+! SUMMARY-  product_context ............................................:      1
+! SUMMARY-  product_definition .........................................:      1
+! SUMMARY-  product_definition_context .................................:      1
+! SUMMARY-  product_definition_formation_with_specified_source .........:      1
+! SUMMARY-  product_definition_shape ...................................:      1
+! SUMMARY-  product_related_product_category ...........................:      1
+! SUMMARY-  si_unit_and_solid_angle_unit ...............................:      1
+! SUMMARY-  spherical_surface ..........................................:      4
+! SUMMARY-  toroidal_surface ...........................................:      4
+! SUMMARY-  uncertainty_measure_with_unit ..............................:      1
+! SUMMARY-  vector .....................................................:    374
+! SUMMARY-  vertex_point ...............................................:    423
+! SUMMARY-                                                               -------
+! SUMMARY-  Total                                                           8505
+! STATUS-    
+! STATUS-   Converting to Output Form (Phase 2 of 3): 19-OCT-2023 9:56:22 PM
+! STATUS-    
+! STATUS-    
+! STATUS-   Generating UG geometry and placing them in parts
+! STATUS-    
+! STATUS-   Creating the UG part (Phase 3 of 3): 19-OCT-2023  9:56:22 PM
+! INFO-     Filing Part ..: F:\宁波莱布尼茨项目\Pythonocc-vericut\machine\仿真机床\Machine_spindle.prt
+! SUMMARY-   
+! SUMMARY-  Summary of Unigraphics Part Entities
+! SUMMARY-   
+! SUMMARY-  Entities Processed             Count
+! SUMMARY-  ------------------             -----
+! SUMMARY-                                 -----
+! SUMMARY-  Total                              0
+! INFO-      
+! INFO-     Total number of solids input for this translation       :         0
+! INFO-      
+! INFO-     Number of solids created without body validation faults :         0
+! INFO-      
+! INFO-     Number of solids created with body validation fault(s)  :         0
+! INFO-      
+! INFO-     Number of solids ending up as sheet bodies              :         0
+! INFO-      
+! INFO-     End of Translation: 19-OCT-2023  9:56:23 PM
+! INFO-      

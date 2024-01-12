@@ -54,7 +54,7 @@ def Get_face_direction(face):  # 获取平面的法向
     # print(pln.Axis().Direction().XYZ().Coord())
     original_direct = pln.Axis().Direction().XYZ().Coord()
     return original_direct
-def Get_Arc_interpolation_point(Pnt1=[],Pnt2=[],Pnt3=[],Direction=None,step=0.1):#pnt1为起点坐标，pnt2为终点坐标，pnt3为i,j,k
+def Get_Arc_interpolation_point(Pnt1=[],Pnt2=[],Pnt3=[],Direction=None,step=0.5):#pnt1为起点坐标，pnt2为终点坐标，pnt3为i,j,k
     try:
 
         x0,y0,z0=Pnt1[:]
