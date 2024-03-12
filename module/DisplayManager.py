@@ -139,6 +139,8 @@ class DisplayManager(object):
 
 		#self.canva.InitDriver()
 	
+	def SetBackgroundImage(self):
+		self.canva._display.SetBackgroundImage("./GUI/Pic/Cloudy.png")
 	def ProjReferenceAxe(self):#返回当前鼠标位置在视图中的值
 		_dragStartPosY = self.canva.dragStartPosY
 		_dragStartPosX = self.canva.dragStartPosX
@@ -183,7 +185,7 @@ class DisplayManager(object):
 		
 		plane = Geom_Plane(gp_Pnt(0.0, 0.0, 0.0), gp_Dir(1, 0, 0))
 		ais_plane_zy = AIS_Plane(plane, True)
-		ais_plane_zy.SetColor(Quantity_Color(Quantity_NOC_GRAY))
+		ais_plane_zy.SetColor(Quantity_Color(Quantity_NOC_WHITE))
 		ais_plane_zy.SetTypeOfSensitivity(Select3D_TOS_INTERIOR)
 		asp = Prs3d_LineAspect(Quantity_Color(Quantity_NOC_WHITE), 2, 1)
 		ais_plane_zy.SetAspect(asp)
@@ -192,7 +194,7 @@ class DisplayManager(object):
 		
 		plane = Geom_Plane(gp_Pnt(0.0, 0.0, 0.0), gp_Dir(0, 0, 1))
 		ais_plane_zy = AIS_Plane(plane, True)
-		ais_plane_zy.SetColor(Quantity_Color(Quantity_NOC_GRAY))
+		ais_plane_zy.SetColor(Quantity_Color(Quantity_NOC_WHITE))
 		ais_plane_zy.SetTypeOfSensitivity(Select3D_TOS_INTERIOR)
 		asp = Prs3d_LineAspect(Quantity_Color(Quantity_NOC_GREEN), 1, 10)
 		ais_plane_zy.SetAspect(asp)

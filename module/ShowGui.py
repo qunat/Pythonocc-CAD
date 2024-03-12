@@ -18,7 +18,7 @@ from GUI.RibbonWidget import *
 from GUI.TittleBarWidget import *
 from GUI.TopBorderBarWidge import *
 from PyQt5.QtCore import  Qt
-from module import DisplayManager,ModelTree,OCAFModule,InteractiveModule,Ipython
+from module import DisplayManager,ModelTree,OCAFModule,InteractiveModule
 from sketcher import sketcher
 from surface import swept
 from manufacture import manufacturing
@@ -106,6 +106,8 @@ class Ui_MainWindow(MainGui.Ui_MainWindow):
 		self.Manufacturing=manufacturing.manufacturing(self)
 		self.statusBar=QtWidgets.QStatusBar()
 		self.setCentralWidget(self.Displayshape_core.canva)
+		print(QtGui.QImageReader.supportedImageFormats())
+		
 
 		
 		# Create TittleBar
@@ -144,11 +146,11 @@ class Ui_MainWindow(MainGui.Ui_MainWindow):
 		
 		# Create PythonConsole
 		#self.ipython = Ipython.ConsoleWidget(customBanner=None)
-		self.ipython=Ipython.TextBrowser()
-		self.items_ipython = QDockWidget('信息输出控制台', self)  # 新建QDockWidget
-		self.addDockWidget(Qt.BottomDockWidgetArea, self.items_ipython)  # 在主显示区域右侧显示
-		self.items_ipython.setMaximumHeight(180)  # 设置最小大小
-		self.items_ipython.setWidget(self.ipython)
+		#self.ipython=Ipython.TextBrowser()
+		#self.items_ipython = QDockWidget('信息输出控制台', self)  # 新建QDockWidget
+		#self.addDockWidget(Qt.BottomDockWidgetArea, self.items_ipython)  # 在主显示区域右侧显示
+		#self.items_ipython.setMaximumHeight(180)  # 设置最小大小
+		#self.items_ipython.setWidget(self.ipython)
 		
 
 	def closeEvent(self, close_event):

@@ -393,7 +393,7 @@ class manufacturing(object):
 		self.machining = {"spindle_speed": 0, "feet_speed": 0, "status_G": "G0", "x": 0, "y": 0, "z": 0, "x0": 0,
 						  "y0": 0, "z0": 0, "i": 0, "j": 0, "k": 0}
 		# new_Create_path=Create_Path()
-		#self.parent.textBrowser.clear()
+		self.parent.ipython.textBrowser.clear()
 		self.my_cylinder = BRepPrimAPI_MakeCylinder(10, 50).Shape()
 		self.tool = TopoDS_Shape(self.my_cylinder)  # 建立刀具
 		print("开始切削")
