@@ -229,7 +229,7 @@ class qtViewer3d(qtBaseViewer):
 		self.createCursors()
 
 	def createCursors(self):
-		module_pth = os.path.abspath(os.path.dirname(__file__))
+		module_pth = os.path.abspath(".\\python3.7\\Lib\\site-packages\\OCC\\Display")
 		icon_pth = os.path.join(module_pth, "icons")
 
 		_CURSOR_PIX_ROT = QtGui.QPixmap(os.path.join(icon_pth, "cursor-rotate.png"))
