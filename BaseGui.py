@@ -2,18 +2,10 @@
 from OCC.Display.backend import load_backend
 from PyQt5 import QtWidgets,QtGui
 from PyQt5.QtWidgets import QApplication, QStyleFactory
-
 from ui import MainGui
-# ------------------------------------------------------------开始初始化环境
-backend_str = None
-display_triedron = True
-background_gradient_color1 = [212, 212, 212]
-background_gradient_color2 = [128, 128, 128]
-used_backend = load_backend(backend_str)
-# ------------------------------------------------------------初始化结束
-
 import sys
 from  module import ShowGui
+
 class Mywindown(QtWidgets.QMainWindow, ShowGui.Ui_MainWindow,MainGui.Ui_MainWindow):
 	def __init__(self, parent=None):
 		super(Mywindown, self).__init__(parent)
@@ -54,7 +46,7 @@ if __name__ == '__main__':
 															   #background_gradient_color2)
 	win.Displayshape_core.Displaydatum()
 	win.Displayshape_core.SetBackgroundImage()
-	#win.Displayshape_core.DisplayCube()
+	win.Displayshape_core.DisplayCube()
 	#win.InteractiveOperate.Setting()
 	#win.Displayshape_core.canva._display.register_select_callback(win.InteractiveOperate.clicked_callback)
 	# make the application float to the top

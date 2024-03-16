@@ -22,11 +22,13 @@ from __future__ import print_function
 import logging
 import os
 import sys
-
 from PyQt5.QtCore import pyqtSignal, QObject
-
 from module import  OCCViewer
 from OCC.Display.backend import get_qt_modules
+from OCC.Display.backend import load_backend
+
+backend_str = None
+used_backend = load_backend(backend_str)
 
 QtCore, QtGui, QtWidgets, QtOpenGL = get_qt_modules()
 

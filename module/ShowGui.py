@@ -2,7 +2,7 @@
 from OCC.Core import BRepExtrema
 from OCC.Core.BRepBuilderAPI import BRepBuilderAPI_MakeEdge
 from OCC.Core.gp import gp_Lin
-from OCC.Display.qtDisplay import qtViewer3d
+from module.qtDisplay import qtViewer3d
 from PyQt5 import QtCore, QtGui, QtWidgets
 from ui import MainGui
 from PyQt5.QtWidgets import (QWidget, QTableWidget, QHBoxLayout, QApplication, QTableWidgetItem, QAbstractItemView,
