@@ -9,9 +9,8 @@ from OCC.Core.Geom import Geom_Axis2Placement, Geom_Plane
 from OCC.Core.Prs3d import Prs3d_LineAspect
 from OCC.Core.TopoDS import TopoDS_Face, TopoDS_Shape, TopoDS_Edge, TopoDS_Solid,TopoDS_Shell
 from PyQt5.QtWidgets import QFileDialog
-from module import qtDisplay
 from OCC.Extend.DataExchange import read_step_file,read_iges_file,read_stl_file
-from module import Assemble
+from module import Assemble,qtDisplay
 from OCC.Core.Quantity import *
 from OCC.Core.gp import *
 from OCC.Core.Graphic3d import *
@@ -121,11 +120,6 @@ class NoDumpProcess(object):
 			if a.struct=="None":
 				continue
 			self.root_dict[a.order]=(a)
-		
-			
-		
-		
-	
 		
 			
 class DisplayManager(object):

@@ -48,7 +48,7 @@ class OCAF(object):
 			self.chose_document = QFileDialog.getOpenFileName(self.parent, '打开文件', './',
 															  " STP files(*.stp , *.step);;IGES files(*.iges);;STL files(*.stl)")  # 选择转换的文价夹
 			filepath = self.chose_document[0]  # 获取打开文件夹路径
-			if os.path.exists(filepath):
+			if os.path.exists(filepath) and filepath!="":
 				end_with = str(filepath).lower()
 				self.parent.statusbar.showMessage("状态：正在打开，请稍后......")  ###
 				Loadprocess=ProcessWidgets.ProcessWidget(self.parent)
@@ -60,7 +60,7 @@ class OCAF(object):
 				if end_with.endswith(".step") or end_with.endswith("stp"):#stp格式导入
 					self.import_shape, assemble_relation_list, DumpToString = Assemble.read_step_file_with_names_colors(
 						filepath)
-					print("我主要是看这里",self.import_shape)
+					#print("我主要是看这里",self.import_shape)
 
 					# 判断是否为标准的装配体结构
 					
@@ -83,7 +83,7 @@ class OCAF(object):
 						QApplication.processEvents()
 
 					# 建立模型树
-					print("显示",root_dict)
+					#print("显示",root_dict)
 					try:
 						if root_dict != None:
 							self.parent.modeltree.Create_tree_NodeList(root_dict=root_dict)
@@ -125,8 +125,10 @@ class OCAF(object):
 			print(e)
 
 		finally:
-			Loadprocess.Close()
-
+			try:
+				Loadprocess.Close()
+			except:
+				pass
 	
 	def Import_part(self):
 		try:

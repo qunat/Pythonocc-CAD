@@ -106,7 +106,7 @@ class Ui_MainWindow(MainGui.Ui_MainWindow):
 		self.Manufacturing=manufacturing.manufacturing(self)
 		self.statusBar=QtWidgets.QStatusBar()
 		self.setCentralWidget(self.Displayshape_core.canva)
-		print(QtGui.QImageReader.supportedImageFormats())
+		#print(QtGui.QImageReader.supportedImageFormats())
 		
 
 		
