@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from OCC.Display.backend import load_backend
-from PyQt5 import QtWidgets,QtGui
+from PyQt5 import QtWidgets,QtGui,QtCore
 from PyQt5.QtWidgets import QApplication, QStyleFactory
 from ui import MainGui
 import sys
@@ -21,6 +21,23 @@ class Mywindown(QtWidgets.QMainWindow, ShowGui.Ui_MainWindow,MainGui.Ui_MainWind
 		x = (resolution.width() - self.frameSize().width()) / 2
 		y = (resolution.height() - self.frameSize().height()) / 2
 		self.move(x, y)
+	
+	def changeEvent(self, e):
+		if e.type() == QtCore.QEvent.WindowStateChange:
+			if self.isMinimized():
+				#print("窗口最小化")
+				pass
+			elif self.isMaximized():
+				#print("窗口最大化")
+				pass
+			elif self.isFullScreen():
+				#print("全屏显示")
+				pass
+			elif self.isActiveWindow():
+				#print("活动窗口")
+				pass
+		
+	
 
 
 if __name__ == '__main__':

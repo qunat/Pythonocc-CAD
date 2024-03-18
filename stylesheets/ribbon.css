@@ -1,6 +1,6 @@
 QToolBar {
     padding: 0px;
-
+    
 }
 
 QTabWidget:pane {
@@ -11,10 +11,12 @@ QTabWidget:pane {
     border-bottom: 1px solid rgba(0,0,0,20%);
     border-top: 1px solid rgba(0,0,0,20%);
     top: -1;
+
 }
 QTabWidget{
         font: 10pt "微软雅黑";
         background-color:#00001
+       
 
 }
 

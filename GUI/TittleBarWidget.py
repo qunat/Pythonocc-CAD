@@ -21,7 +21,7 @@ class TittleBarWidget(QToolBar):
 		self._Tittle_widget.setMinimumHeight(37*gui_scale())
 		self.setMovable(False)
 		self.addWidget(self._Tittle_widget)
-		#self.setStyleSheet("background-color: rgb(14, 162, 185);")
+		self.setStyleSheet("background-color: rgb(45, 93, 135);")
 		
 		HBOX=QHBoxLayout()
 		HBOX_Logo = QHBoxLayout()

@@ -4,6 +4,8 @@ QToolButton {
     padding: 0px;
     margin-left:2px;
     margin-right:2px;
+    
+
 }
 
 QToolButton:hover {
