@@ -27,18 +27,10 @@ class Ui_MainWindow(object):
 		self.centralwidget.setStyleSheet("")
 		self.centralwidget.setObjectName("centralwidget")
 		self.BrepCADlable=QtWidgets.QLabel(self.centralwidget)
-		self.BrepCADdate=QtWidgets.QLabel(self.centralwidget)
-		self.BrepCADlable.setText("BrepCAD")
-		self.BrepCADdate.setText("2024")
-		self.BrepCADlable.setStyleSheet("color: rgb(134, 136, 139);");
-		self.BrepCADlable.setFont(QtGui.QFont("Roman times",60,QtGui.QFont.Bold))
-		self.BrepCADlable.setAlignment(QtCore.Qt.AlignRight)
-		self.BrepCADdate.setStyleSheet("color: rgb(134, 136, 139);");
-		self.BrepCADdate.setFont(QtGui.QFont("Roman times",40,QtGui.QFont.Bold))
-		self.BrepCADdate.setAlignment(QtCore.Qt.AlignRight)
-		self.BrepCADlable.setGeometry(370,180,300,200)
-		self.BrepCADdate.setGeometry(390,280,200,200)
-
+		self.BrepCADlable.setPixmap(QtGui.QPixmap('./pic/BrepCAD2024.png'))
+		layout=QtWidgets.QVBoxLayout()
+		layout.addWidget(self.BrepCADlable)
+		self.centralwidget.setLayout(layout)
 		MainWindow.setCentralWidget(self.centralwidget)
 		
 		self.statusbar = QtWidgets.QStatusBar(MainWindow)
