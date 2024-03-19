@@ -26,6 +26,19 @@ class Ui_MainWindow(object):
 		self.centralwidget = QtWidgets.QWidget(MainWindow)
 		self.centralwidget.setStyleSheet("")
 		self.centralwidget.setObjectName("centralwidget")
+		self.BrepCADlable=QtWidgets.QLabel(self.centralwidget)
+		self.BrepCADdate=QtWidgets.QLabel(self.centralwidget)
+		self.BrepCADlable.setText("BrepCAD")
+		self.BrepCADdate.setText("2024")
+		self.BrepCADlable.setStyleSheet("color: rgb(134, 136, 139);");
+		self.BrepCADlable.setFont(QtGui.QFont("Roman times",60,QtGui.QFont.Bold))
+		self.BrepCADlable.setAlignment(QtCore.Qt.AlignRight)
+		self.BrepCADdate.setStyleSheet("color: rgb(134, 136, 139);");
+		self.BrepCADdate.setFont(QtGui.QFont("Roman times",40,QtGui.QFont.Bold))
+		self.BrepCADdate.setAlignment(QtCore.Qt.AlignRight)
+		self.BrepCADlable.setGeometry(370,180,300,200)
+		self.BrepCADdate.setGeometry(390,280,200,200)
+
 		MainWindow.setCentralWidget(self.centralwidget)
 		
 		self.statusbar = QtWidgets.QStatusBar(MainWindow)
@@ -38,6 +51,8 @@ class Ui_MainWindow(object):
 		self.toolBar.addSeparator()
 		self.toolBar.setIconSize(QtCore.QSize(20, 20))
 		#self.toolBar.addAction(exitAct)
+		self.statusbar.setStyleSheet("background-color: rgb(45, 93, 135);")
+		self.statusbar.setFixedHeight(32)
 		#MainWindow.addToolBar(QtCore.Qt.TopToolBarArea, self.toolBar)
 		
 	

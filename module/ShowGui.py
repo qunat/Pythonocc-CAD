@@ -25,7 +25,7 @@ from manufacture import manufacturing
 from PyQt5 import QtGui,QtWidgets
 
 class Auto_create_ribbon(object):
-	def __init__(self,parent=None,init_name="Ribbon_main"):
+	def __init__(self,parent=None,init_name="RibbonMain"):
 		self.parent=parent
 		self.ribbon_dict={}
 		self.ribbon_table={}  # table 选项
@@ -97,7 +97,7 @@ class Ui_MainWindow(MainGui.Ui_MainWindow):
 	def __init__(self):
 		self.setupUi(self)
 		self.setWindowFlags(Qt.FramelessWindowHint)
-		self.Displayshape_core=DisplayManager.DisplayManager(self)
+		#self.Displayshape_core=DisplayManager.DisplayManager(self)
 		self.OCAF=OCAFModule.OCAF(self)
 		self.modeltree=ModelTree.ModelTree()
 		self.InteractiveOperate=InteractiveModule.InteractiveOperate(self)
@@ -105,10 +105,8 @@ class Ui_MainWindow(MainGui.Ui_MainWindow):
 		self.Surface=swept.Surface(self)
 		self.Manufacturing=manufacturing.manufacturing(self)
 		self.statusBar=QtWidgets.QStatusBar()
-		self.setCentralWidget(self.Displayshape_core.canva)
+		#self.setCentralWidget(self.Displayshape_core.canva)
 		#print(QtGui.QImageReader.supportedImageFormats())
-		
-
 		
 		# Create TittleBar
 		self.TittleBar = TittleBarWidget(self)
@@ -122,13 +120,20 @@ class Ui_MainWindow(MainGui.Ui_MainWindow):
 		self.init_ribbon()
 		
 		#Create TopBorderBar
-		self.TopBorderBa=TopBorderBarWidget(self)
-		self.addToolBar(QtCore.Qt.TopToolBarArea, self.TopBorderBa)
-		self.insertToolBarBreak(self.TopBorderBa)
+		#self.TopBorderBa=TopBorderBarWidget(self)
+		#self.addToolBar(QtCore.Qt.TopToolBarArea, self.TopBorderBa)
+		#self.insertToolBarBreak(self.TopBorderBa)
 		#exitAct = QAction(QIcon('./icons/copy.png'), 'Exit', self)
 		#self.toolBar.addAction(exitAct)
 		
 		
+		
+		#Create ModelTree
+		#self.items = QDockWidget('组合浏览器', self)  # 新建QDockWidget
+		#self.addDockWidget(Qt.LeftDockWidgetArea, self.items)  # 在主显示区域右侧显示
+		#self.items.setMinimumWidth(280)# 设置最小大小
+		#self.items.setWidget(self.modeltree.tree)
+
 		#右键单击弹出界面
 		self.menuBar = QtWidgets.QMenuBar()
 		self.menuBar.setGeometry(QtCore.QRect(0, 0, 606 , 26))
@@ -137,12 +142,6 @@ class Ui_MainWindow(MainGui.Ui_MainWindow):
 		#self.Displayshape_core.canva.customContextMenuRequested['QPoint'].connect(self.rightMenuShow)
 		#self.Displayshape_core.canva.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
 		#self.Displayshape_core.canva.customContextMenuRequested['QPoint'].connect(self.rightMenuShow)
-		
-		#Create ModelTree
-		self.items = QDockWidget('组合浏览器', self)  # 新建QDockWidget
-		self.addDockWidget(Qt.LeftDockWidgetArea, self.items)  # 在主显示区域右侧显示
-		self.items.setMinimumWidth(350)# 设置最小大小
-		self.items.setWidget(self.modeltree.tree)
 		
 		# Create PythonConsole
 		#self.ipython = Ipython.ConsoleWidget(customBanner=None)
@@ -153,20 +152,19 @@ class Ui_MainWindow(MainGui.Ui_MainWindow):
 		#self.items_ipython.setWidget(self.ipython)
 		
 
-	def closeEvent(self, close_event):
-		pass
-
 	def init_ribbon(self):
-		self.RibbonMange=Auto_create_ribbon(parent=self,init_name="Ribbon_main")
-		self._ribbon._ribbon_widget.setCurrentIndex(1)
+		self.RibbonMange=Auto_create_ribbon(parent=self,init_name="RibbonInit")
+		self._ribbon._ribbon_widget.setCurrentIndex(0)
 	def change_ribbon(self,init_name):
 		try:
 			self._ribbon._ribbon_widget.clear()
 			self.RibbonMange = Auto_create_ribbon(parent=self, init_name=init_name)
-			
 		except:
 			pass
-		
+
+	def closeEvent(self, close_event):
+		pass
+
 		
 	def rightMenuShow(self):
 		try:

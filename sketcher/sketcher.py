@@ -30,7 +30,7 @@ class SketchModule(object):
 		self.gp_Dir=None
 		self.show_element={}
 		self.new_do_draw_dict={"line":None,"circel":None,"rectangle":None,"arc":None,"profile":None}
-		self.parent.Displayshape_core.canva.mouse_move_Signal.trigger.connect(self.show_coordinate)
+		#self.parent.Displayshape_core.canva.mouse_move_Signal.trigger.connect(self.show_coordinate)
 		self.Dimension_Manege = Dimension_Manege(self)
 		self.sketcher_capture=sketcher_capture(self.parent)
 		

@@ -20,9 +20,9 @@ class Dimension_Manege():
 		self.arrow_length=1
 		self.text_height=1
 		self.text_size=1
-		self.parent.parent.Displayshape_core.canva.keyPressEvent_Signal.trigger.connect(self.dimension_changed)
-		self.parent.parent.Displayshape_core.canva.mousePressEvent_Signal.trigger.connect(self.drag_dimension)
-		self.parent.parent.Displayshape_core.canva.mouseDoubleClickEvent_Signal.trigger.connect(self.edit_dimension)
+		#self.parent.parent.Displayshape_core.canva.keyPressEvent_Signal.trigger.connect(self.dimension_changed)
+		#self.parent.parent.Displayshape_core.canva.mousePressEvent_Signal.trigger.connect(self.drag_dimension)
+		#self.parent.parent.Displayshape_core.canva.mouseDoubleClickEvent_Signal.trigger.connect(self.edit_dimension)
 		
 	
 	def setting_Prs3d_DimensionAspect(self,dimension_ID=0,dimension_alignment=0):

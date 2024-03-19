@@ -56,14 +56,14 @@ if __name__ == '__main__':
 	# --------------------
 	win = Mywindown()
 	win.show()
-	win.Displayshape_core.canva.InitDriver()
-	win.Displayshape_core.canva.qApp = app
-	win.Displayshape_core.canva._display.display_triedron()
+	#win.Displayshape_core.canva.InitDriver()
+	#win.Displayshape_core.canva.qApp = app
+	#win.Displayshape_core.canva._display.display_triedron()
 	#win.Displayshape_core.canva._display.set_bg_gradient_color(background_gradient_color1,
 															   #background_gradient_color2)
-	win.Displayshape_core.Displaydatum()
-	win.Displayshape_core.SetBackgroundImage()
-	win.Displayshape_core.DisplayCube()
+	#win.Displayshape_core.Displaydatum()
+	#win.Displayshape_core.SetBackgroundImage()
+	#win.Displayshape_core.DisplayCube()
 	#win.InteractiveOperate.Setting()
 	#win.Displayshape_core.canva._display.register_select_callback(win.InteractiveOperate.clicked_callback)
 	# make the application float to the top
