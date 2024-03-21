@@ -4,7 +4,7 @@ from OCC.Core.BRepBuilderAPI import BRepBuilderAPI_MakeEdge
 from OCC.Core.gp import gp_Lin
 from module.qtDisplay import qtViewer3d
 from PyQt5 import QtCore, QtGui, QtWidgets
-from ui import MainGui
+from ui import MainGui,ModuleSelect
 from PyQt5.QtWidgets import (QWidget, QTableWidget, QHBoxLayout, QApplication, QTableWidgetItem, QAbstractItemView,
 							 QComboBox, QPushButton, QDockWidget, QListWidget)
 from PyQt5.QtGui import QKeySequence as QKSec
@@ -118,7 +118,11 @@ class Ui_MainWindow(MainGui.Ui_MainWindow):
 		self.addToolBar(self._ribbon)
 		self.insertToolBarBreak(self._ribbon)
 		self.init_ribbon()
-		
+
+		#Create ModuleSelect
+		__moduleselect=ModuleSelect.moduleselect(self)
+		__moduleselect.show()
+
 		#Create TopBorderBar
 		#self.TopBorderBa=TopBorderBarWidget(self)
 		#self.addToolBar(QtCore.Qt.TopToolBarArea, self.TopBorderBa)
