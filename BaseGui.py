@@ -26,7 +26,7 @@ class Mywindown(QtWidgets.QMainWindow, ShowGui.Ui_MainWindow,MainGui.Ui_MainWind
 		if e.type() == QtCore.QEvent.WindowStateChange:
 			if self.isMinimized():
 				#print("窗口最小化")
-				pass
+				pass 
 			elif self.isMaximized():
 				#print("窗口最大化")
 				pass
@@ -69,5 +69,4 @@ if __name__ == '__main__':
 	# make the application float to the top
 	splash.finish(win)
 	win.raise_()
-	#win.showMaximized()
 	app.exec_()

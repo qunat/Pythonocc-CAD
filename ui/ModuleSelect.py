@@ -16,6 +16,7 @@ from GUI.StyleSheets import get_stylesheet
 class moduleselect(QtWidgets.QMainWindow):
     def __init__(self,parent):
         super(moduleselect,self).__init__(parent)
+        self.SetGeometry()
         self.setupUi()
         x = parent.geometry().x() + parent.geometry().width() / 2
         y = parent.geometry().y() + parent.geometry().height() / 2
@@ -26,7 +27,7 @@ class moduleselect(QtWidgets.QMainWindow):
         self.widget.setObjectName("ModuleSelect")
         self.widget.resize(830, 300)
         self.pushButton = QtWidgets.QPushButton(self.widget)
-        self.pushButton.setGeometry(QtCore.QRect(80, 35, 180, 160))
+        self.pushButton.setGeometry(self.__Buttongeometry["part"])
         self.pushButton.setText("")
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap("./Pic/model-removebg-preview.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
@@ -35,7 +36,7 @@ class moduleselect(QtWidgets.QMainWindow):
         self.pushButton.setAutoRepeatDelay(301)
         self.pushButton.setObjectName("pushButton")
         self.pushButton_2 = QtWidgets.QPushButton(self.widget)
-        self.pushButton_2.setGeometry(QtCore.QRect(310, 35, 180, 160))
+        self.pushButton_2.setGeometry(self.__Buttongeometry["assembly"])
         self.pushButton_2.setText("")
         icon1 = QtGui.QIcon()
         icon1.addPixmap(QtGui.QPixmap("./Pic/assembly-removebg-preview.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
@@ -43,7 +44,7 @@ class moduleselect(QtWidgets.QMainWindow):
         self.pushButton_2.setIconSize(QtCore.QSize(180, 160))
         self.pushButton_2.setObjectName("pushButton_2")
         self.pushButton_3 = QtWidgets.QPushButton(self.widget)
-        self.pushButton_3.setGeometry(QtCore.QRect(550, 35, 180, 160))
+        self.pushButton_3.setGeometry(self.__Buttongeometry["sheet"])
         self.pushButton_3.setText("")
         icon2 = QtGui.QIcon()
         icon2.addPixmap(QtGui.QPixmap("./Pic/sheet-removebg-preview.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
@@ -87,8 +88,13 @@ class moduleselect(QtWidgets.QMainWindow):
         self.label_3.setText(_translate("Form", "钣金"))
         self.pushButton_4.setText(_translate("Form", "退出"))
     def SetGeometry(self):
+        self.__Buttongeometry={}
         self.__geometry=[830, 300]
-        self.__Buttongeometry=[80, 50, 180, 160]
+        Button_width=180
+        Button_height=160
+        self.__Buttongeometry["part"]=QtCore.QRect(80, 35, Button_width, Button_height)
+        self.__Buttongeometry["assembly"]=QtCore.QRect(310, 35, Button_width, Button_height)
+        self.__Buttongeometry["sheet"]=QtCore.QRect(550, 35, Button_width, Button_height)
 
     def centerOnScreen(self):
         '''Centers the window on the screen.'''
