@@ -20,19 +20,20 @@ class moduleselect(QtWidgets.QMainWindow):
         self.setupUi()
         x = parent.geometry().x() + parent.geometry().width() / 2
         y = parent.geometry().y() + parent.geometry().height() / 2
-        self.setGeometry(x, y, 830, 250)
+        self.setGeometry(x, y, self.__geometry["X"], self.__geometry["Y"])
         self.setWindowTitle('模块选择')
+        #self.setStyleSheet("background-color: transparent; border: none;")
     def setupUi(self):
         self.widget = QtWidgets.QWidget(self)
         self.widget.setObjectName("ModuleSelect")
-        self.widget.resize(830, 300)
+        self.widget.resize(self.__geometry["X"], self.__geometry["Y"])
         self.pushButton = QtWidgets.QPushButton(self.widget)
         self.pushButton.setGeometry(self.__Buttongeometry["part"])
         self.pushButton.setText("")
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap("./Pic/model-removebg-preview.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.pushButton.setIcon(icon)
-        self.pushButton.setIconSize(QtCore.QSize(180, 160))
+        self.pushButton.setIconSize(QtCore.QSize(self.__Button_width, self.__Button_height))
         self.pushButton.setAutoRepeatDelay(301)
         self.pushButton.setObjectName("pushButton")
         self.pushButton_2 = QtWidgets.QPushButton(self.widget)
@@ -41,7 +42,7 @@ class moduleselect(QtWidgets.QMainWindow):
         icon1 = QtGui.QIcon()
         icon1.addPixmap(QtGui.QPixmap("./Pic/assembly-removebg-preview.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.pushButton_2.setIcon(icon1)
-        self.pushButton_2.setIconSize(QtCore.QSize(180, 160))
+        self.pushButton_2.setIconSize(QtCore.QSize(self.__Button_width, self.__Button_height))
         self.pushButton_2.setObjectName("pushButton_2")
         self.pushButton_3 = QtWidgets.QPushButton(self.widget)
         self.pushButton_3.setGeometry(self.__Buttongeometry["sheet"])
@@ -49,27 +50,27 @@ class moduleselect(QtWidgets.QMainWindow):
         icon2 = QtGui.QIcon()
         icon2.addPixmap(QtGui.QPixmap("./Pic/sheet-removebg-preview.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.pushButton_3.setIcon(icon2)
-        self.pushButton_3.setIconSize(QtCore.QSize(180, 160))
+        self.pushButton_3.setIconSize(QtCore.QSize(self.__Button_width, self.__Button_height))
         self.pushButton_3.setObjectName("pushButton_3")
         self.label = QtWidgets.QLabel(self.widget)
-        self.label.setGeometry(QtCore.QRect(160, 220, 71, 41))
+        self.label.setGeometry(self.__Lable["part"])
         font = QtGui.QFont()
         font.setFamily("微软雅黑 Light")
-        font.setPointSize(14)
+        font.setPointSize(self.__lable_size)
         self.label.setFont(font)
         self.label.setObjectName("label")
         self.label_2 = QtWidgets.QLabel(self.widget)
-        self.label_2.setGeometry(QtCore.QRect(380, 220, 71, 41))
+        self.label_2.setGeometry(self.__Lable["assembly"])
         font = QtGui.QFont()
         font.setFamily("微软雅黑 Light")
-        font.setPointSize(14)
+        font.setPointSize(self.__lable_size)
         self.label_2.setFont(font)
         self.label_2.setObjectName("label_2")
         self.label_3 = QtWidgets.QLabel(self.widget)
-        self.label_3.setGeometry(QtCore.QRect(630, 220, 71, 41))
+        self.label_3.setGeometry(self.__Lable["sheet"])
         font = QtGui.QFont()
         font.setFamily("微软雅黑 Light")
-        font.setPointSize(14)
+        font.setPointSize(self.__lable_size)
         self.label_3.setFont(font)
         self.label_3.setObjectName("label_3")
         self.pushButton_4 = QtWidgets.QPushButton(self.widget)
@@ -89,12 +90,33 @@ class moduleselect(QtWidgets.QMainWindow):
         self.pushButton_4.setText(_translate("Form", "退出"))
     def SetGeometry(self):
         self.__Buttongeometry={}
-        self.__geometry=[830, 300]
-        Button_width=180
-        Button_height=160
-        self.__Buttongeometry["part"]=QtCore.QRect(80, 35, Button_width, Button_height)
-        self.__Buttongeometry["assembly"]=QtCore.QRect(310, 35, Button_width, Button_height)
-        self.__Buttongeometry["sheet"]=QtCore.QRect(550, 35, Button_width, Button_height)
+        self.__Lable={}
+        self.__geometry={"X":700,"Y":225}
+
+        self.__Button_width=150
+        self.__Button_height=130
+
+        self.__Lable_width=60
+        self.__Lable_height=50
+
+        self.__lable_size=20
+
+        button_horizontal=int((self.__geometry["X"]-3*self.__Button_width)/4)
+        button_vertical=int((self.__geometry["Y"]-1*self.__Button_width)/2)
+
+        lable_horizontal=button_horizontal+(self.__Button_width-self.__Lable_width)/2
+        lable_vertical=10
+
+
+
+
+        self.__Buttongeometry["part"]=QtCore.QRect(button_horizontal, button_vertical, self.__Button_width, self.__Button_height)
+        self.__Buttongeometry["assembly"]=QtCore.QRect(2*button_horizontal+self.__Button_width, button_vertical, self.__Button_width, self.__Button_height)
+        self.__Buttongeometry["sheet"]=QtCore.QRect(3*button_horizontal+2*self.__Button_width, button_vertical, self.__Button_width, self.__Button_height)
+
+        self.__Lable["part"]=QtCore.QRect(lable_horizontal, button_vertical+self.__Button_height+lable_vertical, self.__Lable_width, self.__Lable_height)
+        self.__Lable["assembly"]=QtCore.QRect(1*button_horizontal+self.__Button_width+lable_horizontal, button_vertical+self.__Button_height+lable_vertical, self.__Lable_width, self.__Lable_height)
+        self.__Lable["sheet"]=QtCore.QRect(2*button_horizontal+2*self.__Button_width+lable_horizontal, button_vertical+self.__Button_height+lable_vertical, self.__Lable_width, self.__Lable_height)
 
     def centerOnScreen(self):
         '''Centers the window on the screen.'''
