@@ -36,9 +36,6 @@ class Mywindown(QtWidgets.QMainWindow, ShowGui.Ui_MainWindow,MainGui.Ui_MainWind
 			elif self.isActiveWindow():
 				#print("活动窗口")
 				pass
-		
-	
-
 
 if __name__ == '__main__':
 	# checks if QApplication already exists
