@@ -18,11 +18,10 @@ class moduleselect(QtWidgets.QMainWindow):
         super(moduleselect,self).__init__(parent)
         self.SetGeometry()
         self.setupUi()
-        x = parent.geometry().x() + parent.geometry().width() / 2
+        x = parent.geometry().x() + (parent.geometry().width() -self.__geometry["X"])/2
         y = parent.geometry().y() + parent.geometry().height() / 2
-        self.setGeometry(x, y, self.__geometry["X"], self.__geometry["Y"])
         self.setWindowTitle('模块选择')
-        #self.setStyleSheet("background-color: transparent; border: none;")
+        self.setStyleSheet(self.StyleSheet)
     def setupUi(self):
         self.widget = QtWidgets.QWidget(self)
         self.widget.setObjectName("ModuleSelect")
@@ -73,10 +72,16 @@ class moduleselect(QtWidgets.QMainWindow):
         font.setPointSize(self.__lable_size)
         self.label_3.setFont(font)
         self.label_3.setObjectName("label_3")
-        self.pushButton_4 = QtWidgets.QPushButton(self.widget)
-        self.pushButton_4.setGeometry(QtCore.QRect(710, 250, 100, 30))
-        self.pushButton_4.setAutoDefault(True)
-        self.pushButton_4.setObjectName("pushButton_4")
+
+        self.StyleSheet=('''
+                QPushButton {
+                "background-color: #4CAF50;"
+                border-radius: 50px;
+                color: white;
+                padding: 10px 20px;
+            }
+        ''')
+        
 
         self.retranslateUi(self.widget)
         QtCore.QMetaObject.connectSlotsByName(self.widget)
@@ -87,27 +92,24 @@ class moduleselect(QtWidgets.QMainWindow):
         self.label.setText(_translate("Form", "零件"))
         self.label_2.setText(_translate("Form", "装配"))
         self.label_3.setText(_translate("Form", "钣金"))
-        self.pushButton_4.setText(_translate("Form", "退出"))
     def SetGeometry(self):
         self.__Buttongeometry={}
         self.__Lable={}
         self.__geometry={"X":700,"Y":225}
 
-        self.__Button_width=150
-        self.__Button_height=130
+        self.__Button_width=120
+        self.__Button_height=100
 
-        self.__Lable_width=60
+        self.__Lable_width=50
         self.__Lable_height=50
 
-        self.__lable_size=20
+        self.__lable_size=15
 
         button_horizontal=int((self.__geometry["X"]-3*self.__Button_width)/4)
         button_vertical=int((self.__geometry["Y"]-1*self.__Button_width)/2)
 
         lable_horizontal=button_horizontal+(self.__Button_width-self.__Lable_width)/2
-        lable_vertical=10
-
-
+        lable_vertical=5
 
 
         self.__Buttongeometry["part"]=QtCore.QRect(button_horizontal, button_vertical, self.__Button_width, self.__Button_height)
@@ -117,6 +119,7 @@ class moduleselect(QtWidgets.QMainWindow):
         self.__Lable["part"]=QtCore.QRect(lable_horizontal, button_vertical+self.__Button_height+lable_vertical, self.__Lable_width, self.__Lable_height)
         self.__Lable["assembly"]=QtCore.QRect(1*button_horizontal+self.__Button_width+lable_horizontal, button_vertical+self.__Button_height+lable_vertical, self.__Lable_width, self.__Lable_height)
         self.__Lable["sheet"]=QtCore.QRect(2*button_horizontal+2*self.__Button_width+lable_horizontal, button_vertical+self.__Button_height+lable_vertical, self.__Lable_width, self.__Lable_height)
+        self.setFixedSize(self.__geometry["X"], (self.__geometry["Y"]))
 
     def centerOnScreen(self):
         '''Centers the window on the screen.'''
