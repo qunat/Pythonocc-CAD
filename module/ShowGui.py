@@ -18,7 +18,7 @@ from GUI.RibbonWidget import *
 from GUI.TittleBarWidget import *
 from GUI.TopBorderBarWidge import *
 from PyQt5.QtCore import  Qt
-from module import DisplayManager,ModelTree,OCAFModule,InteractiveModule
+from module import DisplayManager,ModelTree,OCAFModule,InteractiveModule,ModuleWindowManager
 from sketcher import sketcher
 from surface import swept
 from manufacture import manufacturing
@@ -97,6 +97,7 @@ class Ui_MainWindow(MainGui.Ui_MainWindow):
 	def __init__(self):
 		self.setupUi(self)
 		self.setWindowFlags(Qt.FramelessWindowHint)
+		self.ModuleWindowManager=ModuleWindowManager.modulewindowmanager(self)
 		#self.Displayshape_core=DisplayManager.DisplayManager(self)
 		self.OCAF=OCAFModule.OCAF(self)
 		self.modeltree=ModelTree.ModelTree()

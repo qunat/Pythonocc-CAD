@@ -16,12 +16,17 @@ from GUI.StyleSheets import get_stylesheet
 class moduleselect(QtWidgets.QMainWindow):
     def __init__(self,parent):
         super(moduleselect,self).__init__(parent)
+        self.parent=parent
         self.SetGeometry()
         self.setupUi()
         x = parent.geometry().x() + (parent.geometry().width() -self.__geometry["X"])/2
         y = parent.geometry().y() + parent.geometry().height() / 2
         self.setWindowTitle('模块选择')
         self.setStyleSheet(self.StyleSheet)
+        self.pushButton.clicked.connect(self.close)
+        self.pushButton.clicked.connect(self.parent.ModuleWindowManager.CreatePartWindown)
+
+
     def setupUi(self):
         self.widget = QtWidgets.QWidget(self)
         self.widget.setObjectName("ModuleSelect")
@@ -85,6 +90,8 @@ class moduleselect(QtWidgets.QMainWindow):
 
         self.retranslateUi(self.widget)
         QtCore.QMetaObject.connectSlotsByName(self.widget)
+        
+
 
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
@@ -120,6 +127,7 @@ class moduleselect(QtWidgets.QMainWindow):
         self.__Lable["assembly"]=QtCore.QRect(1*button_horizontal+self.__Button_width+lable_horizontal, button_vertical+self.__Button_height+lable_vertical, self.__Lable_width, self.__Lable_height)
         self.__Lable["sheet"]=QtCore.QRect(2*button_horizontal+2*self.__Button_width+lable_horizontal, button_vertical+self.__Button_height+lable_vertical, self.__Lable_width, self.__Lable_height)
         self.setFixedSize(self.__geometry["X"], (self.__geometry["Y"]))
+
 
     def centerOnScreen(self):
         '''Centers the window on the screen.'''

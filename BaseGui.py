@@ -28,7 +28,6 @@ class Mywindown(QtWidgets.QMainWindow, ShowGui.Ui_MainWindow,MainGui.Ui_MainWind
 				#print("窗口最小化")
 				pass 
 			elif self.isMaximized():
-				#print("窗口最大化")
 				pass
 			elif self.isFullScreen():
 				#print("全屏显示")
@@ -62,7 +61,7 @@ if __name__ == '__main__':
 	#win.Displayshape_core.SetBackgroundImage()
 	#win.Displayshape_core.DisplayCube()
 	#win.InteractiveOperate.Setting()
-	#win.Displayshape_core.canva._display.register_select_callback(win.InteractiveOperate.clicked_callback)
+	#win.Displayshape_core.canva._displaax: int, ay: int, aw: int, ah: inty.register_select_callback(win.InteractiveOperate.clicked_callback)
 	# make the application float to the top
 	splash.finish(win)
 	win.raise_()
