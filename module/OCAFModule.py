@@ -42,8 +42,11 @@ class OCAF(object):
 	def Open_part(self):
 		try:
 			id = 0
-			self.parent.Displayshape_core.canva._display.register_select_callback(self.clicked_callback)
-			#self.parent.Displayshape_core.canva._display.EraseAll()
+			index=self.parent.ModuleWindowManager.tabwidget.currentIndex()
+			name=self.parent.ModuleWindowManager.tabwidget.tabText(index)
+			print(name)
+			self.parent.Displayshape_core_dict[name].canva._display.register_select_callback(self.clicked_callback)
+			#self.parent.Displayshape_core_dict[name].canva._display.EraseAll()
 			self.parent.modeltree.Clear_tree_NodeList()
 			self.chose_document = QFileDialog.getOpenFileName(self.parent, '打开文件', './',
 															  " STP files(*.stp , *.step);;IGES files(*.iges);;STL files(*.stl)")  # 选择转换的文价夹
@@ -77,8 +80,8 @@ class OCAF(object):
 						# color=Quantity_Color(c.Red(),c.Green(), c.Blue(),Quantity_TOC_RGB)
 						if not isinstance(shpt_lbl_color, TopoDS_Solid):  # 排除非solid
 							continue
-						return_shape = self.parent.Displayshape_core.canva._display.DisplayShape(shpt_lbl_color,color=Quantity_Color(c.Red(),c.Green(),c.Blue(),Quantity_TOC_RGB),update=True)
-						self.parent.Displayshape_core.shape_maneger_core_dict[id] = return_shape[0]
+						return_shape = self.parent.Displayshape_core_dict[name].canva._display.DisplayShape(shpt_lbl_color,color=Quantity_Color(c.Red(),c.Green(),c.Blue(),Quantity_TOC_RGB),update=True)
+						self.parent.Displayshape_core_dict[name].shape_maneger_core_dict[id] = return_shape[0]
 						id += 1
 						QApplication.processEvents()
 
@@ -99,7 +102,7 @@ class OCAF(object):
 				
 				elif end_with.endswith(".iges") or end_with.endswith(".igs"):#stp格式导入
 					import_shape = read_iges_file(filepath)
-					self.parent.Displayshape_core.canva._display.DisplayShape(import_shape)
+					self.parent.Displayshape_core_dict[name].canva._display.DisplayShape(import_shape)
 					self.import_shape={import_shape:None}
 					root_dict = NoDumpProcess(self.import_shape.keys(), file=filepath).root_dict
 					self.parent.modeltree.Create_tree_NodeList(root_dict=root_dict)
@@ -109,7 +112,7 @@ class OCAF(object):
 				
 				elif end_with.endswith(".stl") or end_with.endswith(".stl"):#stl格式导入
 					import_shape = read_stl_file(filepath)
-					self.parent.Displayshape_core.canva._display.DisplayShape(import_shape)
+					self.parent.Displayshape_core_dict[name].canva._display.DisplayShape(import_shape)
 					self.import_shape={import_shape:None}
 					root_dict = NoDumpProcess(self.import_shape.keys(), file=filepath).root_dict
 					self.parent.modeltree.Create_tree_NodeList(root_dict=root_dict)
@@ -163,9 +166,9 @@ class OCAF(object):
 						# color=Quantity_Color(c.Red(),c.Green(), c.Blue(),Quantity_TOC_RGB)
 						if not isinstance(shpt_lbl_color, TopoDS_Solid):  # 排除非solid
 							continue
-						return_shape = self.parent.Displayshape_core.canva._display.DisplayShape(shpt_lbl_color,color=Quantity_Color(c.Red(),c.Green(),c.Blue(),Quantity_TOC_RGB),update=True)
+						return_shape = self.parent.Displayshape_core_dict[name].canva._display.DisplayShape(shpt_lbl_color,color=Quantity_Color(c.Red(),c.Green(),c.Blue(),Quantity_TOC_RGB),update=True)
 						self.__shape.append(shpt_lbl_color)
-						self.parent.Displayshape_core.shape_maneger_core_dict[id] = return_shape[0]
+						self.parent.Displayshape_core_dict[name].shape_maneger_core_dict[id] = return_shape[0]
 						QApplication.processEvents()
 
 					# 建立模型树
@@ -182,7 +185,7 @@ class OCAF(object):
 
 				elif end_with.endswith(".iges") or end_with.endswith(".igs"):#stp格式导入
 					import_shape = read_iges_file(filepath)
-					self.parent.Displayshape_core.canva._display.DisplayShape(import_shape)
+					self.parent.Displayshape_core_dict[name].canva._display.DisplayShape(import_shape)
 					self.import_shape={import_shape:None}
 					root_dict = NoDumpProcess(self.import_shape.keys(), file=filepath).root_dict
 					self.parent.modeltree.Create_tree_NodeList(root_dict=root_dict)
@@ -193,7 +196,7 @@ class OCAF(object):
 				elif end_with.endswith(".stl") or end_with.endswith(".stl"):#stl格式导入
 					import_shape = read_stl_file(filepath)
 					self.__shape.append(import_shape)
-					self.parent.Displayshape_core.canva._display.DisplayShape(import_shape)
+					self.parent.Displayshape_core_dict[name].canva._display.DisplayShape(import_shape)
 					self.import_shape={import_shape:None}
 					root_dict = NoDumpProcess(self.import_shape.keys(), file=filepath).root_dict
 					self.parent.modeltree.Create_tree_NodeList(root_dict=root_dict)
@@ -212,7 +215,7 @@ class OCAF(object):
 		try:
 			result_shape = BRepAlgoAPI_Cut(self.__shape[0], self.__shape[1]).Shape()
 			print(1111,result_shape)
-			self.parent.Displayshape_core.canva._display.DisplayShape(result_shape, update=True)
+			self.parent.Displayshape_core_dict[name].canva._display.DisplayShape(result_shape, update=True)
 		except Exception as e:
 			print(e)
 	

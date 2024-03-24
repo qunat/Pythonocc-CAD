@@ -164,6 +164,7 @@ class Ui_MainWindow(MainGui.Ui_MainWindow):
 		try:
 			self._ribbon._ribbon_widget.clear()
 			self.RibbonMange = Auto_create_ribbon(parent=self, init_name=init_name)
+			self._ribbon._ribbon_widget.setCurrentIndex(1)
 		except:
 			pass
 
