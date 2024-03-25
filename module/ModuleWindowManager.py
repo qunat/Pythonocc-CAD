@@ -40,8 +40,8 @@ class modulewindowmanager(object):
 		self.parent.Displayshape_core_dict[self.windownname[-1]].canva.setFocus()
 		self.tabwidget.repaint()
 		self.tabwidget.setFocus()
-		self.tabwidget.setCurrentIndex(1)
-		self.tabwidget.setCurrentIndex(0)
+		#self.tabwidget.setCurrentIndex(1)
+		#self.tabwidget.setCurrentIndex(0)
 		self.parent.repaint()
 
 		#change part ribbon 
