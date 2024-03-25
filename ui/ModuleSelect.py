@@ -102,7 +102,7 @@ class moduleselect(QtWidgets.QMainWindow):
     def SetGeometry(self):
         self.__Buttongeometry={}
         self.__Lable={}
-        self.__geometry={"X":700,"Y":225}
+        self.__geometry={"X":650,"Y":200}
 
         self.__Button_width=120
         self.__Button_height=100

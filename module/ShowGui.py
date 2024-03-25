@@ -34,6 +34,7 @@ class Auto_create_ribbon(object):
 		self.panel_dict = {}
 		self.Read_ribbon_init(init_name)
 		self.Create_ribbon()
+
 	def Read_ribbon_init(self,init_name):
 		with open("./GUI/{}.ini".format(init_name),"r",encoding="utf-8") as f:
 			inner=f.readlines()
@@ -44,6 +45,7 @@ class Auto_create_ribbon(object):
 					i=i.replace("\n","")
 					self.ribbon_list.append(i)
 	def Create_ribbon(self):
+		print(self.parent.moduleselect)
 		for ribbon in self.ribbon_list:
 			ribbon_list=ribbon.split(" ")
 			table_name=ribbon_list[0].split("=")[1]
@@ -97,17 +99,28 @@ class Ui_MainWindow(MainGui.Ui_MainWindow):
 	def __init__(self):
 		self.setupUi(self)
 		self.setWindowFlags(Qt.FramelessWindowHint)
+		#init winwows manager module
 		self.ModuleWindowManager=ModuleWindowManager.modulewindowmanager(self)
-		#self.Displayshape_core=DisplayManager.DisplayManager(self)
+		#init OCAF module
 		self.OCAF=OCAFModule.OCAF(self)
+		#init modeltree module
 		self.modeltree=ModelTree.ModelTree()
+		#init InteractiveOperate module
 		self.InteractiveOperate=InteractiveModule.InteractiveOperate(self)
+		#init Sketcher module
 		self.Sketcher=sketcher.SketchModule(self)
+		#init surface module
 		self.Surface=swept.Surface(self)
+		#init manufacturing module 
 		self.Manufacturing=manufacturing.manufacturing(self)
+
+
+		#Create ModuleSelect
+		self.moduleselect=ModuleSelect.moduleselect(self)
+
+		# Create TittleBar
 		self.statusBar=QtWidgets.QStatusBar()
-		#self.setCentralWidget(self.Displayshape_core.canva)
-		#print(QtGui.QImageReader.supportedImageFormats())
+		
 		
 		# Create TittleBar
 		self.TittleBar = TittleBarWidget(self)
@@ -120,25 +133,8 @@ class Ui_MainWindow(MainGui.Ui_MainWindow):
 		self.insertToolBarBreak(self._ribbon)
 		self.init_ribbon()
 
-		#Create ModuleSelect
-		__moduleselect=ModuleSelect.moduleselect(self)
-		__moduleselect.show()
-
-		#Create TopBorderBar
-		#self.TopBorderBa=TopBorderBarWidget(self)
-		#self.addToolBar(QtCore.Qt.TopToolBarArea, self.TopBorderBa)
-		#self.insertToolBarBreak(self.TopBorderBa)
-		#exitAct = QAction(QIcon('./icons/copy.png'), 'Exit', self)
-		#self.toolBar.addAction(exitAct)
 		
 		
-		
-		#Create ModelTree
-		#self.items = QDockWidget('组合浏览器', self)  # 新建QDockWidget
-		#self.addDockWidget(Qt.LeftDockWidgetArea, self.items)  # 在主显示区域右侧显示
-		#self.items.setMinimumWidth(280)# 设置最小大小
-		#self.items.setWidget(self.modeltree.tree)
-
 		#右键单击弹出界面
 		self.menuBar = QtWidgets.QMenuBar()
 		self.menuBar.setGeometry(QtCore.QRect(0, 0, 606 , 26))

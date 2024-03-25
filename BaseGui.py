@@ -38,7 +38,7 @@ class Mywindown(QtWidgets.QMainWindow, ShowGui.Ui_MainWindow,MainGui.Ui_MainWind
 
 if __name__ == '__main__':
 	# checks if QApplication already exists
-	QApplication.setStyle(QStyleFactory.create('Fusion'))
+	#QApplication.setStyle(QStyleFactory.create('Fusion'))
 	app = QtWidgets.QApplication.instance()
 	if not app:
 		app = QtWidgets.QApplication(sys.argv)
