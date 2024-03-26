@@ -44,7 +44,6 @@ class OCAF(object):
 			id = 0
 			index=self.parent.ModuleWindowManager.tabwidget.currentIndex()
 			name=self.parent.ModuleWindowManager.tabwidget.tabText(index)
-			print(name)
 			self.parent.Displayshape_core_dict[name].canva._display.register_select_callback(self.clicked_callback)
 			#self.parent.Displayshape_core_dict[name].canva._display.EraseAll()
 			self.parent.modeltree.Clear_tree_NodeList()
@@ -135,6 +134,8 @@ class OCAF(object):
 	
 	def Import_part(self):
 		try:
+			index=self.parent.ModuleWindowManager.tabwidget.currentIndex()
+			name=self.parent.ModuleWindowManager.tabwidget.tabText(index)
 			self.chose_document = QFileDialog.getOpenFileName(self.parent, '导入文件', './',
 															  " STP files(*.stp , *.step);;IGES files(*.iges);;STL files(*.stl)")  # 选择转换的文价夹
 			filepath = self.chose_document[0]  # 获取打开文件夹路径
@@ -159,7 +160,7 @@ class OCAF(object):
 					except:
 						root_dict = NoDumpProcess(self.import_shape.keys(), file=filepath).root_dict
 						pass
-					print("root_dict",root_dict)
+					#print("root_dict",root_dict)
 					for shpt_lbl_color in self.import_shape:
 						
 						label, c, property = self.import_shape[shpt_lbl_color]
@@ -214,7 +215,6 @@ class OCAF(object):
 		print(self.__shape)
 		try:
 			result_shape = BRepAlgoAPI_Cut(self.__shape[0], self.__shape[1]).Shape()
-			print(1111,result_shape)
 			self.parent.Displayshape_core_dict[name].canva._display.DisplayShape(result_shape, update=True)
 		except Exception as e:
 			print(e)

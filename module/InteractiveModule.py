@@ -27,16 +27,18 @@ class InteractiveOperate(object):
 		self.InteractiveClose=None
 
 	def Setting(self,Prs3d_TypeOfHighlight=0):
-		self.parent.Displayshape_core.canva._display.Context.SetAutomaticHilight(True)
-		self.parent.Displayshape_core.canva._display.SetSelectionMode(TopAbs_VERTEX)
-		self.parent.Displayshape_core.canva._display.Context.Deactivate()
-		self.parent.Displayshape_core.canva._display.Context.Activate(AIS_Shape_SelectionMode(TopAbs_FACE),True)
-		self.parent.Displayshape_core.canva._display.Context.UpdateSelected(True)
-		self.parent.Displayshape_core.canva._display.Context.SetAutoActivateSelection(True)
+		index=self.parent.ModuleWindowManager.tabwidget.currentIndex()
+		name=self.parent.ModuleWindowManager.tabwidget.tabText(index)
+		self.parent.Displayshape_core_dict[name].canva._display.Context.SetAutomaticHilight(True)
+		self.parent.Displayshape_core_dict[name].canva._display.SetSelectionMode(TopAbs_VERTEX)
+		self.parent.Displayshape_core_dict[name].canva._display.Context.Deactivate()
+		self.parent.Displayshape_core_dict[name].canva._display.Context.Activate(AIS_Shape_SelectionMode(TopAbs_FACE),True)
+		self.parent.Displayshape_core_dict[name].canva._display.Context.UpdateSelected(True)
+		self.parent.Displayshape_core_dict[name].canva._display.Context.SetAutoActivateSelection(True)
 		
-		HighlightStyle = self.parent.Displayshape_core.canva._display.Context.HighlightStyle()
+		HighlightStyle = self.parent.Displayshape_core_dict[name].canva._display.Context.HighlightStyle()
 		HighlightStyle.SetColor(Quantity_Color(255 / 255, 128 / 255, 0 / 255, Quantity_TOC_RGB))
-		SelectionStyle = self.parent.Displayshape_core.canva._display.Context.SelectionStyle()
+		SelectionStyle = self.parent.Displayshape_core_dict[name].canva._display.Context.SelectionStyle()
 		HighlightStyle.SetMethod(Aspect_TOHM_COLOR)  # 颜色显示方式
 		# SelectionStyle.SetMethod(Aspect_TOHM_COLOR)# 颜色显示方式
 		SelectionStyle.SetColor(Quantity_Color(0 / 255, 0 / 255, 0 / 255, Quantity_TOC_RGB))  # 设置选择后颜色
@@ -48,19 +50,19 @@ class InteractiveOperate(object):
 		#SetTypeOfMarker(Prs3d_TypeOfMarker::Prs3d_TOM_CIRCLE)
 		asp.SetScale( 2)
 		HighlightStyle.SetPointAspect(asp)
-		self.parent.Displayshape_core.canva._display.Context.SetHighlightStyle(0,HighlightStyle)
-		self.parent.Displayshape_core.canva._display.Context.SetSelectionStyle(SelectionStyle)
-		self.parent.Displayshape_core.canva._display.SetSelectionMode(TopAbs_VERTEX)
-		self.parent.Displayshape_core.canva._display.SetSelectionMode(-1)
+		self.parent.Displayshape_core_dict[name].canva._display.Context.SetHighlightStyle(0,HighlightStyle)
+		self.parent.Displayshape_core_dict[name].canva._display.Context.SetSelectionStyle(SelectionStyle)
+		self.parent.Displayshape_core_dict[name].canva._display.SetSelectionMode(TopAbs_VERTEX)
+		self.parent.Displayshape_core_dict[name].canva._display.SetSelectionMode(-1)
 
 		# SelectionStyle.t_select_style->SetDisplayMode(1)#整体高亮
 		# t_select_style->SetTransparency(0.1)
 		# 高亮点的样式设置
 		# aspectMarker=Graphic3d_AspectMarker3d(Aspect_TOM_PLUS)
 		# aspectMarker.SetColor(Quantity_Color(1.0, 0.0, 0.0, Quantity_TOC_RGB))
-		#self.parent.Displayshape_core.canva._display.Context.SetHighlightStyle(aspectMarker)
+		#self.parent.Displayshape_core_dict[name].canva._display.Context.SetHighlightStyle(aspectMarker)
 		#SetMethod()
-		#myGroup = Graphic3d_Group(self.parent.Displayshape_core.canva._display.GetView())
+		#myGroup = Graphic3d_Group(self.parent.Displayshape_core_dict[name].canva._display.GetView())
 		#myMarker = Graphic3d_MarkerImage(Aspect_TOM_O, Quantity_Color(c), 8, 1)
 		#myGroup.Marker(myMarker)
 

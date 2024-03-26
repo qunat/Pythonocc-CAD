@@ -38,11 +38,13 @@ class modulewindowmanager(object):
 		self.parent.Displayshape_core_dict[self.windownname[-1]].DisplayCube()
 		self.parent.Displayshape_core_dict[self.windownname[-1]].canva._display.Repaint()
 		self.parent.Displayshape_core_dict[self.windownname[-1]].canva.setFocus()
+		self.tabwidget.setCurrentIndex(self.tabwidget.count()-1)
+		self.parent.Displayshape_core_dict[self.windownname[-1]].canva._display.OnResize()
+		self.tabwidget.update()
 		self.tabwidget.repaint()
 		self.tabwidget.setFocus()
-		#self.tabwidget.setCurrentIndex(1)
-		#self.tabwidget.setCurrentIndex(0)
 		self.parent.repaint()
+		#self.parent.resize(1008, 767)
 
 		#change part ribbon 
 		if self.items==None and self.TopBorderBa==None:
