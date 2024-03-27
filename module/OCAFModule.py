@@ -46,7 +46,7 @@ class OCAF(object):
 			name=self.parent.ModuleWindowManager.tabwidget.tabText(index)
 			self.parent.Displayshape_core_dict[name].canva._display.register_select_callback(self.clicked_callback)
 			#self.parent.Displayshape_core_dict[name].canva._display.EraseAll()
-			self.parent.modeltree.Clear_tree_NodeList()
+			self.parent.modeltree_dict[name].Clear_tree_NodeList()
 			self.chose_document = QFileDialog.getOpenFileName(self.parent, '打开文件', './',
 															  " STP files(*.stp , *.step);;IGES files(*.iges);;STL files(*.stl)")  # 选择转换的文价夹
 			filepath = self.chose_document[0]  # 获取打开文件夹路径
@@ -88,7 +88,7 @@ class OCAF(object):
 					#print("显示",root_dict)
 					try:
 						if root_dict != None:
-							self.parent.modeltree.Create_tree_NodeList(root_dict=root_dict)
+							self.parent.modeltree_dict[name].Create_tree_NodeList(root_dict=root_dict)
 						else:
 							pass
 					except:
@@ -104,7 +104,7 @@ class OCAF(object):
 					self.parent.Displayshape_core_dict[name].canva._display.DisplayShape(import_shape)
 					self.import_shape={import_shape:None}
 					root_dict = NoDumpProcess(self.import_shape.keys(), file=filepath).root_dict
-					self.parent.modeltree.Create_tree_NodeList(root_dict=root_dict)
+					self.parent.modeltree_dict[name].Create_tree_NodeList(root_dict=root_dict)
 					self.parent.statusbar.showMessage("状态：打开成功")  ###
 					self.parent.statusBar.showMessage('状态：软件运行正常')
 				
@@ -114,7 +114,7 @@ class OCAF(object):
 					self.parent.Displayshape_core_dict[name].canva._display.DisplayShape(import_shape)
 					self.import_shape={import_shape:None}
 					root_dict = NoDumpProcess(self.import_shape.keys(), file=filepath).root_dict
-					self.parent.modeltree.Create_tree_NodeList(root_dict=root_dict)
+					self.parent.modeltree_dict[name].Create_tree_NodeList(root_dict=root_dict)
 					self.parent.statusbar.showMessage("状态：打开成功")  ###
 					self.parent.statusBar.showMessage('状态：软件运行正常')
 			
@@ -175,7 +175,7 @@ class OCAF(object):
 					# 建立模型树
 					try:
 						if root_dict != None:
-							self.parent.modeltree.Create_tree_NodeList(root_dict=root_dict)
+							self.parent.modeltree_dict[name].Create_tree_NodeList(root_dict=root_dict)
 						else:
 							pass
 					except:
@@ -189,7 +189,7 @@ class OCAF(object):
 					self.parent.Displayshape_core_dict[name].canva._display.DisplayShape(import_shape)
 					self.import_shape={import_shape:None}
 					root_dict = NoDumpProcess(self.import_shape.keys(), file=filepath).root_dict
-					self.parent.modeltree.Create_tree_NodeList(root_dict=root_dict)
+					self.parent.modeltree_dict[name].Create_tree_NodeList(root_dict=root_dict)
 					self.parent.statusbar.showMessage("状态：打开成功")  ###
 					self.parent.statusBar.showMessage('状态：软件运行正常')
 				
@@ -200,7 +200,7 @@ class OCAF(object):
 					self.parent.Displayshape_core_dict[name].canva._display.DisplayShape(import_shape)
 					self.import_shape={import_shape:None}
 					root_dict = NoDumpProcess(self.import_shape.keys(), file=filepath).root_dict
-					self.parent.modeltree.Create_tree_NodeList(root_dict=root_dict)
+					self.parent.modeltree_dict[name].Create_tree_NodeList(root_dict=root_dict)
 					self.parent.statusbar.showMessage("状态：打开成功")  ###
 					self.parent.statusBar.showMessage('状态：软件运行正常')
 

@@ -2,7 +2,7 @@
 import sys
 from PyQt5.QtWidgets import QApplication, QMainWindow, QTabWidget, QWidget, QVBoxLayout, QLabel,QDockWidget
 from PyQt5 import QtWidgets,QtGui,QtCore
-from module import DisplayManager
+from module import DisplayManager,ModelTree
 from GUI.TopBorderBarWidge import *
 
 class modulewindowmanager(object):
@@ -16,8 +16,10 @@ class modulewindowmanager(object):
 		# initial windownname number
 		self.modulewindowname_dict={}
 		self.parent.Displayshape_core_dict={}
+		self.parent.modeltree_dict={}
 		self.windownname=["零件1"]
 		self.windownnum=1
+		self.tabwidget.currentChanged.connect(self.TabwidgetChangeEvent)
 
 
 	def CreatePartWindown(self):
@@ -44,7 +46,6 @@ class modulewindowmanager(object):
 		self.tabwidget.repaint()
 		self.tabwidget.setFocus()
 		self.parent.repaint()
-		#self.parent.resize(1008, 767)
 
 		#change part ribbon 
 		if self.items==None and self.TopBorderBa==None:
@@ -55,7 +56,8 @@ class modulewindowmanager(object):
 			self.items = QDockWidget('组合浏览器', self.parent)  # 新建QDockWidget
 			self.parent.addDockWidget(QtCore.Qt.LeftDockWidgetArea, self.items)  # 在主显示区域右侧显示
 			self.items.setMinimumWidth(280)# 设置最小大小
-			self.items.setWidget(self.parent.modeltree.tree)
+		self.parent.modeltree_dict[self.windownname[-1]]=ModelTree.ModelTree()
+		self.items.setWidget(self.parent.modeltree_dict[self.windownname[-1]].tree)
 
 		#Create TopBorderBar
 		if self.TopBorderBa==None:	
@@ -74,3 +76,11 @@ class modulewindowmanager(object):
 		pass
 	def CreateSheetWindown(self):
 		pass
+	def TabwidgetChangeEvent(self):
+		try:
+			index=self.tabwidget.currentIndex()
+			name=self.tabwidget.tabText(index)
+			print(self.parent.modeltree_dict)
+			self.items.setWidget(self.parent.modeltree_dict[name].tree)
+		except:
+			pass

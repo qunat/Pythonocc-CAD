@@ -104,7 +104,7 @@ class Ui_MainWindow(MainGui.Ui_MainWindow):
 		#init OCAF module
 		self.OCAF=OCAFModule.OCAF(self)
 		#init modeltree module
-		self.modeltree=ModelTree.ModelTree()
+		#self.modeltree=ModelTree.ModelTree()
 		#init InteractiveOperate module
 		self.InteractiveOperate=InteractiveModule.InteractiveOperate(self)
 		#init Sketcher module
