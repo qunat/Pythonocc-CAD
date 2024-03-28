@@ -22,13 +22,17 @@ class modulewindowmanager(object):
 		self.tabwidget.currentChanged.connect(self.TabwidgetChangeEvent)
 
 
-	def CreatePartWindown(self):
+	def CreatePartWindown(self,name=None):
 		app = QtWidgets.QApplication.instance()
 		if not app:
 			app = QtWidgets.QApplication(sys.argv)
 		
+		if name==None:
+			self.CreateWindownname()
+		else:
+			self.windownname.append(name)
+
 		# Add tabs to the tab widget
-		self.CreateWindownname()
 		self.parent.Displayshape_core_dict[self.windownname[-1]]=DisplayManager.DisplayManager(self.parent)
 		self.tabwidget.addTab(self.parent.Displayshape_core_dict[self.windownname[-1]].canva, self.windownname[-1])
 		self.parent.setCentralWidget(self.tabwidget)
@@ -80,7 +84,6 @@ class modulewindowmanager(object):
 		try:
 			index=self.tabwidget.currentIndex()
 			name=self.tabwidget.tabText(index)
-			print(self.parent.modeltree_dict)
 			self.items.setWidget(self.parent.modeltree_dict[name].tree)
 		except:
 			pass

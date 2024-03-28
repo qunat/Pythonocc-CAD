@@ -11,6 +11,7 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from GUI import gui_scale
 from GUI.StyleSheets import get_stylesheet
+from functools import partial
 
 
 class moduleselect(QtWidgets.QMainWindow):
@@ -24,7 +25,7 @@ class moduleselect(QtWidgets.QMainWindow):
         self.setWindowTitle('模块选择')
         self.setStyleSheet(self.StyleSheet)
         self.pushButton.clicked.connect(self.close)
-        self.pushButton.clicked.connect(self.parent.ModuleWindowManager.CreatePartWindown)
+        self.pushButton.clicked.connect(partial(self.parent.ModuleWindowManager.CreatePartWindown,None))
 
 
     def setupUi(self):

@@ -42,21 +42,24 @@ class OCAF(object):
 	def Open_part(self):
 		try:
 			id = 0
-			index=self.parent.ModuleWindowManager.tabwidget.currentIndex()
-			name=self.parent.ModuleWindowManager.tabwidget.tabText(index)
-			self.parent.Displayshape_core_dict[name].canva._display.register_select_callback(self.clicked_callback)
-			#self.parent.Displayshape_core_dict[name].canva._display.EraseAll()
-			self.parent.modeltree_dict[name].Clear_tree_NodeList()
+			
 			self.chose_document = QFileDialog.getOpenFileName(self.parent, '打开文件', './',
 															  " STP files(*.stp , *.step);;IGES files(*.iges);;STL files(*.stl)")  # 选择转换的文价夹
 			filepath = self.chose_document[0]  # 获取打开文件夹路径
+			print(self.chose_document)
 			if os.path.exists(filepath) and filepath!="":
 				end_with = str(filepath).lower()
 				self.parent.statusbar.showMessage("状态：正在打开，请稍后......")  ###
 				Loadprocess=ProcessWidgets.ProcessWidget(self.parent)
 				Loadprocess.Show()
 				QApplication.processEvents()
-
+				#index=self.parent.ModuleWindowManager.tabwidget.currentIndex()
+				#name=self.parent.ModuleWindowManager.tabwidget.tabText(index)
+				name=filepath.split("/")[-1].split(".")[0]
+				self.parent.ModuleWindowManager.CreatePartWindown(name)
+				self.parent.Displayshape_core_dict[name].canva._display.register_select_callback(self.clicked_callback)
+				#self.parent.Displayshape_core_dict[name].canva._display.EraseAll()
+				self.parent.modeltree_dict[name].Clear_tree_NodeList()
 				
 				# 判断文件类型 选择对应的导入函数
 				if end_with.endswith(".step") or end_with.endswith("stp"):#stp格式导入
