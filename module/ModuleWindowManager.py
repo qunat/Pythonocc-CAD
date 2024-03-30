@@ -4,6 +4,7 @@ from PyQt5.QtWidgets import QApplication, QMainWindow, QTabWidget, QWidget, QVBo
 from PyQt5 import QtWidgets,QtGui,QtCore
 from module import DisplayManager,ModelTree
 from GUI.TopBorderBarWidge import *
+from GUI.ViewLeaderWidget import *
 
 class modulewindowmanager(object):
 	def __init__(self,parent=None):
@@ -17,6 +18,7 @@ class modulewindowmanager(object):
 		self.modulewindowname_dict={}
 		self.parent.Displayshape_core_dict={}
 		self.parent.modeltree_dict={}
+		self.ViewleaderBar_dict={}
 		self.windownname=["零件1"]
 		self.windownnum=1
 		self.tabwidget.currentChanged.connect(self.TabwidgetChangeEvent)
@@ -44,13 +46,17 @@ class modulewindowmanager(object):
 		self.parent.Displayshape_core_dict[self.windownname[-1]].DisplayCube()
 		self.parent.Displayshape_core_dict[self.windownname[-1]].canva._display.Repaint()
 		self.parent.Displayshape_core_dict[self.windownname[-1]].canva.setFocus()
+		self.ViewleaderBar_dict[self.windownname[-1]]=ViewLeaderWidget(self.parent.Displayshape_core_dict[self.windownname[-1]].canva)
+		self.ViewleaderBar_dict[self.windownname[-1]].setGeometry(QtCore.QRect(300,0,300,32))
+		self.ViewleaderBar_dict[self.windownname[-1]].repaint()
 		self.tabwidget.setCurrentIndex(self.tabwidget.count()-1)
 		self.parent.Displayshape_core_dict[self.windownname[-1]].canva._display.OnResize()
 		self.tabwidget.update()
 		self.tabwidget.repaint()
 		self.tabwidget.setFocus()
 		self.parent.repaint()
-
+		#Create ViewleaderBar
+		
 		#change part ribbon 
 		if self.items==None and self.TopBorderBa==None:
 			self.parent.change_ribbon("RibbonMain")  

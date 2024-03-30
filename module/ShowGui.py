@@ -17,6 +17,7 @@ from OCC.Core.gp import gp_Pnt, gp_Dir, gp_Lin, gp_Ax2, gp_Dir, gp_Pln, gp_Origi
 from GUI.RibbonWidget import *
 from GUI.TittleBarWidget import *
 from GUI.TopBorderBarWidge import *
+from GUI.ViewLeaderWidget import *
 from PyQt5.QtCore import  Qt
 from module import DisplayManager,ModelTree,OCAFModule,InteractiveModule,ModuleWindowManager
 from sketcher import sketcher
@@ -126,6 +127,8 @@ class Ui_MainWindow(MainGui.Ui_MainWindow):
 		self.TittleBar = TittleBarWidget(self)
 		self.addToolBar(self.TittleBar)
 		#self.init_ribbon()
+
+		
 		
 		# Create Ribbon
 		self._ribbon = RibbonWidget(self)
