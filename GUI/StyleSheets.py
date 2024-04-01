@@ -20,6 +20,9 @@ class Stylesheets(object):
 		self.make_stylesheet("ribbonSmallButton", "stylesheets/ribbonSmallButton.css")
 		self.make_stylesheet("tittlebarButton", "stylesheets/tittlebarButton.css")
 		self.make_stylesheet("tittlebarButtonWindown", "stylesheets/tittlebarButtonWindown.css")
+		self.make_stylesheet("ViewLeaderButton", "stylesheets/ViewLeaderButton.css")
+		self.make_stylesheet("ViewLeader", "stylesheets/ViewLeader.css")
+
 
 	def make_stylesheet(self, name, path):
 		with open(path,encoding="utf-8") as data_file:

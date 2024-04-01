@@ -71,7 +71,27 @@ class TopBorderBarWidget(QToolBar):
 		HBOX_Left.addWidget(self.select_model_combobox, 50)
 
 		#--------------------------------------------------------------------------------------------------
-		
+		#add open file
+		self.folder_pushButton = TittleBarButton(parent, "folder_pushButton", "view_top", [32, 32],"打开")
+		HBOX_Center.addWidget(self.folder_pushButton, 0)
+		#add undo--------------------------------------------------------------------------------------
+		self.undo_pushButton = TittleBarButton(parent,"undo_pushButton","view_tfr_tri",[32,32],"撤销")
+		HBOX_Center.addWidget(self.undo_pushButton,0)
+		#add redo---------------------------------------------------------------------------------------------
+		self.redo_pushButton = TittleBarButton(parent,"redo_pushButton","view_tfr_iso",[32,32],"重做")
+		HBOX_Center.addWidget(self.redo_pushButton, 0)
+		#add save------------------------------------------------------------------------------------------------
+		self.save_pushButton = TittleBarButton(parent,"save_pushButton","view_right",[32,32],"保存")
+		HBOX_Center.addWidget(self.save_pushButton, 0)
+		#add copy
+		self.copy_pushButton = TittleBarButton(parent, "copy_pushButton", "view_left", [32, 32],"复制")
+		HBOX_Center.addWidget(self.copy_pushButton, 0)
+		#add paste
+		self.paste_pushButton = TittleBarButton(parent, "paste_pushButton", "view_front", [32, 32],"黏贴")
+		HBOX_Center.addWidget(self.paste_pushButton, 0)
+		# add about
+		self.about_pushButton = TittleBarButton(parent, "about_pushButton", "view_bottom", [32, 32],"关于")
+		HBOX_Center.addWidget(self.about_pushButton, 0)
 		
 		
 

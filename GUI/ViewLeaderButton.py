@@ -12,15 +12,15 @@ class ViewLeaderButton(QToolButton,QPushButton,QAction):
 	def __init__(self,parent=None,object_name=None,icon_name=None,icon_size=[],action_tip=None,action=None,):
 		QPushButton.__init__(self)
 		sc = gui_scale()
-		self.setMaximumWidth(25 * sc)
-		self.setMinimumWidth(25 * sc)
-		self.setMinimumHeight(50 * sc)
-		self.setMaximumHeight(50 * sc)
-		self.setStyleSheet(get_stylesheet("tittlebarButton"))
-		self.setToolButtonStyle(3)
+		self.setMaximumWidth(38 * sc)
+		self.setMinimumWidth(38 * sc)
+		self.setMinimumHeight(38 * sc)
+		self.setMaximumHeight(38 * sc)
+		#self.setStyleSheet(get_stylesheet("ViewLeaderButton"))
+		self.setToolButtonStyle(0)
 		self.setIconSize(QSize(32 * sc, 32 * sc))
 		self.Create_IconButton(parent,object_name,icon_name,icon_size,action_tip,action)
-		self.setStyleSheet("background: transparent;")
+		self.setStyleSheet("background-color: transparent;")
 		
 	def Create_IconButton(self,parent=None,object_name=None,icon_name=None,icon_size=None,action_tip=None,action=None):
 		self.setObjectName(object_name)
