@@ -34,6 +34,7 @@ class modulewindowmanager(object):
 		else:
 			self.windownname.append(name)
 
+		self.parent.current_window_name=self.windownname[-1]
 		# Add tabs to the tab widget
 		self.parent.Displayshape_core_dict[self.windownname[-1]]=DisplayManager.DisplayManager(self.parent)
 		self.tabwidget.addTab(self.parent.Displayshape_core_dict[self.windownname[-1]].canva, self.windownname[-1])
@@ -88,5 +89,6 @@ class modulewindowmanager(object):
 			index=self.tabwidget.currentIndex()
 			name=self.tabwidget.tabText(index)
 			self.items.setWidget(self.parent.modeltree_dict[name].tree)
+			self.parent.current_window_name=name
 		except:
 			pass

@@ -36,6 +36,7 @@ class Auto_create_ribbon(object):
 		self.Read_ribbon_init(init_name)
 		self.Create_ribbon()
 
+
 	def Read_ribbon_init(self,init_name):
 		with open("./GUI/{}.ini".format(init_name),"r",encoding="utf-8") as f:
 			inner=f.readlines()
@@ -135,6 +136,9 @@ class Ui_MainWindow(MainGui.Ui_MainWindow):
 		self.addToolBar(self._ribbon)
 		self.insertToolBarBreak(self._ribbon)
 		self.init_ribbon()
+
+		#init parameter
+		self.current_window_name=None
 
 		
 		

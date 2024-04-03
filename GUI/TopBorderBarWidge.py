@@ -13,6 +13,7 @@ from GUI.TittleBarButton import TittleBarButton,TittleBarButton_windown
 class TopBorderBarWidget(QToolBar):
 	def __init__(self, parent):
 		QToolBar.__init__(self, parent)
+		self.parent=parent
 		self.setStyleSheet(get_stylesheet("ribbon"))
 		self.setObjectName("TittleWidget")
 		self.setWindowTitle("Tittle")
@@ -24,7 +25,7 @@ class TopBorderBarWidget(QToolBar):
 		#self.setStyleSheet("background-color: rgb(14, 162, 185);")
 		
 		self.HBOX_LeftlLayoutWidget = QtWidgets.QWidget(self._Tittle_widget)
-		self.HBOX_LeftlLayoutWidget.setGeometry(QtCore.QRect(0, 0, 300, 40))
+		self.HBOX_LeftlLayoutWidget.setGeometry(QtCore.QRect(0, 0, 500, 40))
 		self.HBOX_LeftlLayoutWidget.setObjectName("HBOX_LeftlLayoutWidget")
 		
 		HBOX=QHBoxLayout()
@@ -53,6 +54,7 @@ class TopBorderBarWidget(QToolBar):
 		#add open file
 		#self.menu_pushButton = TittleBarButton(self._Tittle_widget, "folder_pushButton", "folder", [20, 20],"打开",parent.OCAF.Open_part)
 		#HBOX_Left.addWidget(self.menu_pushButton, 50)
+
 		#select combobox--------------------------------------------------------------------------------------
 		self.select_combobox = QtWidgets.QComboBox()
 		self.select_combobox.addItem("无选择过滤器")
@@ -71,27 +73,35 @@ class TopBorderBarWidget(QToolBar):
 		HBOX_Left.addWidget(self.select_model_combobox, 50)
 
 		#--------------------------------------------------------------------------------------------------
+		print(self.parent.current_window_name)
 		#add open file
-		self.folder_pushButton = TittleBarButton(parent, "folder_pushButton", "view_top", [32, 32],"打开")
-		HBOX_Center.addWidget(self.folder_pushButton, 0)
+		self.folder_pushButton = TittleBarButton(parent, "folder_pushButton", "view_top", [32, 32],"打开",
+			self.parent.Displayshape_core_dict[self.parent.current_window_name].canva._display.View_Top)
+		HBOX_Left.addWidget(self.folder_pushButton, 0)
 		#add undo--------------------------------------------------------------------------------------
-		self.undo_pushButton = TittleBarButton(parent,"undo_pushButton","view_tfr_tri",[32,32],"撤销")
-		HBOX_Center.addWidget(self.undo_pushButton,0)
+		self.undo_pushButton = TittleBarButton(parent,"undo_pushButton","view_tfr_tri",[32,32],"撤销",
+			self.parent.Displayshape_core_dict[self.parent.current_window_name].canva._display.View_Rear)
+		HBOX_Left.addWidget(self.undo_pushButton,0)
 		#add redo---------------------------------------------------------------------------------------------
-		self.redo_pushButton = TittleBarButton(parent,"redo_pushButton","view_tfr_iso",[32,32],"重做")
-		HBOX_Center.addWidget(self.redo_pushButton, 0)
+		self.redo_pushButton = TittleBarButton(parent,"redo_pushButton","view_tfr_iso",[32,32],"重做",
+			self.parent.Displayshape_core_dict[self.parent.current_window_name].canva._display.View_Iso)
+		HBOX_Left.addWidget(self.redo_pushButton, 0)
 		#add save------------------------------------------------------------------------------------------------
-		self.save_pushButton = TittleBarButton(parent,"save_pushButton","view_right",[32,32],"保存")
-		HBOX_Center.addWidget(self.save_pushButton, 0)
+		self.save_pushButton = TittleBarButton(parent,"save_pushButton","view_right",[32,32],"保存",
+			self.parent.Displayshape_core_dict[self.parent.current_window_name].canva._display.View_Right)
+		HBOX_Left.addWidget(self.save_pushButton, 0)
 		#add copy
-		self.copy_pushButton = TittleBarButton(parent, "copy_pushButton", "view_left", [32, 32],"复制")
-		HBOX_Center.addWidget(self.copy_pushButton, 0)
+		self.copy_pushButton = TittleBarButton(parent, "copy_pushButton", "view_left", [32, 32],"复制",
+			self.parent.Displayshape_core_dict[self.parent.current_window_name].canva._display.View_Left)
+		HBOX_Left.addWidget(self.copy_pushButton, 0)
 		#add paste
-		self.paste_pushButton = TittleBarButton(parent, "paste_pushButton", "view_front", [32, 32],"黏贴")
-		HBOX_Center.addWidget(self.paste_pushButton, 0)
+		self.paste_pushButton = TittleBarButton(parent, "paste_pushButton", "view_front", [32, 32],"黏贴",
+			self.parent.Displayshape_core_dict[self.parent.current_window_name].canva._display.View_Front)
+		HBOX_Left.addWidget(self.paste_pushButton, 0)
 		# add about
-		self.about_pushButton = TittleBarButton(parent, "about_pushButton", "view_bottom", [32, 32],"关于")
-		HBOX_Center.addWidget(self.about_pushButton, 0)
+		self.about_pushButton = TittleBarButton(parent, "about_pushButton", "view_bottom", [32, 32],"关于",
+			self.parent.Displayshape_core_dict[self.parent.current_window_name].canva._display.View_Bottom)
+		HBOX_Left.addWidget(self.about_pushButton, 0)
 		
 		
 
