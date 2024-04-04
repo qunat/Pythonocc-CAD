@@ -53,7 +53,7 @@ class modulewindowmanager(object):
 		self.tabwidget.repaint()
 		self.tabwidget.setFocus()
 		self.parent.repaint()
-		#Create ViewleaderBar
+		#self.ViewleaderBar_dict[self.windownname[-1]]=ViewLeaderWidget(self.parent.Displayshape_core_dict[self.windownname[-1]].canva)
 		
 		#change part ribbon 
 		if self.items==None and self.TopBorderBa==None:
@@ -93,6 +93,5 @@ class modulewindowmanager(object):
 			self.items.setWidget(self.parent.modeltree_dict[name].tree)
 			self.parent.current_window_name=name
 			self.TopBorderBa.reset_triggered_connect()
-			print("是否切换",self.parent.current_window_name)
 		except:
 			pass

@@ -1,0 +1,3 @@
+[console_scripts]
+netgen = netgen.__main__:main
+

@@ -762,8 +762,9 @@ class Viewer3d(Display3d):
     def DynamicZoom(self, X1, Y1, X2, Y2):
         self.View.Zoom(X1, Y1, X2, Y2)
 
-    def ZoomFactor(self,zoom_factor):
-        #self.View.SetCenter(500,500)
+    def ZoomFactor(self,zoom_factor,Xp=None,Yp=None):
+        if Xp!=None and Yp!=None:
+            self.View.SetCenter(Xp,Yp)
         self.View.SetZoom(zoom_factor)
 
     def ZoomArea(self, X1, Y1, X2, Y2):

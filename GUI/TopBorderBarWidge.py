@@ -74,37 +74,36 @@ class TopBorderBarWidget(QToolBar):
 
 		#--------------------------------------------------------------------------------------------------
 		#add open file
-		self.view_top_pushButton = TittleBarButton(parent, "folder_pushButton", "view_top", [32, 32],"打开",
+		self.view_top_pushButton = TittleBarButton(parent, "view_top_pushButton", "view_top", [32, 32],"俯视图",
 			self.parent.Displayshape_core_dict[self.parent.current_window_name].canva._display.View_Top)
 		HBOX_Left.addWidget(self.view_top_pushButton, 0)
 		#add undo--------------------------------------------------------------------------------------
-		self.view_tfr_tri_pushButton = TittleBarButton(parent,"undo_pushButton","view_tfr_tri",[32,32],"撤销",
+		self.view_tfr_tri_pushButton = TittleBarButton(parent,"view_tfr_tri_pushButton","view_tfr_tri",[32,32],"正三轴视图",
 			self.parent.Displayshape_core_dict[self.parent.current_window_name].canva._display.View_Rear)
 		HBOX_Left.addWidget(self.view_tfr_tri_pushButton,0)
 		#add redo---------------------------------------------------------------------------------------------
-		self.view_tfr_iso_pushButton = TittleBarButton(parent,"redo_pushButton","view_tfr_iso",[32,32],"重做",
+		self.view_tfr_iso_pushButton = TittleBarButton(parent,"view_tfr_iso_pushButton","view_tfr_iso",[32,32],"轴测图",
 			self.parent.Displayshape_core_dict[self.parent.current_window_name].canva._display.View_Iso)
 		HBOX_Left.addWidget(self.view_tfr_iso_pushButton, 0)
 		#add save------------------------------------------------------------------------------------------------
-		self.view_right_pushButton = TittleBarButton(parent,"save_pushButton","view_right",[32,32],"保存",
+		self.view_right_pushButton = TittleBarButton(parent,"view_right_pushButton","view_right",[32,32],"右视图",
 			self.parent.Displayshape_core_dict[self.parent.current_window_name].canva._display.View_Right)
 		HBOX_Left.addWidget(self.view_right_pushButton, 0)
 		#add copy
-		self.view_left_pushButton = TittleBarButton(parent, "copy_pushButton", "view_left", [32, 32],"复制",
+		self.view_left_pushButton = TittleBarButton(parent, "view_left", "view_left", [32, 32],"左视图",
 			self.parent.Displayshape_core_dict[self.parent.current_window_name].canva._display.View_Left)
 		HBOX_Left.addWidget(self.view_left_pushButton, 0)
 		#add paste
-		self.view_front_pushButton = TittleBarButton(parent, "paste_pushButton", "view_front", [32, 32],"黏贴",
+		self.view_front_pushButton = TittleBarButton(parent, "view_front", "view_front", [32, 32],"前视图",
 			self.parent.Displayshape_core_dict[self.parent.current_window_name].canva._display.View_Front)
 		HBOX_Left.addWidget(self.view_front_pushButton, 0)
 		# add about
-		self.view_bottom_pushButton = TittleBarButton(parent, "about_pushButton", "view_bottom", [32, 32],"关于",
+		self.view_bottom_pushButton = TittleBarButton(parent, "view_bottom", "view_bottom", [32, 32],"仰视图",
 			self.parent.Displayshape_core_dict[self.parent.current_window_name].canva._display.View_Bottom)
 		HBOX_Left.addWidget(self.view_bottom_pushButton, 0)
 		
 		
 	def reset_triggered_connect(self):
-		print("enter")
 		self.view_top_pushButton.Add_Action(self.parent.Displayshape_core_dict[self.parent.current_window_name].canva._display.View_Top)
 		self.view_tfr_tri_pushButton.Add_Action(self.parent.Displayshape_core_dict[self.parent.current_window_name].canva._display.View_Rear)
 		self.view_tfr_iso_pushButton.Add_Action(self.parent.Displayshape_core_dict[self.parent.current_window_name].canva._display.View_Iso)
@@ -112,7 +111,6 @@ class TopBorderBarWidget(QToolBar):
 		self.view_left_pushButton.Add_Action(self.parent.Displayshape_core_dict[self.parent.current_window_name].canva._display.View_Left)
 		self.view_front_pushButton.Add_Action(self.parent.Displayshape_core_dict[self.parent.current_window_name].canva._display.View_Front)
 		self.view_bottom_pushButton.Add_Action(self.parent.Displayshape_core_dict[self.parent.current_window_name].canva._display.View_Bottom)
-		print("enter finish")
 	def add_ribbon_tab(self, name):
 		ribbon_tab = RibbonTab(self, name)
 		ribbon_tab.setObjectName("tab_" + name)

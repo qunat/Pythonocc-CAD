@@ -21,7 +21,7 @@ from __future__ import print_function
 
 import logging
 import os
-import sys
+import sys,math
 from PyQt5.QtCore import pyqtSignal, QObject
 from module import  OCCViewer
 from OCC.Display.backend import get_qt_modules
@@ -196,6 +196,7 @@ class qtViewer3d(qtBaseViewer):
 		self.dragStartPosX=0
 		self.dragStartPosY=0
 		self.mousepresstype = None
+		self.mousemovelock=False
 		self.mouse_move_Signal=mouse_move_Signal_Foo()
 		self.wheelEvent_Signal=wheelEvent_Foo()
 		self.keyPressEvent_Signal=keyPressEvent_Foo()
@@ -300,7 +301,23 @@ class qtViewer3d(qtBaseViewer):
 		#self._display.ResetView()
 
 		pt = event.pos()
+		center_x=math.ceil(pt.x()*zoom_factor)
+		center_y=math.ceil(pt.y()*zoom_factor)
 		self._display.ZoomFactor(zoom_factor)
+
+		"""
+		local zoom
+
+		dx = pt.x() - self.dragStartPosX
+			dy = pt.y() - self.dragStartPosY
+			self.dragStartPosX = pt.x()
+			self.dragStartPosY = pt.y()
+			self.cursor = "pan"
+			self._display.Pan(dx, -dy)
+			self._drawbox = False
+			self.mousemovelock=True
+
+		"""
 		self.scaling_ratio*=zoom_factor
 		self.wheelEvent_Signal.connect_and_emit_trigger()
 
@@ -333,7 +350,6 @@ class qtViewer3d(qtBaseViewer):
 		if event.button() == QtCore.Qt.RightButton or event.button() == QtCore.Qt.MidButton:
 			self.buttons_list.append(QtCore.Qt.RightButton)
 		self.buttons_list.clear()
-		#abc=self._display.GetSelectedShapes()
 	
 	def mouseDoubleClickEvent(self, event):
 		if event.button() == QtCore.Qt.LeftButton:
@@ -392,13 +408,17 @@ class qtViewer3d(qtBaseViewer):
 		#MOVE  ADD MYSELF
 
 		# ROTATE
+		if evt.buttons() != QtCore.Qt.MidButton and evt.buttons()!=QtCore.Qt.RightButton:
+			self.mousemovelock = False
+
 		if (buttons == QtCore.Qt.MidButton and not modifiers == QtCore.Qt.ShiftModifier and
-				self.parent.InteractiveOperate.InteractiveModule!="SKETCH" ):
+				self.parent.InteractiveOperate.InteractiveModule!="SKETCH" ) and self.mousemovelock==False:
 			self.cursor = "rotate"
 			self._display.Rotation(pt.x(), pt.y())
 			self._drawbox = False
+		
 
-		# DYNAMIC ZOOM catia operate
+		# DYNAMIC ZOOM CATIA OPERATE
 
 		elif (buttons == QtCore.Qt.RightButton and
 			  not modifiers == QtCore.Qt.ShiftModifier ) and False:#暂时无用
@@ -422,8 +442,9 @@ class qtViewer3d(qtBaseViewer):
 			self.cursor = "pan"
 			self._display.Pan(dx, -dy)
 			self._drawbox = False
+			self.mousemovelock=True
 
-			# PAN 2
+		# PAN 2
 		elif buttons == QtCore.Qt.MidButton and self.parent.InteractiveOperate.InteractiveModule=="SKETCH" :
 			
 			dx = pt.x() - self.dragStartPosX
@@ -435,6 +456,8 @@ class qtViewer3d(qtBaseViewer):
 			self._drawbox = False
 
 		# DRAW BOX
+
+
 
 		# ZOOM WINDOW
 		elif (buttons == QtCore.Qt.RightButton and
@@ -459,5 +482,6 @@ class qtViewer3d(qtBaseViewer):
 
 		self.dragStartPosX = evt.x()
 		self.dragStartPosY = evt.y()
+		
 		#print(self.dragStartPosX,self.dragStartPosY)
 		#self._display.SetCenter(int(pt.x()),int(pt.x()))
