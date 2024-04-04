@@ -1,1 +1,0 @@
-#include <../stlgeom/stlgeom.hpp>
