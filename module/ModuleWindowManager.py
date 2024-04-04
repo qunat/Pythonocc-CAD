@@ -72,6 +72,8 @@ class modulewindowmanager(object):
 			self.TopBorderBa=TopBorderBarWidget(self.parent)
 			self.parent.addToolBar(QtCore.Qt.TopToolBarArea, self.TopBorderBa)
 			self.parent.insertToolBarBreak(self.TopBorderBa)
+		# reset TopBorderBa view
+		self.TopBorderBa.reset_triggered_connect()
 		
 
 	def CreateWindownname(self):
@@ -90,5 +92,7 @@ class modulewindowmanager(object):
 			name=self.tabwidget.tabText(index)
 			self.items.setWidget(self.parent.modeltree_dict[name].tree)
 			self.parent.current_window_name=name
+			self.TopBorderBa.reset_triggered_connect()
+			print("是否切换",self.parent.current_window_name)
 		except:
 			pass

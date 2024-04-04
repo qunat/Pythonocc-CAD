@@ -73,38 +73,46 @@ class TopBorderBarWidget(QToolBar):
 		HBOX_Left.addWidget(self.select_model_combobox, 50)
 
 		#--------------------------------------------------------------------------------------------------
-		print(self.parent.current_window_name)
 		#add open file
-		self.folder_pushButton = TittleBarButton(parent, "folder_pushButton", "view_top", [32, 32],"打开",
+		self.view_top_pushButton = TittleBarButton(parent, "folder_pushButton", "view_top", [32, 32],"打开",
 			self.parent.Displayshape_core_dict[self.parent.current_window_name].canva._display.View_Top)
-		HBOX_Left.addWidget(self.folder_pushButton, 0)
+		HBOX_Left.addWidget(self.view_top_pushButton, 0)
 		#add undo--------------------------------------------------------------------------------------
-		self.undo_pushButton = TittleBarButton(parent,"undo_pushButton","view_tfr_tri",[32,32],"撤销",
+		self.view_tfr_tri_pushButton = TittleBarButton(parent,"undo_pushButton","view_tfr_tri",[32,32],"撤销",
 			self.parent.Displayshape_core_dict[self.parent.current_window_name].canva._display.View_Rear)
-		HBOX_Left.addWidget(self.undo_pushButton,0)
+		HBOX_Left.addWidget(self.view_tfr_tri_pushButton,0)
 		#add redo---------------------------------------------------------------------------------------------
-		self.redo_pushButton = TittleBarButton(parent,"redo_pushButton","view_tfr_iso",[32,32],"重做",
+		self.view_tfr_iso_pushButton = TittleBarButton(parent,"redo_pushButton","view_tfr_iso",[32,32],"重做",
 			self.parent.Displayshape_core_dict[self.parent.current_window_name].canva._display.View_Iso)
-		HBOX_Left.addWidget(self.redo_pushButton, 0)
+		HBOX_Left.addWidget(self.view_tfr_iso_pushButton, 0)
 		#add save------------------------------------------------------------------------------------------------
-		self.save_pushButton = TittleBarButton(parent,"save_pushButton","view_right",[32,32],"保存",
+		self.view_right_pushButton = TittleBarButton(parent,"save_pushButton","view_right",[32,32],"保存",
 			self.parent.Displayshape_core_dict[self.parent.current_window_name].canva._display.View_Right)
-		HBOX_Left.addWidget(self.save_pushButton, 0)
+		HBOX_Left.addWidget(self.view_right_pushButton, 0)
 		#add copy
-		self.copy_pushButton = TittleBarButton(parent, "copy_pushButton", "view_left", [32, 32],"复制",
+		self.view_left_pushButton = TittleBarButton(parent, "copy_pushButton", "view_left", [32, 32],"复制",
 			self.parent.Displayshape_core_dict[self.parent.current_window_name].canva._display.View_Left)
-		HBOX_Left.addWidget(self.copy_pushButton, 0)
+		HBOX_Left.addWidget(self.view_left_pushButton, 0)
 		#add paste
-		self.paste_pushButton = TittleBarButton(parent, "paste_pushButton", "view_front", [32, 32],"黏贴",
+		self.view_front_pushButton = TittleBarButton(parent, "paste_pushButton", "view_front", [32, 32],"黏贴",
 			self.parent.Displayshape_core_dict[self.parent.current_window_name].canva._display.View_Front)
-		HBOX_Left.addWidget(self.paste_pushButton, 0)
+		HBOX_Left.addWidget(self.view_front_pushButton, 0)
 		# add about
-		self.about_pushButton = TittleBarButton(parent, "about_pushButton", "view_bottom", [32, 32],"关于",
+		self.view_bottom_pushButton = TittleBarButton(parent, "about_pushButton", "view_bottom", [32, 32],"关于",
 			self.parent.Displayshape_core_dict[self.parent.current_window_name].canva._display.View_Bottom)
-		HBOX_Left.addWidget(self.about_pushButton, 0)
+		HBOX_Left.addWidget(self.view_bottom_pushButton, 0)
 		
 		
-
+	def reset_triggered_connect(self):
+		print("enter")
+		self.view_top_pushButton.Add_Action(self.parent.Displayshape_core_dict[self.parent.current_window_name].canva._display.View_Top)
+		self.view_tfr_tri_pushButton.Add_Action(self.parent.Displayshape_core_dict[self.parent.current_window_name].canva._display.View_Rear)
+		self.view_tfr_iso_pushButton.Add_Action(self.parent.Displayshape_core_dict[self.parent.current_window_name].canva._display.View_Iso)
+		self.view_right_pushButton.Add_Action(self.parent.Displayshape_core_dict[self.parent.current_window_name].canva._display.View_Right)
+		self.view_left_pushButton.Add_Action(self.parent.Displayshape_core_dict[self.parent.current_window_name].canva._display.View_Left)
+		self.view_front_pushButton.Add_Action(self.parent.Displayshape_core_dict[self.parent.current_window_name].canva._display.View_Front)
+		self.view_bottom_pushButton.Add_Action(self.parent.Displayshape_core_dict[self.parent.current_window_name].canva._display.View_Bottom)
+		print("enter finish")
 	def add_ribbon_tab(self, name):
 		ribbon_tab = RibbonTab(self, name)
 		ribbon_tab.setObjectName("tab_" + name)

@@ -60,6 +60,8 @@ class OCAF(object):
 				self.parent.Displayshape_core_dict[name].canva._display.register_select_callback(self.clicked_callback)
 				#self.parent.Displayshape_core_dict[name].canva._display.EraseAll()
 				self.parent.modeltree_dict[name].Clear_tree_NodeList()
+				self.parent.current_window_name=name
+				#self.parent.TopBorderBa.reset_triggered_connect()# reset TopBorderBa view
 				
 				# 判断文件类型 选择对应的导入函数
 				if end_with.endswith(".step") or end_with.endswith("stp"):#stp格式导入
