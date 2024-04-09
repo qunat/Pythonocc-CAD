@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-from OCC.Display.backend import load_backend
 from PyQt5 import QtWidgets,QtGui,QtCore
-from PyQt5.QtWidgets import QApplication, QStyleFactory
 from ui import MainGui
 import sys
 from  module import ShowGui

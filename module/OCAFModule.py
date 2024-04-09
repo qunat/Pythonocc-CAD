@@ -89,6 +89,7 @@ class OCAF(object):
 						id += 1
 						QApplication.processEvents()
 
+					self.parent.Displayshape_core_dict[name].canva._display.FitAll()
 					# 建立模型树
 					#print("显示",root_dict)
 					try:
@@ -107,6 +108,7 @@ class OCAF(object):
 				elif end_with.endswith(".iges") or end_with.endswith(".igs"):#stp格式导入
 					import_shape = read_iges_file(filepath)
 					self.parent.Displayshape_core_dict[name].canva._display.DisplayShape(import_shape)
+					self.parent.Displayshape_core_dict[name].canva._display.FitAll()
 					self.import_shape={import_shape:None}
 					root_dict = NoDumpProcess(self.import_shape.keys(), file=filepath).root_dict
 					self.parent.modeltree_dict[name].Create_tree_NodeList(root_dict=root_dict)
@@ -117,6 +119,7 @@ class OCAF(object):
 				elif end_with.endswith(".stl") or end_with.endswith(".stl"):#stl格式导入
 					import_shape = read_stl_file(filepath)
 					self.parent.Displayshape_core_dict[name].canva._display.DisplayShape(import_shape)
+					self.parent.Displayshape_core_dict[name].canva._display.FitAll()
 					self.import_shape={import_shape:None}
 					root_dict = NoDumpProcess(self.import_shape.keys(), file=filepath).root_dict
 					self.parent.modeltree_dict[name].Create_tree_NodeList(root_dict=root_dict)
@@ -176,7 +179,7 @@ class OCAF(object):
 						self.__shape.append(shpt_lbl_color)
 						self.parent.Displayshape_core_dict[name].shape_maneger_core_dict[id] = return_shape[0]
 						QApplication.processEvents()
-
+					self.parent.Displayshape_core_dict[name].canva._display.FitAll()
 					# 建立模型树
 					try:
 						if root_dict != None:
@@ -192,6 +195,7 @@ class OCAF(object):
 				elif end_with.endswith(".iges") or end_with.endswith(".igs"):#stp格式导入
 					import_shape = read_iges_file(filepath)
 					self.parent.Displayshape_core_dict[name].canva._display.DisplayShape(import_shape)
+					self.parent.Displayshape_core_dict[name].canva._display.FitAll()
 					self.import_shape={import_shape:None}
 					root_dict = NoDumpProcess(self.import_shape.keys(), file=filepath).root_dict
 					self.parent.modeltree_dict[name].Create_tree_NodeList(root_dict=root_dict)
@@ -203,6 +207,7 @@ class OCAF(object):
 					import_shape = read_stl_file(filepath)
 					self.__shape.append(import_shape)
 					self.parent.Displayshape_core_dict[name].canva._display.DisplayShape(import_shape)
+					self.parent.Displayshape_core_dict[name].canva._display.FitAll()
 					self.import_shape={import_shape:None}
 					root_dict = NoDumpProcess(self.import_shape.keys(), file=filepath).root_dict
 					self.parent.modeltree_dict[name].Create_tree_NodeList(root_dict=root_dict)
