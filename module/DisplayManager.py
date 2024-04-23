@@ -212,3 +212,14 @@ class DisplayManager(object):
 		self.shape_maneger_core_dict["cube"] = AIS_ViewCube()
 		self.shape_maneger_core_dict["cube"].SetTransformPersistence(Graphic3d_TMF_TriedronPers, gp_Pnt(1, 1, 100))
 		self.canva._display.Context.Display(self.shape_maneger_core_dict["cube"], True)
+	def HidePart(self):
+        try:
+            if self.modeltree.root.checkState(0)==0:
+                for shape in self.part_maneger_core_dict.values():
+                    self.canva._display.Context.Remove(shape[0],True)
+            if self.modeltree.root.checkState(0)==2:
+                for shape in self.part_maneger_core_dict.values():
+                    self.canva._display.Context.Display(shape[0], True)
+        except Exception as e:
+            print(e)
+            pass

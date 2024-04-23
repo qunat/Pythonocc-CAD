@@ -46,7 +46,7 @@ class OCAF(object):
 			self.chose_document = QFileDialog.getOpenFileName(self.parent, '打开文件', './',
 															  " STP files(*.stp , *.step);;IGES files(*.iges);;STL files(*.stl)")  # 选择转换的文价夹
 			filepath = self.chose_document[0]  # 获取打开文件夹路径
-			print(self.chose_document)
+			#print(self.chose_document)
 			if os.path.exists(filepath) and filepath!="":
 				end_with = str(filepath).lower()
 				self.parent.statusbar.showMessage("状态：正在打开，请稍后......")  ###

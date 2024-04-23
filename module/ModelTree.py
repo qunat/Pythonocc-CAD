@@ -21,12 +21,14 @@ class ModelTree(QtWidgets.QWidget):
 		self.tree_Node_dict={}
 		self.root_dict={}
 		self.node_dict={}
+		self.tree.clicked.connect(self.ItemChanged)
 		
 		# 设置根节点
 		self.history_model_root = QTreeWidgetItem(self.tree)
 		self.history_model_root.setText(0, '历史模型记录')
 		self.history_model_root.setIcon(0, QIcon('sync.ico'))
 		self.history_model_root.setCheckState(0, Qt.Checked)
+		
 		
 
 		self.wcs_root = QTreeWidgetItem(self.history_model_root)
@@ -39,6 +41,7 @@ class ModelTree(QtWidgets.QWidget):
 		self.datum_root_x.setText(0, 'X基准面')
 		self.datum_root_x.setIcon(0, QIcon('./icons/datumplane.png'))
 		self.datum_root_x.setCheckState(0, Qt.Checked)
+
 		# 基准面Y
 		self.datum_root_y = QTreeWidgetItem(self.history_model_root)
 		self.datum_root_y.setText(0, 'Y基准面')
@@ -91,23 +94,21 @@ class ModelTree(QtWidgets.QWidget):
 				
 	def Create_ModelTree(self,Nodelist=[]):
 		# 设置总装配体根节点/子装配体根节点
-		#print("start")
 		if Nodelist[2]=="0:1:1:1":
 			self.tree_root_dict[Nodelist[1]] = QTreeWidgetItem(self.history_model_root)
 			self.tree_root_dict[Nodelist[1]].setText(0, Nodelist[1])
 			self.tree_root_dict[Nodelist[1]].setIcon(0, QIcon('./icons/assypart.png'))
 			self.tree_root_dict[Nodelist[1]].setCheckState(0, Qt.Checked)
-			
 		else:
 			
 			self.tree_root_dict[Nodelist[1]] = QTreeWidgetItem(self.tree_root_dict[Nodelist[0]])
 			self.tree_root_dict[Nodelist[1]].setText(0, Nodelist[1])
 			self.tree_root_dict[Nodelist[1]].setIcon(0, QIcon('./icons/assypart.png'))
 			self.tree_root_dict[Nodelist[1]].setCheckState(0, Qt.Checked)
+			
 		father_root=Nodelist[1]
-		#print("enter",Nodelist[3:len(Nodelist)])
+		print("nodelist",Nodelist[1])
 		#设置子节点
-		print(Nodelist)
 		for order in Nodelist[3:len(Nodelist)]:
 			#print(order,"ok")
 			if self.root_dict[order].refer == None:
@@ -155,4 +156,6 @@ class ModelTree(QtWidgets.QWidget):
 		pass
 	def Updata_Child(self):
 		pass
-
+	def ItemChanged(self):
+		print(666)
+		
