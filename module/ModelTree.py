@@ -107,7 +107,7 @@ class ModelTree(QtWidgets.QWidget):
 			self.tree_root_dict[Nodelist[1]].setCheckState(0, Qt.Checked)
 			
 		father_root=Nodelist[1]
-		print("nodelist",Nodelist[1])
+		#print("nodelist",Nodelist[1])
 		#设置子节点
 		for order in Nodelist[3:len(Nodelist)]:
 			#print(order,"ok")

@@ -19,7 +19,7 @@ from GUI.TittleBarWidget import *
 from GUI.TopBorderBarWidge import *
 from GUI.ViewLeaderWidget import *
 from PyQt5.QtCore import  Qt
-from module import DisplayManager,ModelTree,OCAFModule,InteractiveModule,ModuleWindowManager
+from module import DisplayManager,ModelTree,OCAFModule,InteractiveModule,ModuleWindowManager,PartOperate
 from sketcher import sketcher
 from surface import swept
 from manufacture import manufacturing
@@ -47,7 +47,7 @@ class Auto_create_ribbon(object):
 					i=i.replace("\n","")
 					self.ribbon_list.append(i)
 	def Create_ribbon(self):
-		print(self.parent.moduleselect)
+		#print(self.parent.moduleselect)
 		for ribbon in self.ribbon_list:
 			ribbon_list=ribbon.split(" ")
 			table_name=ribbon_list[0].split("=")[1]
@@ -115,6 +115,7 @@ class Ui_MainWindow(MainGui.Ui_MainWindow):
 		self.Surface=swept.Surface(self)
 		#init manufacturing module 
 		self.Manufacturing=manufacturing.manufacturing(self)
+		
 
 
 		#Create ModuleSelect

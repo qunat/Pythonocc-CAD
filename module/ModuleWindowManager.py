@@ -2,7 +2,7 @@
 import sys
 from PyQt5.QtWidgets import QApplication, QMainWindow, QTabWidget, QWidget, QVBoxLayout, QLabel,QDockWidget
 from PyQt5 import QtWidgets,QtGui,QtCore
-from module import DisplayManager,ModelTree
+from module import DisplayManager,ModelTree,PartOperate
 from GUI.TopBorderBarWidge import *
 from GUI.ViewLeaderWidget import *
 
@@ -74,6 +74,9 @@ class modulewindowmanager(object):
 			self.parent.insertToolBarBreak(self.TopBorderBa)
 		# reset TopBorderBa view
 		self.TopBorderBa.reset_triggered_connect()
+
+		#init partoperate module
+		self.PartOperate=PartOperate.PartOperate(self.parent)
 		
 
 	def CreateWindownname(self):
