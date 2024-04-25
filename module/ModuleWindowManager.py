@@ -75,8 +75,12 @@ class modulewindowmanager(object):
 		# reset TopBorderBa view
 		self.TopBorderBa.reset_triggered_connect()
 
-		#init partoperate module
-		self.PartOperate=PartOperate.PartOperate(self.parent)
+		try:
+			self.parent.PartOperate.part()
+
+		except Exception as e:
+			print(e)
+			pass
 		
 
 	def CreateWindownname(self):

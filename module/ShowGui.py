@@ -115,6 +115,8 @@ class Ui_MainWindow(MainGui.Ui_MainWindow):
 		self.Surface=swept.Surface(self)
 		#init manufacturing module 
 		self.Manufacturing=manufacturing.manufacturing(self)
+		#init partoperate module
+		self.PartOperate=PartOperate.PartOperate(self)
 		
 
 
@@ -141,7 +143,6 @@ class Ui_MainWindow(MainGui.Ui_MainWindow):
 		#init parameter
 		self.current_window_name=None
 
-		
 		
 		#右键单击弹出界面
 		self.menuBar = QtWidgets.QMenuBar()
