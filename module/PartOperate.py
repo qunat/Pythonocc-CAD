@@ -5,7 +5,7 @@ class PartOperate(object):
 		index=self.parent.ModuleWindowManager.tabwidget.currentIndex()
 		name=self.parent.ModuleWindowManager.tabwidget.tabText(index)
 		self.name=name
-		self.parent.Displayshape_core_dict[self.name].canva.mouse_move_Signal.trigger.connect(self.getshape)
+		self.parent.Displayshape_core_dict[self.name].canva.mousePressEvent_Signal.trigger.connect(self.getshape)
 
 	def partmove(self):
 		index=self.parent.ModuleWindowManager.tabwidget.currentIndex()
