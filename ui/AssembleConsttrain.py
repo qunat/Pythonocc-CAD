@@ -115,10 +115,10 @@ class AssembleConstrain(QtWidgets.QMainWindow):
                 print(face)
                 BS=BRepAdaptor_Surface(face,True)
                 AdpSurf = BS.Surface()
-                gp_cyl = surf.Cylinder()
+                gp_cyl = AdpSurf.Cylinder()
                 location = gp_cyl.Location()  # a point of the axis
                 axis = gp_cyl.Axis().Direction()  # the cylinder axis
-                print(gaxis)
+                print(axis)
  
         if self.selectshape2==1:
             #First get ais_shape
