@@ -2,6 +2,7 @@
 from OCC.Core.AIS import AIS_Shape
 from OCC.Core.TopAbs import TopAbs_VERTEX, TopAbs_EDGE, TopAbs_FACE, TopAbs_SOLID, TopAbs_SHELL, TopAbs_COMPOUND, TopAbs_WIRE
 from OCC.Core.StdSelect import StdSelect_ShapeTypeFilter
+from ui import AssembleConsttrain
 
 class PartOperate(object):
 	def __init__(self,parent=None):
@@ -12,24 +13,21 @@ class PartOperate(object):
 		index=self.parent.ModuleWindowManager.tabwidget.currentIndex()
 		name=self.parent.ModuleWindowManager.tabwidget.tabText(index)
 		self.name=name
-		self.parent.Displayshape_core_dict[self.name].canva._display.register_select_callback(self.line_clicked)
-
+		#self.parent.Displayshape_core_dict[self.name].canva._display.register_select_callback(self.line_clicked)
 		#solidFilter=StdSelect_ShapeTypeFilter(TopAbs_FACE)#选择过滤器
 		#self.parent.Displayshape_core_dict[self.name].canva._display.Context.AddFilter(solidFilter)#设置过滤器
-
 		self.parent.Displayshape_core_dict[self.name].canva._display.SetSelectionModeNeutral()
 		self.parent.Displayshape_core_dict[self.name].canva._display.SetSelectionModeFace()
-
-		self.parent.Displayshape_core_dict[self.name].canva.mousePressEvent_Signal.trigger.connect(self.getshape)
-		
-
-		
+		#self.parent.Displayshape_core_dict[self.name].canva.mousePressEvent_Signal.trigger.connect(self.getshape)
+		self.assembleconstrain=AssembleConsttrain.AssembleConstrain(self.parent)
+		self.assembleconstrain.show()
 
 	def getshape(self):
 		index=self.parent.ModuleWindowManager.tabwidget.currentIndex()
 		name=self.parent.ModuleWindowManager.tabwidget.tabText(index)
 		self.name=name
-		shape = self.parent.Displayshape_core_dict[self.name].canva._display.Context.DetectedCurrentShape()  # 通过此方法可以当前鼠标点击的ais_shape
+		shape = self.parent.Displayshape_core_dict[self.name].canva._display.Context.DetectedShape()  # 通过此方法可以当前鼠标点击的ais_shape
+		#shape = shape.ShapeType();
 		#self.ais_shape=AIS_Shape.DownCast(shape)
 		#self.parent.Displayshape_core_dict[self.name].canva._display.Context.Remove(ais_shape,True)
 		print(shape)
@@ -45,7 +43,7 @@ class PartOperate(object):
 		name=self.parent.ModuleWindowManager.tabwidget.tabText(index)
 		self.name=name
 		#self.parent.Displayshape_core_dict[self.name].canva.mousePressEvent_Signal.trigger.connect(self.getshape)
-		self.parent.Displayshape_core_dict[self.name].canva.mouse_move_Signal.trigger.connect(self.getshape)
+		#self.parent.Displayshape_core_dict[self.name].canva.mouse_move_Signal.trigger.connect(self.getshape)
 	def partmove(self):
 		try:
 			print(self.ais_shape)
