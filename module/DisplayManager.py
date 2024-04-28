@@ -202,10 +202,10 @@ class DisplayManager(object):
 	def select(self):
 		pass
 
-	def Hide_datum(self):
-		self.canva._display.Context.Erase(self.shape_maneger_core_dict["ais_plane_xz"],True)
-		self.canva._display.Context.Erase(self.shape_maneger_core_dict["ais_plane_zy"],True)
-		self.canva._display.Context.Erase(self.shape_maneger_core_dict["ais_plane_XY"],True)
+	def Hide_datum(self,hide_datum=""):
+		if hide_datum!="":
+			self.canva._display.Context.Erase(self.shape_maneger_core_dict[hide_datum],True)
+		
 
 	def DisplayCube(self):
 		#my_box = BRepPrimAPI_MakeBox(10., 20., 30.).Shape()

@@ -64,7 +64,7 @@ class modulewindowmanager(object):
 			self.items = QDockWidget('组合浏览器', self.parent)  # 新建QDockWidget
 			self.parent.addDockWidget(QtCore.Qt.LeftDockWidgetArea, self.items)  # 在主显示区域右侧显示
 			self.items.setMinimumWidth(280)# 设置最小大小
-		self.parent.modeltree_dict[self.windownname[-1]]=ModelTree.ModelTree()
+		self.parent.modeltree_dict[self.windownname[-1]]=ModelTree.ModelTree(self.parent)
 		self.items.setWidget(self.parent.modeltree_dict[self.windownname[-1]].tree)
 
 		#Create TopBorderBar

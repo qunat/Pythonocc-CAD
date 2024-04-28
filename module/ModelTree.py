@@ -7,8 +7,9 @@ from PyQt5.QtWidgets import QTreeWidgetItem, QTreeWidget
 
 
 class ModelTree(QtWidgets.QWidget):
-	def __init__(self):
+	def __init__(self,parent=None):
 		super(ModelTree, self).__init__()
+		self.parent=parent
 		self.tree = QTreeWidget()
 		self.tree.expandAll()# 节点全部展开
 		self.tree.setStyle(QtWidgets.QStyleFactory.create('windows'))#有加号
@@ -157,5 +158,9 @@ class ModelTree(QtWidgets.QWidget):
 	def Updata_Child(self):
 		pass
 	def ItemChanged(self):
-		print(666)
+		index=self.parent.ModuleWindowManager.tabwidget.currentIndex()
+		name=self.parent.ModuleWindowManager.tabwidget.tabText(index)
+		if self.datum_root_x.checkState(0)==0:
+			self.parent.Displayshape_core_dict[name].Hide_datum("ais_plane_XY")
+		
 		
