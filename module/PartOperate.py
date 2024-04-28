@@ -3,6 +3,7 @@ from OCC.Core.AIS import AIS_Shape
 from OCC.Core.TopAbs import TopAbs_VERTEX, TopAbs_EDGE, TopAbs_FACE, TopAbs_SOLID, TopAbs_SHELL, TopAbs_COMPOUND, TopAbs_WIRE
 from OCC.Core.StdSelect import StdSelect_ShapeTypeFilter
 from ui import AssembleConsttrain
+from OCC.Core.gp import gp_Ax1, gp_Pnt, gp_Dir, gp_Trsf
 
 class PartOperate(object):
 	def __init__(self,parent=None):
