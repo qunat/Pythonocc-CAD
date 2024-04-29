@@ -77,15 +77,17 @@ class OCAF(object):
 						root_dict = NoDumpProcess(self.import_shape.keys(), file=filepath).root_dict
 				
 
-					#print("root_dict",root_dict)
+					#print(root_dict["0:1:1:1:1"].name)
+					#print(assemble_relation_list)
 					for shpt_lbl_color in self.import_shape:
 						
 						label, c, property = self.import_shape[shpt_lbl_color]
+						print(property)
 						# color=Quantity_Color(c.Red(),c.Green(), c.Blue(),Quantity_TOC_RGB)
 						if not isinstance(shpt_lbl_color, TopoDS_Solid):  # 排除非solid
 							continue
 						return_shape = self.parent.Displayshape_core_dict[name].canva._display.DisplayShape(shpt_lbl_color,color=Quantity_Color(c.Red(),c.Green(),c.Blue(),Quantity_TOC_RGB),update=True)
-						self.parent.Displayshape_core_dict[name].shape_maneger_core_dict[id] = return_shape[0]
+						self.parent.Displayshape_core_dict[name].shape_maneger_core_dict[property["name"]] = return_shape[0]
 						id += 1
 						QApplication.processEvents()
 

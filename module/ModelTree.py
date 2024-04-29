@@ -160,7 +160,11 @@ class ModelTree(QtWidgets.QWidget):
 	def ItemChanged(self):
 		index=self.parent.ModuleWindowManager.tabwidget.currentIndex()
 		name=self.parent.ModuleWindowManager.tabwidget.tabText(index)
+		for i in self.parent.Displayshape_core_dict[name].shape_maneger_core_dict.keys():
+			print(i)
 		if self.datum_root_x.checkState(0)==0:
 			self.parent.Displayshape_core_dict[name].Hide_datum("ais_plane_XY")
+		else:
+			pass
 		
 		

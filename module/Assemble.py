@@ -287,7 +287,7 @@ def read_step_file_with_names_colors(filename):
 
             shape_disp = BRepBuilderAPI_Transform(shape, loc.Transformation()).Shape()
             if not shape_disp in output_shapes:
-                output_shapes[shape_disp] = [lab.GetLabelName(), c,dict_1]
+                output_shapes[shape_disp] = [lab.GetLabelName(), c,assemble_relation_list[-1]]
             for i in range(l_subss.Length()):
                 lab_subs = l_subss.Value(i+1)
                 #print("\n########  simpleshape subshape label :", lab)
@@ -318,7 +318,7 @@ def read_step_file_with_names_colors(filename):
                 shape_to_disp = BRepBuilderAPI_Transform(shape_sub, loc.Transformation()).Shape()
                 # position the subshape to display
                 if not shape_to_disp in output_shapes:
-                    output_shapes[shape_to_disp] = [lab_subs.GetLabelName(), c,dict_1]
+                    output_shapes[shape_to_disp] = [lab_subs.GetLabelName(), c,assemble_relation_list[-1]]
 
 
 
