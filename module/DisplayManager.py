@@ -175,7 +175,7 @@ class DisplayManager(object):
 		asp = Prs3d_LineAspect(Quantity_Color(Quantity_NOC_GREEN), 1, 10)
 		ais_plane_xz.SetAspect(asp)
 		self.canva._display.Context.Display(ais_plane_xz, True)
-		self.shape_maneger_core_dict["ais_plane_xz"]=ais_plane_xz
+		self.shape_maneger_core_dict["X基准面"]=ais_plane_xz
 		
 		plane = Geom_Plane(gp_Pnt(0.0, 0.0, 0.0), gp_Dir(1, 0, 0))
 		ais_plane_zy = AIS_Plane(plane, True)
@@ -184,7 +184,7 @@ class DisplayManager(object):
 		asp = Prs3d_LineAspect(Quantity_Color(Quantity_NOC_WHITE), 2, 1)
 		ais_plane_zy.SetAspect(asp)
 		self.canva._display.Context.Display(ais_plane_zy, True)
-		self.shape_maneger_core_dict["ais_plane_zy"]=ais_plane_zy
+		self.shape_maneger_core_dict["Y基准面"]=ais_plane_zy
 		
 		plane = Geom_Plane(gp_Pnt(0.0, 0.0, 0.0), gp_Dir(0, 0, 1))
 		ais_plane_zy = AIS_Plane(plane, True)
@@ -193,7 +193,7 @@ class DisplayManager(object):
 		asp = Prs3d_LineAspect(Quantity_Color(Quantity_NOC_GREEN), 1, 10)
 		ais_plane_zy.SetAspect(asp)
 		self.canva._display.Context.Display(ais_plane_zy, True)
-		self.shape_maneger_core_dict["ais_plane_XY"]=ais_plane_zy
+		self.shape_maneger_core_dict["Z基准面"]=ais_plane_zy
 	
 	def Displaydatum(self):
 		self.Displaytriehedron()

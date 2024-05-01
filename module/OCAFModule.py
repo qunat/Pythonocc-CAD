@@ -96,6 +96,7 @@ class OCAF(object):
 					try:
 						if root_dict != None:
 							self.parent.modeltree_dict[name].Create_tree_NodeList(root_dict=root_dict)
+							self.parent.modeltree_dict[name].ItemChangedSetting()
 						else:
 							pass
 					except:

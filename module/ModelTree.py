@@ -22,7 +22,8 @@ class ModelTree(QtWidgets.QWidget):
 		self.tree_Node_dict={}
 		self.root_dict={}
 		self.node_dict={}
-		self.tree.clicked.connect(self.ItemChanged)
+		#self.tree.clicked.connect(self.ItemChanged)
+		
 		
 		# 设置根节点
 		self.history_model_root = QTreeWidgetItem(self.tree)
@@ -150,31 +151,27 @@ class ModelTree(QtWidgets.QWidget):
 		#print(self.tree_root_dict)
 			
 
-					
+	def ItemChangedSetting(self):
+		self.tree.itemChanged.connect(self.ItemChanged)
+
 	def Create_Child(self):
 		pass
 	def Updata_Root(self):
 		pass
 	def Updata_Child(self):
 		pass
-	def ItemChanged(self):
+	def ItemChanged(self,column):
 		index=self.parent.ModuleWindowManager.tabwidget.currentIndex()
 		name=self.parent.ModuleWindowManager.tabwidget.tabText(index)
-		#print(self.tree_root_child_dict.keys())
-		for i in self.parent.Displayshape_core_dict[name].shape_maneger_core_dict.keys():
-			try:
-				if self.tree_root_child_dict[i].checkState(0)==0:
-					self.parent.Displayshape_core_dict[name].HidePart(i)
-				else:
-					self.parent.Displayshape_core_dict[name].DisplayPart(i)
+		try:
+			if column.checkState(0)==0:
+				self.parent.Displayshape_core_dict[name].HidePart(column.text(0))
+			else:
+				self.parent.Displayshape_core_dict[name].DisplayPart(column.text(0))
 
-			except:
-				pass
-
-
-		if self.datum_root_x.checkState(0)==0:
-			self.parent.Displayshape_core_dict[name].Hide_datum("ais_plane_XY")
-		else:
-			self.parent.Displayshape_core_dict[name].DisplayPart("ais_plane_XY")
+		except Exception as e:
+			print(e)
+			pass
+	
 		
 		
