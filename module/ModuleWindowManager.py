@@ -75,6 +75,14 @@ class modulewindowmanager(object):
 		# reset TopBorderBa view
 		self.TopBorderBa.reset_triggered_connect()
 
+		#右键单击弹出界面
+		self.menuBar = QtWidgets.QMenuBar()
+		self.menuBar.setGeometry(QtCore.QRect(0, 0, 606 , 26))
+		self.menuBar.setObjectName("menuBar")
+		self.parent.Displayshape_core_dict[self.windownname[-1]].canva.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
+		self.parent.Displayshape_core_dict[self.windownname[-1]].canva.customContextMenuRequested['QPoint'].connect(self.rightMenuShow)
+		
+
 		try:
 			self.parent.PartOperate.part()
 
@@ -101,4 +109,39 @@ class modulewindowmanager(object):
 			self.parent.current_window_name=name
 			self.TopBorderBa.reset_triggered_connect()
 		except:
+			pass
+	def rightMenuShow(self):
+		try:
+			index=self.tabwidget.currentIndex()
+			name=self.tabwidget.tabText(index)
+			if True:
+				rightMenu = QtWidgets.QMenu(self.menuBar)
+				self.actionreboot_1 = QtWidgets.QAction(self.parent.Displayshape_core_dict[name].canva)
+				self.actionreboot_1.setObjectName("actionreboot_1")
+				self.actionreboot_1.setText(QtCore.QCoreApplication.translate("MainWindow", "从列表中选择"))
+				
+				self.actionreboot_2 = QtWidgets.QAction(self.parent.Displayshape_core_dict[name].canva)
+				self.actionreboot_2.setObjectName("actionreboot_2")
+				self.actionreboot_2.setText(QtCore.QCoreApplication.translate("MainWindow", "隐藏"))
+				
+				self.actionreboot_3 = QtWidgets.QAction(self.parent.Displayshape_core_dict[name].canva)
+				self.actionreboot_3.setObjectName("actionreboot_2")
+				self.actionreboot_3.setText(QtCore.QCoreApplication.translate("MainWindow", "删除"))
+
+				self.actionreboot_4 = QtWidgets.QAction(self.parent.Displayshape_core_dict[name].canva)
+				self.actionreboot_4.setObjectName("actionreboot_4")
+				self.actionreboot_4.setText(QtCore.QCoreApplication.translate("MainWindow", "属性"))
+
+				
+				rightMenu.addAction(self.actionreboot_1)
+				rightMenu.addAction(self.actionreboot_2)
+				rightMenu.addAction(self.actionreboot_3)
+				rightMenu.addAction(self.actionreboot_4)
+
+				self.actionreboot_2.triggered.connect(self.parent.Displayshape_core_dict[name].HidePart())
+				#self.actionreboot_1.triggered.connect(self.Measure_diameter_fun)
+				rightMenu.exec_(QtGui.QCursor.pos())
+
+		except Exception as e:
+			print(e)
 			pass

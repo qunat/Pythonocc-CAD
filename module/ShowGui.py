@@ -144,14 +144,6 @@ class Ui_MainWindow(MainGui.Ui_MainWindow):
 		self.current_window_name=None
 
 		
-		#右键单击弹出界面
-		self.menuBar = QtWidgets.QMenuBar()
-		self.menuBar.setGeometry(QtCore.QRect(0, 0, 606 , 26))
-		self.menuBar.setObjectName("menuBar")
-		#self.Displayshape_core.canva.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
-		#self.Displayshape_core.canva.customContextMenuRequested['QPoint'].connect(self.rightMenuShow)
-		#self.Displayshape_core.canva.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
-		#self.Displayshape_core.canva.customContextMenuRequested['QPoint'].connect(self.rightMenuShow)
 		
 		# Create PythonConsole
 		#self.ipython = Ipython.ConsoleWidget(customBanner=None)
@@ -177,62 +169,8 @@ class Ui_MainWindow(MainGui.Ui_MainWindow):
 		pass
 
 		
-	def rightMenuShow(self):
-		try:
-			if True:
-				rightMenu = QtWidgets.QMenu(self.menuBar)
-				self.actionreboot_1 = QtWidgets.QAction(self.Displayshape_core.canva)
-				self.actionreboot_1.setObjectName("actionreboot_1")
-				self.actionreboot_1.setText(QtCore.QCoreApplication.translate("MainWindow", "从列表中选择"))
-				
-				self.actionreboot_2 = QtWidgets.QAction(self.Displayshape_core.canva)
-				self.actionreboot_2.setObjectName("actionreboot_2")
-				self.actionreboot_2.setText(QtCore.QCoreApplication.translate("MainWindow", "隐藏"))
-				
-				self.actionreboot_3 = QtWidgets.QAction(self.Displayshape_core.canva)
-				self.actionreboot_3.setObjectName("actionreboot_2")
-				self.actionreboot_3.setText(QtCore.QCoreApplication.translate("MainWindow", "删除"))
-
-				self.actionreboot_4 = QtWidgets.QAction(self.Displayshape_core.canva)
-				self.actionreboot_4.setObjectName("actionreboot_4")
-				self.actionreboot_4.setText(QtCore.QCoreApplication.translate("MainWindow", "属性"))
-
-				
-				rightMenu.addAction(self.actionreboot_1)
-				rightMenu.addAction(self.actionreboot_2)
-				rightMenu.addAction(self.actionreboot_3)
-				rightMenu.addAction(self.actionreboot_4)
-
-				self.actionreboot_2.triggered.connect(self.hide_part_rightMenuShow)
-				#self.actionreboot_1.triggered.connect(self.Measure_diameter_fun)
-				rightMenu.exec_(QtGui.QCursor.pos())
-
-		except Exception as e:
-			print(e)
-			pass
-	def hide_part_rightMenuShow(self):
-		Distance=0
-		min_distance_id=0
-		(x, y, z, vx, vy, vz) = self.Displayshape_core.ProjReferenceAxe()
-		direction = gp_Dir(vx, vy, vz)
-		line = gp_Lin(gp_Pnt(x, y, z), direction)
-		edge_builder = BRepBuilderAPI_MakeEdge(line)
-		edge = edge_builder.Edge()
-		#print(self.Displayshape_core.shape_maneger_core_dict)
-		for key in self.Displayshape_core.shape_maneger_core_dict.keys():
-			try:
-				#print(key)
-				extrema = BRepExtrema.BRepExtrema_DistShapeShape(self.Displayshape_core.shape_maneger_core_dict[key].Shape(), edge)
-				nearest_point1 = extrema.PointOnShape1(1)
-				nearest_point2 = extrema.PointOnShape2(1)
-				if  nearest_point1.Distance(nearest_point2)== 0:
-					Distance = nearest_point1.Distance(nearest_point2)
-					min_distance_id=key
-		
-			except:
-				pass
-		self.Displayshape_core.canva._display.Context.Erase(self.Displayshape_core.shape_maneger_core_dict[min_distance_id],True)
-		print(min_distance_id)
+	
+	
 			
 		
 	def mousePressEvent(self, e):

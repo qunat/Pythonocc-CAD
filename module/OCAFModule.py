@@ -73,8 +73,10 @@ class OCAF(object):
 					
 					try:
 						root_dict = DumpProcess(DumpToString).root_dict
+						print(root_dict)
 					except:
 						root_dict = NoDumpProcess(self.import_shape.keys(), file=filepath).root_dict
+
 				
 
 					#print(root_dict["0:1:1:1:1"].name)

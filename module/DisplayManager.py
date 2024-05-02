@@ -212,9 +212,15 @@ class DisplayManager(object):
 		self.shape_maneger_core_dict["cube"] = AIS_ViewCube()
 		self.shape_maneger_core_dict["cube"].SetTransformPersistence(Graphic3d_TMF_TriedronPers, gp_Pnt(1, 1, 100))
 		self.canva._display.Context.Display(self.shape_maneger_core_dict["cube"], True)
-	def HidePart(self,part_name):
+	def HidePart(self,part_name=None):
 		try:
-			self.canva._display.Context.Erase(self.shape_maneger_core_dict[part_name],True)
+			if part_name==None:
+				shape = self.canva._display.Context.Current()  # 通过此方法可以当前鼠标点击的ais_shape
+            	#shape = shape.ShapeType();
+				self.ais_shape=AIS_Shape.DownCast(shape)
+				print(self.ais_shape)
+			else:
+				self.canva._display.Context.Erase(self.shape_maneger_core_dict[part_name],True)
 		except Exception as e:
 			print(e)
 			pass
