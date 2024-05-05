@@ -1,41 +1,7 @@
-::[Bat To Exe Converter]
-::
-::YAwzoRdxOk+EWAjk
-::fBw5plQjdCmDJNxKFcTj6pO6nYFa3+5q2j3wIGE6Nm18bHFPBLBsRN+KjYimK9MW5kDnYaUi0G5NmdkJMEh8bR2+fAwxlWdBuWqWC9eOvAzkWVvH70g/ew==
-::YAwzuBVtJxjWCl3EqQJgSA==
-::ZR4luwNxJguZRRnk
-::Yhs/ulQjdF+5
-::cxAkpRVqdFKZSzk=
-::cBs/ulQjdF+5
-::ZR41oxFsdFKZSDk=
-::eBoioBt6dFKZSDk=
-::cRo6pxp7LAbNWATEpCI=
-::egkzugNsPRvcWATEpCI=
-::dAsiuh18IRvcCxnZtBJQ
-::cRYluBh/LU+EWAnk
-::YxY4rhs+aU+JeA==
-::cxY6rQJ7JhzQF1fEqQJQ
-::ZQ05rAF9IBncCkqN+0xwdVs0
-::ZQ05rAF9IAHYFVzEqQJQ
-::eg0/rx1wNQPfEVWB+kM9LVsJDGQ=
-::fBEirQZwNQPfEVWB+kM9LVsJDGQ=
-::cRolqwZ3JBvQF1fEqQJQ
-::dhA7uBVwLU+EWDk=
-::YQ03rBFzNR3SWATElA==
-::dhAmsQZ3MwfNWATElA==
-::ZQ0/vhVqMQ3MEVWAtB9wSA==
-::Zg8zqx1/OA3MEVWAtB9wSA==
-::dhA7pRFwIByZRRnk
-::Zh4grVQjdCmDJNxKFcTj6pO6nYFa3+5q2j3wIGE6Nm18bHFPBLBsRN+KjYimK9MW5kDnYaUi0G5NmdkJMEh8bR2+fAwxlUZJhWuDI/CdoQqvT1CMhg==
-::YB416Ek+ZG8=
-::
-::
-::978f952a14a936cc963da21a135fa983
-
 @echo off
 cd /d %~dp0
 set path=%~dp0
-set parameter0=python3.7
+set parameter0=Win64\python3.7
 set parameter1=\Library\mingw-w64\bin
 set parameter2=\Library\usr\bin
 set parameter3=\Library\bin
@@ -61,7 +27,11 @@ set QT_QPA_PLATFORM_PLUGIN_PATH=%path6%
 
 echo %PATH%
 
-python BaseGui.py
+REM Check if opengl32.dll is present, if yes remove it.
+SET BREPCAD_GUI_ROOT_DIR=%path%\Win64\Gui\
+
+REM START python.exe %path%\brepcad %*
+python Brepcad.py
 
 
 
