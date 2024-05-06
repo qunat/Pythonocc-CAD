@@ -27,7 +27,7 @@ class Ui_MainWindow(object):
 		self.centralwidget.setStyleSheet("")
 		self.centralwidget.setObjectName("centralwidget")
 		self.BrepCADlable=QtWidgets.QLabel(self.centralwidget)
-		self.BrepCADlable.setPixmap(QtGui.QPixmap('./pic/BrepCAD2024.png'))
+		self.BrepCADlable.setPixmap(QtGui.QPixmap('./Images/pic/BrepCAD2024.png'))
 		layout=QtWidgets.QVBoxLayout()
 		layout.addWidget(self.BrepCADlable)
 		self.centralwidget.setLayout(layout)
