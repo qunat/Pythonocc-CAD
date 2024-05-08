@@ -102,7 +102,6 @@ class ModelTree(QtWidgets.QWidget):
 			self.tree_root_dict[Nodelist[1]].setIcon(0, QIcon('./Win64/icons/assypart.png'))
 			self.tree_root_dict[Nodelist[1]].setCheckState(0, Qt.Checked)
 		else:
-			
 			self.tree_root_dict[Nodelist[1]] = QTreeWidgetItem(self.tree_root_dict[Nodelist[0]])
 			self.tree_root_dict[Nodelist[1]].setText(0, Nodelist[1])
 			self.tree_root_dict[Nodelist[1]].setIcon(0, QIcon('./Win64/icons/assypart.png'))

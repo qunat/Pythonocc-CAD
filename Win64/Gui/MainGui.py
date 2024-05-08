@@ -18,7 +18,7 @@ class Ui_MainWindow(object):
 		MainWindow.setObjectName("MainWindow")
 		MainWindow.resize(1008, 767)
 		icon = QtGui.QIcon()
-		icon.addPixmap(QtGui.QPixmap("./icons/logo.ico"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+		icon.addPixmap(QtGui.QPixmap("./Win64/icons/logo.ico"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
 		MainWindow.setWindowIcon(icon)
 		MainWindow.setStyleSheet("")
 		MainWindow.setIconSize(QtCore.QSize(160, 128))
