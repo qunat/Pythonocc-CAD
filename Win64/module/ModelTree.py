@@ -74,22 +74,31 @@ class ModelTree(QtWidgets.QWidget):
 
 	def Create_tree_NodeList(self,root_dict={}):
 		root_order=None
-		for part_property in root_dict.values():
-			if part_property.name==None:
-				continue
-			elif  part_property.struct=="ASSEMBLY":
-				root_order=part_property.order
-				root_name=part_property.name
-				NodeList = ["father_root"]
-				NodeList.append(root_name)
-				NodeList.append(part_property.order)
+		if len(root_dict.keys())!=1:
+			for part_property in root_dict.values():
+				if part_property.name==None:
+					continue
+				elif  part_property.struct=="ASSEMBLY":
+					root_order=part_property.order
+					root_name=part_property.name
+					NodeList = ["father_root"]
+					NodeList.append(root_name)
+					NodeList.append(part_property.order)
 				
-			elif part_property.order[0:part_property.order.rfind(":")]==root_order:
-				NodeList.append(part_property.order)
-				self.node_dict[root_order] = NodeList
+				elif part_property.order[0:part_property.order.rfind(":")]==root_order:
+					NodeList.append(part_property.order)
+					self.node_dict[root_order] = NodeList
+			print(self.node_dict)
+		elif len(root_dict.keys())==1:
+			pass
+			print(self.root_dict)
+		
 				
 		self.root_dict=root_dict
-		self.Create_ModelTree(self.node_dict["0:1:1:1"])
+		try:
+			self.Create_ModelTree(self.node_dict["0:1:1:1"])
+		except Exception as e:
+			print(2222,e)
 		self.tree.expandAll()  # 节点全部展开
 
 
@@ -107,6 +116,7 @@ class ModelTree(QtWidgets.QWidget):
 			self.tree_root_dict[Nodelist[1]].setIcon(0, QIcon('./Win64/icons/assypart.png'))
 			self.tree_root_dict[Nodelist[1]].setCheckState(0, Qt.Checked)
 			
+		print(222,Nodelist)
 		father_root=Nodelist[1]
 		#print("nodelist",Nodelist[1])
 		#设置子节点

@@ -67,20 +67,14 @@ class OCAF(object):
 				if end_with.endswith(".step") or end_with.endswith("stp"):#stp格式导入
 					self.import_shape, assemble_relation_list, DumpToString = Assemble.read_step_file_with_names_colors(
 						filepath)
-					#print("我主要是看这里",self.import_shape)
-
 					# 判断是否为标准的装配体结构
 					
 					try:
 						root_dict = DumpProcess(DumpToString).root_dict
-						print(root_dict)
 					except:
 						root_dict = NoDumpProcess(self.import_shape.keys(), file=filepath).root_dict
 
-				
-
-					#print(root_dict["0:1:1:1:1"].name)
-					#print(assemble_relation_list)
+					print("我主要是看这里",root_dict,DumpToString)
 					for shpt_lbl_color in self.import_shape:
 						
 						label, c, property = self.import_shape[shpt_lbl_color]
@@ -94,7 +88,6 @@ class OCAF(object):
 
 					self.parent.Displayshape_core_dict[name].canva._display.FitAll()
 					# 建立模型树
-					#print("显示",root_dict)
 					try:
 						if root_dict != None:
 							self.parent.modeltree_dict[name].Create_tree_NodeList(root_dict=root_dict)
