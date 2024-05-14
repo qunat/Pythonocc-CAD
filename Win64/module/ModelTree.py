@@ -88,6 +88,7 @@ class ModelTree(QtWidgets.QWidget):
 				elif part_property.order[0:part_property.order.rfind(":")]==root_order:
 					NodeList.append(part_property.order)
 					self.node_dict[root_order] = NodeList
+					
 			print(self.node_dict)
 		elif len(root_dict.keys())==1:
 			pass

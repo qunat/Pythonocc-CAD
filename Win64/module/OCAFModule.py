@@ -71,8 +71,11 @@ class OCAF(object):
 					
 					try:
 						root_dict = DumpProcess(DumpToString).root_dict
+						if root_dict['0:1:1:1'].struct=="PART":
+							root_dict = NoDumpProcess(self.import_shape.keys(), file=filepath).root_dict
 					except:
-						root_dict = NoDumpProcess(self.import_shape.keys(), file=filepath).root_dict
+						pass
+						
 
 					print("我主要是看这里",root_dict,DumpToString)
 					for shpt_lbl_color in self.import_shape:
