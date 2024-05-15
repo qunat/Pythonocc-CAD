@@ -92,11 +92,13 @@ class OCAF(object):
 					self.parent.Displayshape_core_dict[name].canva._display.FitAll()
 					# 建立模型树
 					try:
-						if root_dict != None:
+						print(root_dict['0:1:1:1'].struct)
+						if root_dict != None and root_dict['0:1:1:1'].struct!="PART":
 							self.parent.modeltree_dict[name].Create_tree_NodeList(root_dict=root_dict)
 							self.parent.modeltree_dict[name].ItemChangedSetting()
-						else:
-							pass
+						elif root_dict['0:1:1:1'].struct=="PART":
+							self.parent.modeltree_dict[name].Create_ModelTree_NOASSEMBLE(root_dict=root_dict)
+							self.parent.modeltree_dict[name].ItemChangedSetting()
 					except:
 						pass
 					

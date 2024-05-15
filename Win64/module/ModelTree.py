@@ -89,17 +89,17 @@ class ModelTree(QtWidgets.QWidget):
 					NodeList.append(part_property.order)
 					self.node_dict[root_order] = NodeList
 					
-			print(self.node_dict)
+			#print(self.node_dict)
 		elif len(root_dict.keys())==1:
 			pass
-			print(self.root_dict)
+			#print(self.root_dict)
 		
 				
 		self.root_dict=root_dict
 		try:
 			self.Create_ModelTree(self.node_dict["0:1:1:1"])
 		except Exception as e:
-			print(2222,e)
+			pass
 		self.tree.expandAll()  # 节点全部展开
 
 
@@ -160,6 +160,10 @@ class ModelTree(QtWidgets.QWidget):
 			# self.tree_root_child_dict[part_property["name"]].setCheckState(0, Qt.Checked)
 		#print(self.tree_root_dict)
 			
+	def Create_ModelTree_NOASSEMBLE(self,root_dict={}):
+		'''非装配体结构'''
+		print("非装配结构")
+
 
 	def ItemChangedSetting(self):
 		self.tree.itemChanged.connect(self.ItemChanged)

@@ -96,7 +96,7 @@ class NoDumpProcess(object):
 
 		except:
 			name = file.split("\\")[-1].split(".")[0]
-		DumpToString="ASSEMBLY COMPOUND 0:1:1:1 \"{}\" ".format(name)
+		DumpToString="PART COMPOUND 0:1:1:1 \"{}\" ".format(name)
 		self.DumpToString_list.append(DumpToString)
 		code=1
 
