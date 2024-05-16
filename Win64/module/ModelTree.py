@@ -89,11 +89,9 @@ class ModelTree(QtWidgets.QWidget):
 					NodeList.append(part_property.order)
 					self.node_dict[root_order] = NodeList
 					
-			#print(self.node_dict)
 		elif len(root_dict.keys())==1:
 			pass
-			#print(self.root_dict)
-		
+			
 				
 		self.root_dict=root_dict
 		try:
@@ -117,7 +115,6 @@ class ModelTree(QtWidgets.QWidget):
 			self.tree_root_dict[Nodelist[1]].setIcon(0, QIcon('./Win64/icons/assypart.png'))
 			self.tree_root_dict[Nodelist[1]].setCheckState(0, Qt.Checked)
 			
-		print(222,Nodelist)
 		father_root=Nodelist[1]
 		#print("nodelist",Nodelist[1])
 		#设置子节点
@@ -162,7 +159,17 @@ class ModelTree(QtWidgets.QWidget):
 			
 	def Create_ModelTree_NOASSEMBLE(self,root_dict={}):
 		'''非装配体结构'''
-		print("非装配结构")
+		print("非装配结构",root_dict["0:1:1:1"].name)
+		for order in root_dict.keys():
+			if len(order)==7:
+				print("enter")
+				self.tree_root_dict[root_dict[order].name] = QTreeWidgetItem(self.history_model_root)
+				self.tree_root_dict[root_dict[order].name].setText(0, root_dict[order].name)
+				self.tree_root_dict[root_dict[order].name].setIcon(0, QIcon('./Win64/icons/piecepart.png'))
+				self.tree_root_dict[root_dict[order].name].setCheckState(0, Qt.Checked)
+
+			else:
+				pass
 
 
 	def ItemChangedSetting(self):

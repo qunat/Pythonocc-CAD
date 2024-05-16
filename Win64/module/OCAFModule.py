@@ -68,7 +68,7 @@ class OCAF(object):
 					self.import_shape, assemble_relation_list, DumpToString = Assemble.read_step_file_with_names_colors(
 						filepath)
 					# 判断是否为标准的装配体结构
-					
+
 					try:
 						root_dict = DumpProcess(DumpToString).root_dict
 						if root_dict['0:1:1:1'].struct=="PART":
