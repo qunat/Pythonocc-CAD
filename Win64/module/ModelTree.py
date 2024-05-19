@@ -160,18 +160,24 @@ class ModelTree(QtWidgets.QWidget):
 	def Create_ModelTree_NOASSEMBLE(self,root_dict={}):
 		'''非装配体结构'''
 		print("非装配结构",root_dict["0:1:1:1"].name)
+		solid_order=0
 		for order in root_dict.keys():
 			if len(order)==7:
-				print("enter")
 				self.tree_root_dict[root_dict[order].name] = QTreeWidgetItem(self.history_model_root)
 				self.tree_root_dict[root_dict[order].name].setText(0, root_dict[order].name)
 				self.tree_root_dict[root_dict[order].name].setIcon(0, QIcon('./Win64/icons/piecepart.png'))
 				self.tree_root_dict[root_dict[order].name].setCheckState(0, Qt.Checked)
 
 			else:
-				pass
+				print(123,root_dict[order].name)
+				self.tree_root_dict[solid_order] = QTreeWidgetItem(self.tree_root_dict[root_dict["0:1:1:1"].name])
+				self.tree_root_dict[solid_order].setText(0, root_dict[order].name)
+				self.tree_root_dict[solid_order].setIcon(0, QIcon('./Win64/icons/solid.png'))
+				self.tree_root_dict[solid_order].setCheckState(0, Qt.Checked)
+				solid_order+=1
+			
 
-
+		self.tree.expandAll()  # 节点全部展开
 	def ItemChangedSetting(self):
 		self.tree.itemChanged.connect(self.ItemChanged)
 

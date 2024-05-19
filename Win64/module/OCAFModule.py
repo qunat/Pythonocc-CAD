@@ -81,7 +81,7 @@ class OCAF(object):
 					for shpt_lbl_color in self.import_shape:
 						
 						label, c, property = self.import_shape[shpt_lbl_color]
-						#print(property)
+						print(4444,property["name"])
 						# color=Quantity_Color(c.Red(),c.Green(), c.Blue(),Quantity_TOC_RGB)
 						if not isinstance(shpt_lbl_color, TopoDS_Solid):  # 排除非solid
 							continue
