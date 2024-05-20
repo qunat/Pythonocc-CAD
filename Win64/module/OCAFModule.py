@@ -71,23 +71,39 @@ class OCAF(object):
 
 					try:
 						root_dict = DumpProcess(DumpToString).root_dict
-						if root_dict['0:1:1:1'].struct=="PART":
+
+						if root_dict['0:1:1:1'].struct=="PART":#非装配体
 							root_dict = NoDumpProcess(self.import_shape.keys(), file=filepath).root_dict
+							solid_id=0
+							for shpt_lbl_color in self.import_shape:
+								label, c, property = self.import_shape[shpt_lbl_color]
+								print("非装配体",property["name"])
+								# color=Quantity_Color(c.Red(),c.Green(), c.Blue(),Quantity_TOC_RGB)
+								if not isinstance(shpt_lbl_color, TopoDS_Solid):  # 排除非solid
+									continue
+								return_shape = self.parent.Displayshape_core_dict[name].canva._display.DisplayShape(shpt_lbl_color,color=Quantity_Color(c.Red(),c.Green(),c.Blue(),Quantity_TOC_RGB),update=True)
+								self.parent.Displayshape_core_dict[name].shape_maneger_core_dict["solid"+str(solid_id)] = return_shape[0]
+								solid_id+=1
+								QApplication.processEvents()
+
+						else:#装配体
+							for shpt_lbl_color in self.import_shape:
+								
+								label, c, property = self.import_shape[shpt_lbl_color]
+								print(4444,property["name"])
+								# color=Quantity_Color(c.Red(),c.Green(), c.Blue(),Quantity_TOC_RGB)
+								if not isinstance(shpt_lbl_color, TopoDS_Solid):  # 排除非solid
+									continue
+								return_shape = self.parent.Displayshape_core_dict[name].canva._display.DisplayShape(shpt_lbl_color,color=Quantity_Color(c.Red(),c.Green(),c.Blue(),Quantity_TOC_RGB),update=True)
+								self.parent.Displayshape_core_dict[name].shape_maneger_core_dict[property["name"]] = return_shape[0]
+								QApplication.processEvents()
+
 					except:
 						pass
 						
 
 					print("我主要是看这里",root_dict,DumpToString)
-					for shpt_lbl_color in self.import_shape:
-						
-						label, c, property = self.import_shape[shpt_lbl_color]
-						print(4444,property["name"])
-						# color=Quantity_Color(c.Red(),c.Green(), c.Blue(),Quantity_TOC_RGB)
-						if not isinstance(shpt_lbl_color, TopoDS_Solid):  # 排除非solid
-							continue
-						return_shape = self.parent.Displayshape_core_dict[name].canva._display.DisplayShape(shpt_lbl_color,color=Quantity_Color(c.Red(),c.Green(),c.Blue(),Quantity_TOC_RGB),update=True)
-						self.parent.Displayshape_core_dict[name].shape_maneger_core_dict[property["name"]] = return_shape[0]
-						QApplication.processEvents()
+					
 
 					self.parent.Displayshape_core_dict[name].canva._display.FitAll()
 					# 建立模型树

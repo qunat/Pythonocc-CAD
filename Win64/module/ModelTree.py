@@ -22,6 +22,7 @@ class ModelTree(QtWidgets.QWidget):
 		self.tree_Node_dict={}
 		self.root_dict={}
 		self.node_dict={}
+		self.noassemble_solid_dict={}
 		#self.tree.clicked.connect(self.ItemChanged)
 		
 		
@@ -160,7 +161,7 @@ class ModelTree(QtWidgets.QWidget):
 	def Create_ModelTree_NOASSEMBLE(self,root_dict={}):
 		'''非装配体结构'''
 		print("非装配结构",root_dict["0:1:1:1"].name)
-		solid_order=0
+		solid_id=0
 		for order in root_dict.keys():
 			if len(order)==7:
 				self.tree_root_dict[root_dict[order].name] = QTreeWidgetItem(self.history_model_root)
@@ -169,14 +170,13 @@ class ModelTree(QtWidgets.QWidget):
 				self.tree_root_dict[root_dict[order].name].setCheckState(0, Qt.Checked)
 
 			else:
-				print(123,root_dict[order].name)
-				self.tree_root_dict[solid_order] = QTreeWidgetItem(self.tree_root_dict[root_dict["0:1:1:1"].name])
-				self.tree_root_dict[solid_order].setText(0, root_dict[order].name)
-				self.tree_root_dict[solid_order].setIcon(0, QIcon('./Win64/icons/solid.png'))
-				self.tree_root_dict[solid_order].setCheckState(0, Qt.Checked)
-				solid_order+=1
+				self.tree_root_dict["solid"+str(solid_id)] = QTreeWidgetItem(self.tree_root_dict[root_dict["0:1:1:1"].name])
+				self.tree_root_dict["solid"+str(solid_id)].setText(0, "solid")
+				self.tree_root_dict["solid"+str(solid_id)].setIcon(0, QIcon('./Win64/icons/solid.png'))
+				self.tree_root_dict["solid"+str(solid_id)].setCheckState(0, Qt.Checked)
+				self.tree_root_dict["solid"+str(solid_id)].setData(1,0,"solid"+str(solid_id))
+				solid_id+=1
 			
-
 		self.tree.expandAll()  # 节点全部展开
 	def ItemChangedSetting(self):
 		self.tree.itemChanged.connect(self.ItemChanged)
@@ -190,15 +190,23 @@ class ModelTree(QtWidgets.QWidget):
 	def ItemChanged(self,column):
 		index=self.parent.ModuleWindowManager.tabwidget.currentIndex()
 		name=self.parent.ModuleWindowManager.tabwidget.tabText(index)
+		print(column.data(0,0))
 		try:
-			if column.checkState(0)==0:
-				self.parent.Displayshape_core_dict[name].HidePart(column.text(0))
+			if self.noassemble_solid_dict==None:
+				if column.checkState(0)==0:
+					self.parent.Displayshape_core_dict[name].HidePart(column.text(0))
+				else:
+					self.parent.Displayshape_core_dict[name].DisplayPart(column.text(0))
 			else:
-				self.parent.Displayshape_core_dict[name].DisplayPart(column.text(0))
+				if column.checkState(0)==0:
+					self.parent.Displayshape_core_dict[name].HidePart(self.noassemble_solid_dict[column])
+				else:
+					self.parent.Displayshape_core_dict[name].DisplayPart(self.noassemble_solid_dict[column])
+
+			
 
 		except Exception as e:
 			print(e)
 			pass
 	
-		
 		
