@@ -6,6 +6,13 @@ from PyQt5.QtCore import  Qt
 from PyQt5.QtWidgets import QTreeWidgetItem, QTreeWidget
 
 
+class QTreeWidgetItem(QTreeWidgetItem):
+	def SetId(self,ID):
+		self.id=ID
+	def GetId(self):
+		return self.id
+
+
 class ModelTree(QtWidgets.QWidget):
 	def __init__(self,parent=None):
 		super(ModelTree, self).__init__()
@@ -22,7 +29,7 @@ class ModelTree(QtWidgets.QWidget):
 		self.tree_Node_dict={}
 		self.root_dict={}
 		self.node_dict={}
-		self.noassemble_solid_dict={}
+		self.noassemble_solid=False
 		#self.tree.clicked.connect(self.ItemChanged)
 		
 		
@@ -174,7 +181,7 @@ class ModelTree(QtWidgets.QWidget):
 				self.tree_root_dict["solid"+str(solid_id)].setText(0, "solid")
 				self.tree_root_dict["solid"+str(solid_id)].setIcon(0, QIcon('./Win64/icons/solid.png'))
 				self.tree_root_dict["solid"+str(solid_id)].setCheckState(0, Qt.Checked)
-				self.tree_root_dict["solid"+str(solid_id)].setData(1,0,"solid"+str(solid_id))
+				self.tree_root_dict["solid"+str(solid_id)].SetId("solid"+str(solid_id))
 				solid_id+=1
 			
 		self.tree.expandAll()  # 节点全部展开
@@ -190,18 +197,18 @@ class ModelTree(QtWidgets.QWidget):
 	def ItemChanged(self,column):
 		index=self.parent.ModuleWindowManager.tabwidget.currentIndex()
 		name=self.parent.ModuleWindowManager.tabwidget.tabText(index)
-		print(column.data(0,0))
+		print(column.GetId())
 		try:
-			if self.noassemble_solid_dict==None:
+			if column.text(0)=="solid":
+				if column.checkState(0)==0:
+					self.parent.Displayshape_core_dict[name].HidePart(column.GetId())
+				else:
+					self.parent.Displayshape_core_dict[name].DisplayPart(column.GetId())
+			else:
 				if column.checkState(0)==0:
 					self.parent.Displayshape_core_dict[name].HidePart(column.text(0))
 				else:
 					self.parent.Displayshape_core_dict[name].DisplayPart(column.text(0))
-			else:
-				if column.checkState(0)==0:
-					self.parent.Displayshape_core_dict[name].HidePart(self.noassemble_solid_dict[column])
-				else:
-					self.parent.Displayshape_core_dict[name].DisplayPart(self.noassemble_solid_dict[column])
 
 			
 
