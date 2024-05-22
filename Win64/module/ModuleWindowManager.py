@@ -81,7 +81,6 @@ class modulewindowmanager(object):
 		self.menuBar.setObjectName("menuBar")
 		self.parent.Displayshape_core_dict[self.windownname[-1]].canva.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
 		self.parent.Displayshape_core_dict[self.windownname[-1]].canva.customContextMenuRequested['QPoint'].connect(self.rightMenuShow)
-		
 
 		try:
 			self.parent.PartOperate.part()
@@ -112,6 +111,7 @@ class modulewindowmanager(object):
 			pass
 	def rightMenuShow(self):
 		try:
+
 			index=self.tabwidget.currentIndex()
 			name=self.tabwidget.tabText(index)
 			if True:
@@ -137,8 +137,8 @@ class modulewindowmanager(object):
 				rightMenu.addAction(self.actionreboot_2)
 				rightMenu.addAction(self.actionreboot_3)
 				rightMenu.addAction(self.actionreboot_4)
-
-				self.actionreboot_2.triggered.connect(self.parent.Displayshape_core_dict[name].HidePart())
+				print("enter")
+				#self.actionreboot_2.triggered.connect(self.parent.Displayshape_core_dict[name].HidePart())
 				#self.actionreboot_1.triggered.connect(self.Measure_diameter_fun)
 				rightMenu.exec_(QtGui.QCursor.pos())
 

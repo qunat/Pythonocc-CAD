@@ -77,7 +77,7 @@ class OCAF(object):
 							solid_id=0
 							for shpt_lbl_color in self.import_shape:
 								label, c, property = self.import_shape[shpt_lbl_color]
-								print("非装配体",property["name"])
+								#print("非装配体",property["name"])
 								# color=Quantity_Color(c.Red(),c.Green(), c.Blue(),Quantity_TOC_RGB)
 								if not isinstance(shpt_lbl_color, TopoDS_Solid):  # 排除非solid
 									continue
@@ -90,7 +90,6 @@ class OCAF(object):
 							for shpt_lbl_color in self.import_shape:
 								
 								label, c, property = self.import_shape[shpt_lbl_color]
-								print(4444,property["name"])
 								# color=Quantity_Color(c.Red(),c.Green(), c.Blue(),Quantity_TOC_RGB)
 								if not isinstance(shpt_lbl_color, TopoDS_Solid):  # 排除非solid
 									continue
@@ -102,13 +101,13 @@ class OCAF(object):
 						pass
 						
 
-					print("我主要是看这里",root_dict,DumpToString)
+					#print("我主要是看这里",root_dict,DumpToString)
 					
 
 					self.parent.Displayshape_core_dict[name].canva._display.FitAll()
 					# 建立模型树
 					try:
-						print(root_dict['0:1:1:1'].struct)
+						#print(root_dict['0:1:1:1'].struct)
 						if root_dict != None and root_dict['0:1:1:1'].struct!="PART":
 							self.parent.modeltree_dict[name].Create_tree_NodeList(root_dict=root_dict)
 							self.parent.modeltree_dict[name].ItemChangedSetting()
