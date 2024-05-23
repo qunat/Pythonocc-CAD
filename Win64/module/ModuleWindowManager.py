@@ -21,7 +21,9 @@ class modulewindowmanager(object):
 		self.ViewleaderBar_dict={}
 		self.windownname=["零件1"]
 		self.windownnum=1
+		self.getselectshape=None
 		self.tabwidget.currentChanged.connect(self.TabwidgetChangeEvent)
+
 
 
 	def CreatePartWindown(self,name=None):
@@ -82,6 +84,9 @@ class modulewindowmanager(object):
 		self.parent.Displayshape_core_dict[self.windownname[-1]].canva.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
 		self.parent.Displayshape_core_dict[self.windownname[-1]].canva.customContextMenuRequested['QPoint'].connect(self.rightMenuShow)
 
+		#绑定信号和槽
+		self.parent.Displayshape_core_dict[self.windownname[-1]].canva._display.register_select_callback(self.getshape)
+
 		try:
 			self.parent.PartOperate.part()
 
@@ -109,6 +114,12 @@ class modulewindowmanager(object):
 			self.TopBorderBa.reset_triggered_connect()
 		except:
 			pass
+	def getshape(self,shp, *kwargs):
+		""" This function is called whenever a line is selected
+		"""
+		for face in shp:
+			print(face)
+
 	def rightMenuShow(self):
 		try:
 
@@ -137,10 +148,10 @@ class modulewindowmanager(object):
 				rightMenu.addAction(self.actionreboot_2)
 				rightMenu.addAction(self.actionreboot_3)
 				rightMenu.addAction(self.actionreboot_4)
-				print("enter")
-				#self.actionreboot_2.triggered.connect(self.parent.Displayshape_core_dict[name].HidePart())
-				#self.actionreboot_1.triggered.connect(self.Measure_diameter_fun)
+				
 				rightMenu.exec_(QtGui.QCursor.pos())
+				self.actionreboot_2.triggered.connect(self.parent.Displayshape_core_dict[name].HidePart())
+				#self.actionreboot_1.triggered.connect(self.Measure_diameter_fun)
 
 		except Exception as e:
 			print(e)

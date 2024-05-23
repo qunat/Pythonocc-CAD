@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from typing import List
 
-from OCC.Core.AIS import AIS_Trihedron, AIS_Plane, AIS_ViewCube
+from OCC.Core.AIS import AIS_Trihedron, AIS_Plane, AIS_ViewCube,AIS_Shape
 from OCC.Core.BRep import BRep_Builder
 from OCC.Core.BRepPrimAPI import BRepPrimAPI_MakeBox
 from OCC.Core.BRepTools import breptools_Write, breptools_Read, breptools_Triangulation
@@ -135,6 +135,7 @@ class DisplayManager(object):
 	
 	def SetBackgroundImage(self):
 		self.canva._display.SetBackgroundImage("./Images/Pic/Cloudy.png")
+
 	def ProjReferenceAxe(self):#返回当前鼠标位置在视图中的值
 		_dragStartPosY = self.canva.dragStartPosY
 		_dragStartPosX = self.canva.dragStartPosX
@@ -212,16 +213,21 @@ class DisplayManager(object):
 		self.shape_maneger_core_dict["cube"] = AIS_ViewCube()
 		self.shape_maneger_core_dict["cube"].SetTransformPersistence(Graphic3d_TMF_TriedronPers, gp_Pnt(1, 1, 100))
 		self.canva._display.Context.Display(self.shape_maneger_core_dict["cube"], True)
+
 	def HidePart(self,part_name=None):
 		try:
 			if part_name==None:
-				shape = self.canva._display.Context.Current()  # 通过此方法可以当前鼠标点击的ais_shape
+				self.canva._display.Context.InitDetected()
+				shape = self.canva._display.Context.DetectedCurrentShape()  # 通过此方法可以当前鼠标点击的ais_shape
+				print(shape)
             	#shape = shape.ShapeType();
-				self.ais_shape=AIS_Shape.DownCast(shape)
-				print(self.ais_shape)
+				ais_shape=AIS_Shape(TopoDS_Shape(shape))
+				self.canva._display.Context.Erase(ais_shape,True)
+				
 			else:
 				self.canva._display.Context.Erase(self.shape_maneger_core_dict[part_name],True)
 		except Exception as e:
+			
 			print(e)
 			pass
 	def DisplayPart(self,part_name):
