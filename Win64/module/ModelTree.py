@@ -197,7 +197,6 @@ class ModelTree(QtWidgets.QWidget):
 	def ItemChanged(self,column):
 		index=self.parent.ModuleWindowManager.tabwidget.currentIndex()
 		name=self.parent.ModuleWindowManager.tabwidget.tabText(index)
-		print(column.GetId())
 		try:
 			if column.text(0)=="solid":
 				if column.checkState(0)==0:

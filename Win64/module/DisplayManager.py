@@ -219,9 +219,15 @@ class DisplayManager(object):
 			if part_name==None:
 				self.canva._display.Context.InitDetected()
 				shape = self.canva._display.Context.DetectedCurrentShape()  # 通过此方法可以当前鼠标点击的ais_shape
-				print(shape)
             	#shape = shape.ShapeType();
-				ais_shape=AIS_Shape(TopoDS_Shape(shape))
+				ais_shape=AIS_Shape(shape.Reversed())
+				for i in self.shape_maneger_core_dict.values():
+					try:
+						print(i.Shape(),shape.Reversed())
+						if i.Shape().IsSame(shape.Reversed()):
+							self.canva._display.Context.Erase(i,True)
+					except:
+						pass
 				self.canva._display.Context.Erase(ais_shape,True)
 				
 			else:

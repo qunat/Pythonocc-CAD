@@ -85,7 +85,7 @@ class modulewindowmanager(object):
 		self.parent.Displayshape_core_dict[self.windownname[-1]].canva.customContextMenuRequested['QPoint'].connect(self.rightMenuShow)
 
 		#绑定信号和槽
-		self.parent.Displayshape_core_dict[self.windownname[-1]].canva._display.register_select_callback(self.getshape)
+		#self.parent.Displayshape_core_dict[self.windownname[-1]].canva._display.register_select_callback(self.getshape)
 
 		try:
 			self.parent.PartOperate.part()
