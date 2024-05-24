@@ -197,6 +197,7 @@ class qtViewer3d(qtBaseViewer):
 		self.dragStartPosY=0
 		self.mousepresstype = None
 		self.mousemovelock=False
+		self.mousemoved=False
 		self.mouse_move_Signal=mouse_move_Signal_Foo()
 		self.wheelEvent_Signal=wheelEvent_Foo()
 		self.keyPressEvent_Signal=keyPressEvent_Foo()
@@ -405,6 +406,7 @@ class qtViewer3d(qtBaseViewer):
 		buttons = int(evt.buttons())
 		modifiers = evt.modifiers()
 		self.mouse_move_Signal.connect_and_emit_trigger()
+		self.mousemoved=False
 		#MOVE  ADD MYSELF
 
 		# ROTATE
@@ -443,6 +445,7 @@ class qtViewer3d(qtBaseViewer):
 			self._display.Pan(dx, -dy)
 			self._drawbox = False
 			self.mousemovelock=True
+			self.mousemoved=True
 
 		# PAN 2
 		elif buttons == QtCore.Qt.MidButton and self.parent.InteractiveOperate.InteractiveModule=="SKETCH" :
@@ -454,6 +457,8 @@ class qtViewer3d(qtBaseViewer):
 			self.cursor = "pan"
 			self._display.Pan(dx, -dy)
 			self._drawbox = False
+			self.mousemoved=True
+
 
 		# DRAW BOX
 

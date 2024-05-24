@@ -149,9 +149,13 @@ class modulewindowmanager(object):
 				rightMenu.addAction(self.actionreboot_3)
 				rightMenu.addAction(self.actionreboot_4)
 				
-				rightMenu.exec_(QtGui.QCursor.pos())
-				self.actionreboot_2.triggered.connect(self.parent.Displayshape_core_dict[name].HidePart())
-				#self.actionreboot_1.triggered.connect(self.Measure_diameter_fun)
+				#屏蔽移动时弹出菜单
+				if self.parent.Displayshape_core_dict[name].canva.mousemoved==False:
+					rightMenu.exec_(QtGui.QCursor.pos())
+					self.actionreboot_2.triggered.connect(self.parent.Displayshape_core_dict[name].HidePart())
+					#self.actionreboot_1.triggered.connect(self.Measure_diameter_fun)
+				
+
 
 		except Exception as e:
 			print(e)
