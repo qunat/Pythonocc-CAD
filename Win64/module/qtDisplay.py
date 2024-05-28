@@ -26,6 +26,7 @@ from PyQt5.QtCore import pyqtSignal, QObject
 from Win64.module import  OCCViewer
 from OCC.Display.backend import get_qt_modules
 from OCC.Display.backend import load_backend
+from PyQt5.QtWidgets import QApplication, QMainWindow, QMenu, QAction, QMessageBox
 
 backend_str = None
 used_backend = load_backend(backend_str)
@@ -206,6 +207,34 @@ class qtViewer3d(qtBaseViewer):
 		self.mouseDoubleClickEvent_Signal=mouseDoubleClickEvent_Foo()
 		
 		self.scaling_ratio=1
+	def contextMenuEvent(self, event):
+	        # 创建右键菜单
+	        contextMenu = QMenu(self)
+
+	        # 添加菜单项
+	        newAction = QAction("新建", self)
+	        openAction = QAction("打开", self)
+	        quitAction = QAction("退出", self)
+
+	        # 将菜单项添加到右键菜单中
+	        contextMenu.addAction(newAction)
+	        contextMenu.addAction(openAction)
+	        contextMenu.addSeparator()  # 添加分隔符
+	        contextMenu.addAction(quitAction)
+
+	        # 连接菜单项的事件
+	        newAction.triggered.connect(self.newFile)
+	        openAction.triggered.connect(self.openFile)
+	        quitAction.triggered.connect(self.close)
+
+	        # 显示右键菜单
+	        contextMenu.exec_(self.mapToGlobal(event.pos()))
+
+	def newFile(self):
+		QMessageBox.information(self, "信息", "新建文件")
+
+	def openFile(self):
+		QMessageBox.information(self, "信息", "打开文件")
 
 	@property
 	def qApp(self):
@@ -233,7 +262,7 @@ class qtViewer3d(qtBaseViewer):
 		self.createCursors()
 
 	def createCursors(self):
-		module_pth = os.path.abspath(".\\python3.7\\Lib\\site-packages\\OCC\\Display")
+		module_pth = os.path.abspath(".\\Win64\\python3.7\\Lib\\site-packages\\OCC\\Display")
 		icon_pth = os.path.join(module_pth, "icons")
 
 		_CURSOR_PIX_ROT = QtGui.QPixmap(os.path.join(icon_pth, "cursor-rotate.png"))

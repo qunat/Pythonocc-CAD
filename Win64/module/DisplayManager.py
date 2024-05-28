@@ -8,7 +8,7 @@ from OCC.Core.BRepTools import breptools_Write, breptools_Read, breptools_Triang
 from OCC.Core.Geom import Geom_Axis2Placement, Geom_Plane
 from OCC.Core.Prs3d import Prs3d_LineAspect
 from OCC.Core.TopoDS import TopoDS_Face, TopoDS_Shape, TopoDS_Edge, TopoDS_Solid,TopoDS_Shell
-from PyQt5.QtWidgets import QFileDialog
+from PyQt5.QtWidgets import QFileDialog,QMenu
 from OCC.Extend.DataExchange import read_step_file,read_iges_file,read_stl_file
 from Win64.module import Assemble,qtDisplay
 from OCC.Core.Quantity import *
@@ -221,10 +221,12 @@ class DisplayManager(object):
 				shape = self.canva._display.Context.DetectedCurrentShape()  # 通过此方法可以当前鼠标点击的ais_shape
             	#shape = shape.ShapeType();
 				ais_shape=AIS_Shape(shape.Reversed())
+				print(shape)
 				for i in self.shape_maneger_core_dict.values():
 					try:
-						print(i.Shape(),shape.Reversed())
-						if i.Shape().IsSame(shape.Reversed()):
+						#print(i.Shape(),shape.Reversed())
+						if i.Shape().IsSame(shape.Reversed()) or i.Shape().IsPartner(shape.Reversed()):
+							print(888)
 							self.canva._display.Context.Erase(i,True)
 					except:
 						pass
@@ -234,7 +236,7 @@ class DisplayManager(object):
 				self.canva._display.Context.Erase(self.shape_maneger_core_dict[part_name],True)
 		except Exception as e:
 			
-			print(e)
+			print(e,ais_shape)
 			pass
 	def DisplayPart(self,part_name):
 		self.canva._display.Context.Display(self.shape_maneger_core_dict[part_name],True)
