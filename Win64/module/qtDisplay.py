@@ -205,37 +205,40 @@ class qtViewer3d(qtBaseViewer):
 		self.mousePressEvent_Signal=mousePressEvent_Foo()
 		self.mouseReleaseEvent_Signal=mouseReleaseEvent_Foo()
 		self.mouseDoubleClickEvent_Signal=mouseDoubleClickEvent_Foo()
-		
 		self.scaling_ratio=1
+	'''
 	def contextMenuEvent(self, event):
+			index=self.parent.ModuleWindowManager.tabwidget.currentIndex()
+			name=self.parent.ModuleWindowManager.tabwidget.tabText(index)
 	        # 创建右键菜单
-	        contextMenu = QMenu(self)
+			contextMenu = QMenu(self)
 
 	        # 添加菜单项
-	        newAction = QAction("新建", self)
-	        openAction = QAction("打开", self)
-	        quitAction = QAction("退出", self)
+			ActionHide = QAction("隐藏", self)
+			ActionTransparent = QAction("透明", self)
+			ActionDelete = QAction("删除", self)
+			ActionAttributes = QAction("属性", self)
 
 	        # 将菜单项添加到右键菜单中
-	        contextMenu.addAction(newAction)
-	        contextMenu.addAction(openAction)
-	        contextMenu.addSeparator()  # 添加分隔符
-	        contextMenu.addAction(quitAction)
+			contextMenu.addAction(ActionHide)
+			contextMenu.addSeparator()  # 添加分隔符
+			contextMenu.addAction(ActionTransparent)
+			contextMenu.addSeparator()  # 添加分隔符
+			contextMenu.addAction(ActionDelete)
+			contextMenu.addSeparator()  # 添加分隔符
+			contextMenu.addAction(ActionAttributes)
 
 	        # 连接菜单项的事件
-	        newAction.triggered.connect(self.newFile)
-	        openAction.triggered.connect(self.openFile)
-	        quitAction.triggered.connect(self.close)
+			ActionHide.triggered.connect(self.newFile)
+			ActionTransparent.triggered.connect(self.openFile)
+			print(self.parent.Displayshape_core_dict[name])
+			ActionDelete.triggered.connect(self.parent.Displayshape_core_dict[name].HidePart())
 
 	        # 显示右键菜单
-	        contextMenu.exec_(self.mapToGlobal(event.pos()))
-
-	def newFile(self):
-		QMessageBox.information(self, "信息", "新建文件")
-
-	def openFile(self):
-		QMessageBox.information(self, "信息", "打开文件")
-
+			contextMenu.exec_(self.mapToGlobal(event.pos()))
+	'''
+	
+	
 	@property
 	def qApp(self):
 		# reference to QApplication instance

@@ -8,7 +8,7 @@ from OCC.Core.BRepTools import breptools_Write, breptools_Read, breptools_Triang
 from OCC.Core.Geom import Geom_Axis2Placement, Geom_Plane
 from OCC.Core.Prs3d import Prs3d_LineAspect
 from OCC.Core.TopoDS import TopoDS_Face, TopoDS_Shape, TopoDS_Edge, TopoDS_Solid,TopoDS_Shell
-from PyQt5.QtWidgets import QFileDialog,QMenu
+from PyQt5.QtWidgets import QFileDialog,QMenu,QWidget
 from OCC.Extend.DataExchange import read_step_file,read_iges_file,read_stl_file
 from Win64.module import Assemble,qtDisplay
 from OCC.Core.Quantity import *
@@ -217,16 +217,19 @@ class DisplayManager(object):
 	def HidePart(self,part_name=None):
 		try:
 			if part_name==None:
+				
 				self.canva._display.Context.InitDetected()
 				shape = self.canva._display.Context.DetectedCurrentShape()  # 通过此方法可以当前鼠标点击的ais_shape
+
             	#shape = shape.ShapeType();
 				ais_shape=AIS_Shape(shape.Reversed())
+
 				print(shape)
 				for i in self.shape_maneger_core_dict.values():
 					try:
 						#print(i.Shape(),shape.Reversed())
 						if i.Shape().IsSame(shape.Reversed()) or i.Shape().IsPartner(shape.Reversed()):
-							print(888)
+							
 							self.canva._display.Context.Erase(i,True)
 					except:
 						pass

@@ -81,9 +81,8 @@ class modulewindowmanager(object):
 		self.menuBar = QtWidgets.QMenuBar()
 		self.menuBar.setGeometry(QtCore.QRect(0, 0, 606 , 26))
 		self.menuBar.setObjectName("menuBar")
-		#self.parent.Displayshape_core_dict[self.windownname[-1]].canva.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
-		#self.parent.Displayshape_core_dict[self.windownname[-1]].canva.customContextMenuRequested['QPoint'].connect(self.rightMenuShow)
-
+		self.parent.Displayshape_core_dict[self.windownname[-1]].canva.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
+		self.parent.Displayshape_core_dict[self.windownname[-1]].canva.customContextMenuRequested['QPoint'].connect(self.rightMenuShow)
 		#绑定信号和槽
 		#self.parent.Displayshape_core_dict[self.windownname[-1]].canva._display.register_select_callback(self.getshape)
 
@@ -126,7 +125,7 @@ class modulewindowmanager(object):
 			index=self.tabwidget.currentIndex()
 			name=self.tabwidget.tabText(index)
 			if True:
-				rightMenu = QtWidgets.QMenu()
+				self.rightMenu = QtWidgets.QMenu(self.parent)
 				self.actionreboot_1 = QtWidgets.QAction("从列表中选择",self.parent.Displayshape_core_dict[name].canva)
 				self.actionreboot_1.setObjectName("actionreboot_1")
 				self.actionreboot_1.setText(QtCore.QCoreApplication.translate("MainWindow", "从列表中选择"))
@@ -143,20 +142,23 @@ class modulewindowmanager(object):
 				self.actionreboot_4.setObjectName("actionreboot_4")
 				self.actionreboot_4.setText(QtCore.QCoreApplication.translate("MainWindow", "属性"))
 
-				
-				rightMenu.addAction(self.actionreboot_1)
-				rightMenu.addAction(self.actionreboot_2)
-				rightMenu.addAction(self.actionreboot_3)
-				rightMenu.addAction(self.actionreboot_4)
+
+				#self.actionreboot_1.triggered.connect(self.test1)
+				self.actionreboot_2.triggered.connect(lambda:self.parent.Displayshape_core_dict[name].HidePart(None))
+				#self.actionreboot_3.triggered.connect(self.test3)
+
+			
+				self.rightMenu.addAction(self.actionreboot_1)
+				self.rightMenu.addAction(self.actionreboot_2)
+				self.rightMenu.addAction(self.actionreboot_3)
+				self.rightMenu.addAction(self.actionreboot_4)
 				
 				#屏蔽移动时弹出菜单
 				if self.parent.Displayshape_core_dict[name].canva.mousemoved==False:
-					rightMenu.exec_(QtGui.QCursor.pos())
-					self.actionreboot_2.triggered.connect(self.parent.Displayshape_core_dict[name].HidePart())
-					#self.actionreboot_1.triggered.connect(self.Measure_diameter_fun)
-				
-
-
+					self.rightMenu.exec_(QtGui.QCursor.pos())
+					#self.actionreboot_2.triggered.connect(self.parent.Displayshape_core_dict[name].HidePart())
+					
+					
 		except Exception as e:
-			print(e)
+		
 			pass
