@@ -126,9 +126,9 @@ class modulewindowmanager(object):
 			name=self.tabwidget.tabText(index)
 			if True:
 				self.rightMenu = QtWidgets.QMenu(self.parent)
-				self.actionreboot_1 = QtWidgets.QAction("从列表中选择",self.parent.Displayshape_core_dict[name].canva)
+				self.actionreboot_1 = QtWidgets.QAction("透明",self.parent.Displayshape_core_dict[name].canva)
 				self.actionreboot_1.setObjectName("actionreboot_1")
-				self.actionreboot_1.setText(QtCore.QCoreApplication.translate("MainWindow", "从列表中选择"))
+				self.actionreboot_1.setText(QtCore.QCoreApplication.translate("MainWindow", "透明"))
 				
 				self.actionreboot_2 = QtWidgets.QAction("隐藏",self.parent.Displayshape_core_dict[name].canva)
 				self.actionreboot_2.setObjectName("actionreboot_2")
@@ -143,8 +143,9 @@ class modulewindowmanager(object):
 				self.actionreboot_4.setText(QtCore.QCoreApplication.translate("MainWindow", "属性"))
 
 
-				#self.actionreboot_1.triggered.connect(self.test1)
+				self.actionreboot_1.triggered.connect(self.parent.Displayshape_core_dict[name].SetTransparent)
 				self.actionreboot_2.triggered.connect(lambda:self.parent.Displayshape_core_dict[name].HidePart(None))
+				
 				#self.actionreboot_3.triggered.connect(self.test3)
 
 			

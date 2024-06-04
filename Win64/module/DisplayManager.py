@@ -9,6 +9,7 @@ from OCC.Core.Geom import Geom_Axis2Placement, Geom_Plane
 from OCC.Core.Prs3d import Prs3d_LineAspect
 from OCC.Core.TopoDS import TopoDS_Face, TopoDS_Shape, TopoDS_Edge, TopoDS_Solid,TopoDS_Shell
 from PyQt5.QtWidgets import QFileDialog,QMenu,QWidget
+from PyQt5.QtCore import  Qt
 from OCC.Extend.DataExchange import read_step_file,read_iges_file,read_stl_file
 from Win64.module import Assemble,qtDisplay
 from OCC.Core.Quantity import *
@@ -224,22 +225,36 @@ class DisplayManager(object):
             	#shape = shape.ShapeType();
 				ais_shape=AIS_Shape(shape.Reversed())
 
-				print(shape)
-				for i in self.shape_maneger_core_dict.values():
+				for i in self.shape_maneger_core_dict.keys():
 					try:
-						#print(i.Shape(),shape.Reversed())
-						if i.Shape().IsSame(shape.Reversed()) or i.Shape().IsPartner(shape.Reversed()):
-							
-							self.canva._display.Context.Erase(i,True)
-					except:
+						if self.shape_maneger_core_dict[i].Shape().IsSame(shape.Reversed()) or self.shape_maneger_core_dict[i].Shape().IsPartner(shape.Reversed()):
+							self.canva._display.Context.Erase(self.shape_maneger_core_dict[i],True)
+							index=self.parent.ModuleWindowManager.tabwidget.currentIndex()
+							name=self.parent.ModuleWindowManager.tabwidget.tabText(index)
+							self.parent.modeltree_dict[name].tree_root_dict[i].setCheckState(0, Qt.Unchecked)
+					except 	Exception as e:
 						pass
 				self.canva._display.Context.Erase(ais_shape,True)
 				
 			else:
 				self.canva._display.Context.Erase(self.shape_maneger_core_dict[part_name],True)
 		except Exception as e:
-			
-			print(e,ais_shape)
 			pass
+	def SetTransparent(self):
+		try:
+			self.canva._display.Context.InitDetected()
+			shape = self.canva._display.Context.DetectedCurrentShape()  # 通过此方法可以当前鼠标点击的ais_shape
+			#shape = shape.ShapeType();
+			ais_shape=AIS_Shape(shape.Reversed())
+			for i in self.shape_maneger_core_dict.keys():
+				try:
+					if self.shape_maneger_core_dict[i].Shape().IsSame(shape.Reversed()) or self.shape_maneger_core_dict[i].Shape().IsPartner(shape.Reversed()):
+						self.shape_maneger_core_dict[i].SetTransparency(0.5)
+						self.canva._display.Context.Redisplay(self.shape_maneger_core_dict[i],True,False)
+				except 	Exception as e:
+					pass
+		except Exception as e:
+			pass
+
 	def DisplayPart(self,part_name):
 		self.canva._display.Context.Display(self.shape_maneger_core_dict[part_name],True)

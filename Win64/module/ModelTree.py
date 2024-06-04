@@ -187,7 +187,8 @@ class ModelTree(QtWidgets.QWidget):
 		self.tree.expandAll()  # 节点全部展开
 	def ItemChangedSetting(self):
 		self.tree.itemChanged.connect(self.ItemChanged)
-
+	def CancelCheckState(self):
+		pass
 	def Create_Child(self):
 		pass
 	def Updata_Root(self):
