@@ -22,7 +22,7 @@ from OCC.Core.GeomAPI import geomapi_To3d
 from Win64.sketcher.sketcher_line import Brep_line
 from Win64.sketcher.sketcher_circel import Brep_circel
 
-class SketchModule(object):
+class Sketcher(object):
 	def __init__(self,parent=None):
 		self.parent=parent
 		self.sketch_type=None
@@ -33,11 +33,6 @@ class SketchModule(object):
 		#self.parent.Displayshape_core.canva.mouse_move_Signal.trigger.connect(self.show_coordinate)
 		self.Dimension_Manege = Dimension_Manege(self)
 		self.sketcher_capture=sketcher_capture(self.parent)
-		
-	
-
-
-
 	def get_all_sketcher_element(self):
 		sketch_element_dict={}
 		for element in self.new_do_draw_dict.keys():
@@ -52,8 +47,6 @@ class SketchModule(object):
 					for key in circel:
 						lable = element + str(key)
 						sketch_element_dict[lable] = self.parent.Sketcher.new_do_draw_dict[element].show_circel_dict[key]
-
-
 			except:
 				pass
 		self.show_element=sketch_element_dict
@@ -64,45 +57,6 @@ class SketchModule(object):
 		coordinate="X:{:.2f}   Y:{:.2f}".format(x,y)
 		self.parent.Displayshape_core.canva._display.View.SetProj(vx, vy, vz)
 		self.parent.statusbar.showMessage(coordinate)
-		
-	def select_sketch_plane(self):
-		self.select_windows=SelectWidget(parent=self.parent)
-		print("select_sketch_plane")
-		self.select_windows.Show()
-		#self.parent.Displayshape_core.canva._display.SetSelectionModeEdge()
-		#self.parent.change_ribbon(init_name="Ribbon_sketcher")
-		
-		
-	def quite_sketch(self):
-		self.parent.change_ribbon(init_name="Ribbon_main")
-		self.parent._ribbon._ribbon_widget.setCurrentIndex(1)
-		self.parent.Displayshape_core.canva._display.View_Iso()
-		self.parent.Displayshape_core.canva._display.FitAll()
-		self.parent.InteractiveOperate.InteractiveModule="Home"
-		
-	def _2Dto3d(self):
-		plane = gp_Pln(gp_Origin(), self.gp_Dir)
-		line = BRepBuilderAPI_MakeEdge(geomapi_To3d(self.new_do_draw_dict["line"].show_line_dict[0], plane)).Edge()
-		
-	def uptoplane(self):
-		self.parent.InteractiveOperate.InteractiveModule="SKETCH"
-		self.parent.Displayshape_core.canva._display.register_select_callback(self.clicked_callback)
-		self.parent.Displayshape_core.Hide_datum()
-
-		if self.select_windows.comboBox.currentText()=="XY平面":
-			self.parent.Displayshape_core.canva._display.View_Top()
-			self.parent.Displayshape_core.canva._display.FitAll()
-			self.gp_Dir=gp_Dir(0,0,1)
-
-		if self.select_windows.comboBox.currentText()=="YZ平面":
-			self.parent.Displayshape_core.canva._display.View_Right()
-			self.parent.Displayshape_core.canva._display.FitAll()
-			self.gp_Dir=gp_Dir(1,0,0)
-		if self.select_windows.comboBox.currentText()=="XZ平面":
-			self.parent.Displayshape_core.canva._display.View_Front()
-			self.parent.Displayshape_core.canva._display.FitAll()
-			self.gp_Dir=gp_Dir(0,1,0)
-	
 	def clicked_callback(self, shp, *kwargs):
 		try:
 			if self.sketch_type==4:
@@ -398,4 +352,60 @@ class SketchModule(object):
 
 
 
-		return x, y, z, vx, vy, vz
+		return x, y, z, vx, vy, vz	
+class SketcherManager(object):
+	def __init__(self,parent=None):
+		self.parent=parent
+		self.windown_sketcher_dict=[]
+		self.sketcher_dict=[]
+	def CreateSketcher(self):
+		windown_name=self.parent.ModuleWindowManager.GetWindownName()
+		if windown_name in self.windown_sketcher_dict.keys():
+			pass
+		sketcher_id=1
+		pass
+
+class SketchModule(object):
+	def __init__(self,parent=None):
+		self.parent=parent
+		self.sketch_type=None
+		
+	def select_sketch_plane(self):
+		self.select_windows=SelectWidget(parent=self.parent)
+		print("select_sketch_plane")
+		self.select_windows.Show()
+		#self.parent.Displayshape_core.canva._display.SetSelectionModeEdge()
+		#self.parent.change_ribbon(init_name="Ribbon_sketcher")
+		
+		
+	def quite_sketch(self):
+		self.parent.change_ribbon(init_name="Ribbon_main")
+		self.parent._ribbon._ribbon_widget.setCurrentIndex(1)
+		self.parent.Displayshape_core.canva._display.View_Iso()
+		self.parent.Displayshape_core.canva._display.FitAll()
+		self.parent.InteractiveOperate.InteractiveModule="Home"
+		
+	def _2Dto3d(self):
+		plane = gp_Pln(gp_Origin(), self.gp_Dir)
+		line = BRepBuilderAPI_MakeEdge(geomapi_To3d(self.new_do_draw_dict["line"].show_line_dict[0], plane)).Edge()
+		
+	def uptoplane(self):
+		self.parent.InteractiveOperate.InteractiveModule="SKETCH"
+		self.parent.Displayshape_core.canva._display.register_select_callback(self.clicked_callback)
+		self.parent.Displayshape_core.Hide_datum()
+
+		if self.select_windows.comboBox.currentText()=="XY平面":
+			self.parent.Displayshape_core.canva._display.View_Top()
+			self.parent.Displayshape_core.canva._display.FitAll()
+			self.gp_Dir=gp_Dir(0,0,1)
+
+		if self.select_windows.comboBox.currentText()=="YZ平面":
+			self.parent.Displayshape_core.canva._display.View_Right()
+			self.parent.Displayshape_core.canva._display.FitAll()
+			self.gp_Dir=gp_Dir(1,0,0)
+		if self.select_windows.comboBox.currentText()=="XZ平面":
+			self.parent.Displayshape_core.canva._display.View_Front()
+			self.parent.Displayshape_core.canva._display.FitAll()
+			self.gp_Dir=gp_Dir(0,1,0)
+	
+	

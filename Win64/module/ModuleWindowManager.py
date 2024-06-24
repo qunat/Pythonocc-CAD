@@ -99,6 +99,10 @@ class modulewindowmanager(object):
 		if number!=0:
 			windownname="零件"+str(number)
 			self.windownname.append(windownname)
+	def GetWindownName(self):
+		index=self.tabwidget.currentIndex()
+		name=self.tabwidget.tabText(index)
+		return name
 
 	def CreateAssembelyWindown(self):
 		pass
