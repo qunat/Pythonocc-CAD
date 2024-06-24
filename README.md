@@ -52,7 +52,7 @@ git clone https://github.com/qunat/Pythonocc-CAD.git
 conda activate your environment
 cd pythonocc-CAD
 python BaseGui.py
-also clcik the BrepCAD.exe
+also double clcik the start.bta
 
 ```
 # update it 
