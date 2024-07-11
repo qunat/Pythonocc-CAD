@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 from PyQt5 import QtWidgets,QtGui,QtCore
+
+from PyQt5.QtWidgets import QApplication
 from Win64.Gui import MainGui
 import sys
 from  Win64.module import ShowGui
@@ -37,6 +39,7 @@ class Mywindown(QtWidgets.QMainWindow, ShowGui.Ui_MainWindow,MainGui.Ui_MainWind
 if __name__ == '__main__':
 	# checks if QApplication already exists
 	#QApplication.setStyle(QStyleFactory.create('Fusion'))
+	QApplication.setAttribute(QtCore.Qt.AA_EnableHighDpiScaling) 
 	app = QtWidgets.QApplication.instance()
 	if not app:
 		app = QtWidgets.QApplication(sys.argv)
