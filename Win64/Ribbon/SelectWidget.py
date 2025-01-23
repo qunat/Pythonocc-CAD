@@ -55,7 +55,7 @@ class SelectWidget(QtWidgets.QMainWindow):
 
 	def ok(self):
 		self.parent.Sketcher.uptoplane()
-		self.parent.change_ribbon(init_name="Ribbon_sketcher")
+		self.parent.change_ribbon(init_name="RibbonSketcher")
 		self.close()
 		
 	def cancel(self):

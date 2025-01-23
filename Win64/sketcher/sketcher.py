@@ -30,9 +30,12 @@ class Sketcher(object):
 		self.gp_Dir=None
 		self.show_element={}
 		self.new_do_draw_dict={"line":None,"circel":None,"rectangle":None,"arc":None,"profile":None}
-		#self.parent.Displayshape_core.canva.mouse_move_Signal.trigger.connect(self.show_coordinate)
+		#self.parent.Displayshape_core_dict[self.windownname[-1]].canva.mouse_move_Signal.trigger.connect(self.show_coordinate)
 		self.Dimension_Manege = Dimension_Manege(self)
 		self.sketcher_capture=sketcher_capture(self.parent)
+		self.windownname=self.parent.ModuleWindowManager.GetWindownName()
+		
+
 	def get_all_sketcher_element(self):
 		sketch_element_dict={}
 		for element in self.new_do_draw_dict.keys():
@@ -53,9 +56,9 @@ class Sketcher(object):
 		return sketch_element_dict
 
 	def show_coordinate(self):
-		(x, y, z, vx, vy, vz) = self.parent.Displayshape_core.ProjReferenceAxe()
+		(x, y, z, vx, vy, vz) = self.parent.Displayshape_core_dict[self.windownname].ProjReferenceAxe()
 		coordinate="X:{:.2f}   Y:{:.2f}".format(x,y)
-		self.parent.Displayshape_core.canva._display.View.SetProj(vx, vy, vz)
+		self.parent.Displayshape_core_dict[self.windownname].canva._display.View.SetProj(vx, vy, vz)
 		self.parent.statusbar.showMessage(coordinate)
 	def clicked_callback(self, shp, *kwargs):
 		try:
@@ -148,16 +151,16 @@ class Sketcher(object):
 		print("dynamics_draw_trance")
 		try:
 			if isinstance(self.draw_trance_element, Brep_line):  # 直线捕捉
-				self.parent.Displayshape_core.canva._display.Context.Remove(
+				self.parent.Displayshape_core_dict[self.windownname].canva._display.Context.Remove(
 					self.draw_trance_element.capture_point_list[0], False)  # 移除已经显示的端点
-				self.parent.Displayshape_core.canva._display.Context.Remove(
+				self.parent.Displayshape_core_dict[self.windownname].canva._display.Context.Remove(
 					self.draw_trance_element.capture_point_list[1], False)  # 移除已经显示的中点
-				self.parent.Displayshape_core.canva._display.Context.Remove(
+				self.parent.Displayshape_core_dict[self.windownname].canva._display.Context.Remove(
 					self.draw_trance_element.capture_point_list[2], False)  # 移除已经显示的端点
 			else:  # 圆或圆弧捕捉
-				self.parent.Displayshape_core.canva._display.Context.Remove(
+				self.parent.Displayshape_core_dict[self.windownname].canva._display.Context.Remove(
 					self.draw_trance_element.capture_center_point_list[0], False)
-				self.parent.Displayshape_core.canva._display.Context.Remove(
+				self.parent.Displayshape_core_dict[self.windownname].canva._display.Context.Remove(
 					self.draw_trance_element.capture_any_point_list[0], False)  # 移除已经显示的任意点
 		
 		except Exception as e:
@@ -165,9 +168,9 @@ class Sketcher(object):
 			
 		shape_id = 0
 		Distance = 0
-		_dragStartPosY = self.parent.Displayshape_core.canva.dragStartPosY
-		_dragStartPosX = self.parent.Displayshape_core.canva.dragStartPosX
-		(x, y, z, vx, vy, vz) = self.parent.Displayshape_core.ProjReferenceAxe()
+		_dragStartPosY = self.parent.Displayshape_core_dict[self.windownname].canva.dragStartPosY
+		_dragStartPosX = self.parent.Displayshape_core_dict[self.windownname].canva.dragStartPosX
+		(x, y, z, vx, vy, vz) = self.parent.Displayshape_core_dict[self.windownname].ProjReferenceAxe()
 		direction = gp_Dir(vx, vy, vz)
 		line = gp_Lin(gp_Pnt(x, y, z), direction)
 		edge_builder = BRepBuilderAPI_MakeEdge(line)
@@ -201,16 +204,16 @@ class Sketcher(object):
 							element = self.parent.Sketcher.new_do_draw_dict["circel"].show_circel_dict
 						
 						self.draw_trance_element = element[shape_id]
-						print(shape_id, 666)
+						#print(shape_id, 666)
 						
 					elif Distance > 20:
-						self.parent.Displayshape_core.canva._display.Context.Remove(
+						self.parent.Displayshape_core_dict[self.windownname].canva._display.Context.Remove(
 							element[shape_id].capture_point_list[0], False)  # 移除已经显示的端点
-						self.parent.Displayshape_core.canva._display.Context.Remove(
+						self.parent.Displayshape_core_dict[self.windownname].canva._display.Context.Remove(
 							element[shape_id].capture_point_list[1], False)  # 移除已经显示的中点
-						self.parent.Displayshape_core.canva._display.Context.Remove(
+						self.parent.Displayshape_core_dict[self.windownname].canva._display.Context.Remove(
 							element[shape_id].capture_point_list[2], False)  # 移除已经显示的端点
-						self.parent.Displayshape_core.canva._display.Context.Remove(
+						self.parent.Displayshape_core_dict[self.windownname].canva._display.Context.Remove(
 							element[shape_id].capture_any_point_list[0], False)  # 重移除已经显示的任意点
 					pass
 				except Exception as e:
@@ -224,22 +227,22 @@ class Sketcher(object):
 				if Distance > 15 or Distance == 0:
 					self.capture_point_None = 0
 					try:
-						self.parent.Displayshape_core.canva._display.Context.Remove(
+						self.parent.Displayshape_core_dict[self.windownname].canva._display.Context.Remove(
 							element[shape_id].capture_point_list[0], False)  # 移除已经显示的端点
-						self.parent.Displayshape_core.canva._display.Context.Remove(
+						self.parent.Displayshape_core_dict[self.windownname].canva._display.Context.Remove(
 							element[shape_id].capture_point_list[1], False)  # 移除已经显示的中点
-						self.parent.Displayshape_core.canva._display.Context.Remove(
+						self.parent.Displayshape_core_dict[self.windownname].canva._display.Context.Remove(
 							element[shape_id].capture_point_list[2], False)  # 移除已经显示的端点
-						self.parent.Displayshape_core.canva._display.Context.Remove(
+						self.parent.Displayshape_core_dict[self.windownname].canva._display.Context.Remove(
 							element[shape_id].capture_any_point_list[0], False)  # 移除已经显示的任意点
-						self.parent.Displayshape_core.canva._display.Repaint()
-						self.parent.Displayshape_core.canva._display.Context.UpdateCurrentViewer()
+						self.parent.Displayshape_core_dict[self.windownname].canva._display.Repaint()
+						self.parent.Displayshape_core_dict[self.windownname].canva._display.Context.UpdateCurrentViewer()
 					except Exception as e:
 						
 						pass
 				else:
 					try:
-						self.parent.Displayshape_core.canva._display.Context.Remove(
+						self.parent.Displayshape_core_dict[self.windownname].canva._display.Context.Remove(
 							element[shape_id].capture_any_point_list[0], False)  # 移除已经显示的任意点
 						pnt = gp_Pnt(x, y, z)
 						pnt0 = element[shape_id].get_capture_point_pnt(0)
@@ -248,17 +251,17 @@ class Sketcher(object):
 						
 						if pnt.Distance(pnt0) >= 15 and pnt.Distance(pnt1) >= 15 and pnt.Distance(pnt2) >= 15:
 							element[shape_id].set_capture_any_point(x, y, z)
-							self.parent.Displayshape_core.canva._display.Context.Display(
+							self.parent.Displayshape_core_dict[self.windownname].canva._display.Context.Display(
 								element[shape_id].capture_any_point_list[0], False)  # 移除已经显示的任意点
 						
-						self.parent.Displayshape_core.canva._display.Context.Display(
+						self.parent.Displayshape_core_dict[self.windownname].canva._display.Context.Display(
 							element[shape_id].capture_point_list[0], False)  # 移除已经显示的端点
-						self.parent.Displayshape_core.canva._display.Context.Display(
+						self.parent.Displayshape_core_dict[self.windownname].canva._display.Context.Display(
 							element[shape_id].capture_point_list[1], False)  # 移除已经显示的中点
-						self.parent.Displayshape_core.canva._display.Context.Display(
+						self.parent.Displayshape_core_dict[self.windownname].canva._display.Context.Display(
 							element[shape_id].capture_point_list[2], False)  # 移除已经显示的端点
-						self.parent.Displayshape_core.canva._display.Repaint()
-						self.parent.Displayshape_core.canva._display.Context.UpdateCurrentViewer()
+						self.parent.Displayshape_core_dict[self.windownname].canva._display.Repaint()
+						self.parent.Displayshape_core_dict[self.windownname].canva._display.Context.UpdateCurrentViewer()
 					except Exception as e:
 						print(e)
 			elif isinstance(element[shape_id], sketcher_circel.Brep_circel):  # 圆弧捕捉
@@ -266,9 +269,9 @@ class Sketcher(object):
 				if Distance > 15 or Distance == 0:
 					# element[shape_id].remove_capture_point()
 					# element[shape_id].remove_capture_any_point(self)
-					self.parent.Displayshape_core.canva._display.Context.Remove(
+					self.parent.Displayshape_core_dict[self.windownname].canva._display.Context.Remove(
 						element[shape_id].capture_center_point_list[0], False)  # 移除已经显示的圆心
-					self.parent.Displayshape_core.canva._display.Context.Remove(
+					self.parent.Displayshape_core_dict[self.windownname].canva._display.Context.Remove(
 						element[shape_id].capture_any_point_list[0], False)  # 移除已经显示的圆弧上的点
 					pass
 				
@@ -276,9 +279,9 @@ class Sketcher(object):
 				else:
 					P1 = [x, y, z]
 					element[shape_id].create_capture_any_point(P1)
-					self.parent.Displayshape_core.canva._display.Context.Display(
+					self.parent.Displayshape_core_dict[self.windownname].canva._display.Context.Display(
 						element[shape_id].capture_center_point_list[0], False)  # 移除已经显示的圆心
-					self.parent.Displayshape_core.canva._display.Context.Display(
+					self.parent.Displayshape_core_dict[self.windownname].canva._display.Context.Display(
 						element[shape_id].capture_any_point_list[0], False)  # 移除已经显示的圆心
 			# element[shape_id].display_capture_any_point()
 			# element[shape_id].display_capture_point()
@@ -290,7 +293,7 @@ class Sketcher(object):
 		if True:  # 捕捉生成的端点
 			shape_id = 0
 			Distance = 0
-			(x, y, z, vx, vy, vz) = self.parent.Displayshape_core.ProjReferenceAxe()
+			(x, y, z, vx, vy, vz) = self.parent.Displayshape_core_dict[self.windownname].ProjReferenceAxe()
 			direction = gp_Dir(vx, vy, vz)
 			line = gp_Lin(gp_Pnt(x, y, z), direction)
 			edge_builder = BRepBuilderAPI_MakeEdge(line)
@@ -335,7 +338,7 @@ class Sketcher(object):
 				pnt2 = element[shape_id].get_capture_point_pnt(2)
 				if Distance > 15 or Distance == 0:
 					self.capture_point_None = 0
-					(x, y, z, vx, vy, vz) = self.parent.Displayshape_core.ProjReferenceAxe()
+					(x, y, z, vx, vy, vz) = self.parent.Displayshape_core_dict[self.windownname].ProjReferenceAxe()
 
 				else:
 					if pnt.Distance(pnt0) <= 15:
@@ -369,20 +372,24 @@ class SketchModule(object):
 	def __init__(self,parent=None):
 		self.parent=parent
 		self.sketch_type=None
+		self.windownname=None
+		self.sketcher={}
+		
+
 		
 	def select_sketch_plane(self):
+		self.windownname=self.parent.ModuleWindowManager.GetWindownName()
 		self.select_windows=SelectWidget(parent=self.parent)
-		print("select_sketch_plane")
 		self.select_windows.Show()
-		#self.parent.Displayshape_core.canva._display.SetSelectionModeEdge()
-		#self.parent.change_ribbon(init_name="Ribbon_sketcher")
+		self.parent.Displayshape_core_dict[self.windownname].canva._display.SetSelectionModeEdge()
+		#self.parent.change_ribbon(init_name="RibbonSketcher")
 		
 		
 	def quite_sketch(self):
-		self.parent.change_ribbon(init_name="Ribbon_main")
+		self.parent.change_ribbon(init_name="RibbonMain")
 		self.parent._ribbon._ribbon_widget.setCurrentIndex(1)
-		self.parent.Displayshape_core.canva._display.View_Iso()
-		self.parent.Displayshape_core.canva._display.FitAll()
+		self.parent.Displayshape_core_dict[self.windownname].canva._display.View_Iso()
+		self.parent.Displayshape_core_dict[self.windownname].canva._display.FitAll()
 		self.parent.InteractiveOperate.InteractiveModule="Home"
 		
 	def _2Dto3d(self):
@@ -390,22 +397,25 @@ class SketchModule(object):
 		line = BRepBuilderAPI_MakeEdge(geomapi_To3d(self.new_do_draw_dict["line"].show_line_dict[0], plane)).Edge()
 		
 	def uptoplane(self):
+		self.createSkecther()
 		self.parent.InteractiveOperate.InteractiveModule="SKETCH"
-		self.parent.Displayshape_core.canva._display.register_select_callback(self.clicked_callback)
-		self.parent.Displayshape_core.Hide_datum()
+		self.parent.Displayshape_core_dict[self.windownname].canva._display.register_select_callback(self.sketcher[self.windownname].clicked_callback)
+		self.parent.Displayshape_core_dict[self.windownname].Hide_datum()
 
 		if self.select_windows.comboBox.currentText()=="XY平面":
-			self.parent.Displayshape_core.canva._display.View_Top()
-			self.parent.Displayshape_core.canva._display.FitAll()
+			self.parent.Displayshape_core_dict[self.windownname].canva._display.View_Top()
+			self.parent.Displayshape_core_dict[self.windownname].canva._display.FitAll()
 			self.gp_Dir=gp_Dir(0,0,1)
 
 		if self.select_windows.comboBox.currentText()=="YZ平面":
-			self.parent.Displayshape_core.canva._display.View_Right()
-			self.parent.Displayshape_core.canva._display.FitAll()
+			self.parent.Displayshape_core_dict[self.windownname].canva._display.View_Right()
+			self.parent.Displayshape_core_dict[self.windownname].canva._display.FitAll()
 			self.gp_Dir=gp_Dir(1,0,0)
 		if self.select_windows.comboBox.currentText()=="XZ平面":
-			self.parent.Displayshape_core.canva._display.View_Front()
-			self.parent.Displayshape_core.canva._display.FitAll()
+			self.parent.Displayshape_core_dict[self.windownname].canva._display.View_Front()
+			self.parent.Displayshape_core_dict[self.windownname].canva._display.FitAll()
 			self.gp_Dir=gp_Dir(0,1,0)
 	
-	
+	def createSkecther(self):
+		self.windownname=self.parent.ModuleWindowManager.GetWindownName()
+		self.sketcher[self.windownname]=Sketcher(self.parent)
