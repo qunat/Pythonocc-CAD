@@ -374,6 +374,7 @@ class SketchModule(object):
 		self.sketch_type=None
 		self.windownname=None
 		self.sketcher={}
+		self.currentSketcher=None
 		
 
 		
@@ -419,3 +420,7 @@ class SketchModule(object):
 	def createSkecther(self):
 		self.windownname=self.parent.ModuleWindowManager.GetWindownName()
 		self.sketcher[self.windownname]=Sketcher(self.parent)
+		self.currentSketcher=self.sketcher[self.windownname]
+		print("currentwindow",self.windownname)
+	def setCurentSketcher(self):
+		pass

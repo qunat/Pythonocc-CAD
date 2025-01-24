@@ -19,7 +19,7 @@ class modulewindowmanager(object):
 		self.parent.Displayshape_core_dict={}
 		self.parent.modeltree_dict={}
 		self.ViewleaderBar_dict={}
-		self.windownname=["零件0"]
+		self.windownname=["零件1"]
 		self.windownnum=1
 		self.getselectshape=None
 		self.tabwidget.currentChanged.connect(self.TabwidgetChangeEvent)

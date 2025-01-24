@@ -207,6 +207,7 @@ class DisplayManager(object):
 	def Hide_datum(self,hide_datum=""):
 		if hide_datum!="":
 			self.canva._display.Context.Erase(self.shape_maneger_core_dict[hide_datum],True)
+			print("345678")
 		
 
 	def DisplayCube(self):

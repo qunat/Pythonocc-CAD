@@ -49,6 +49,7 @@ class Brep_line(object):
 		self.capture_point_list=[None,None,None]
 		self.capture_any_point_list = [None]
 		self.isDone=None
+		self.windownname=self.parent.ModuleWindowManager.GetWindownName()
 		self.create_line()
 		
 	def create_line(self):
@@ -109,8 +110,9 @@ class sketch_line(object):
 		self.capture_middle_point_list = []
 		self.draw_line_connect=0
 		self.draw_trance_element=None
+		self.windownname=self.parent.ModuleWindowManager.GetWindownName()
 		solidFilter=StdSelect_ShapeTypeFilter(TopAbs_EDGE)#选择过滤器
-		self.parent.Displayshape_core.canva._display.Context.AddFilter(solidFilter)#设置过滤器
+		self.parent.Displayshape_core_dict[self.windownname].canva._display.Context.AddFilter(solidFilter)#设置过滤器
 
 
 
@@ -121,17 +123,17 @@ class sketch_line(object):
 	def draw_line(self,shape=None):
 			if self.parent.InteractiveOperate.InteractiveModule == "SKETCH":
 				if self.draw_line_connect!=1 or True:
-					#self.parent.Displayshape_core.canva.mouse_move_Signal.trigger.connect(self.parent.Sketcher.dynamics_draw_trance)
+					#self.parent.Displayshape_core_dict[self.windownname].canva.mouse_move_Signal.trigger.connect(self.parent.Sketcher.currentSketcher.dynamics_draw_trance)
 					self.draw_line_connect=1
-				(x, y, z, vx, vy, vz)=self.parent.Sketcher.catch_capure_point(shape)
+				(x, y, z, vx, vy, vz)=self.parent.Sketcher.currentSketcher.catch_capure_point(shape)
 				
 				if len(self.point_count) == 0:
 					self.point = [x, y, z]
 					self.point_count.append(self.point)
 					print(x, y, z, vx, vy, vz)
 					self.show_line_dict[self.line_id] = None
-					self.parent.Displayshape_core.canva.mouse_move_Signal.trigger.connect(self.parent.Sketcher.sketcher_capture.dynamics_point_highlight)
-					self.parent.Displayshape_core.canva.mouse_move_Signal.trigger.connect(self.dynamics_drwa_line)
+					self.parent.Displayshape_core_dict[self.windownname].canva.mouse_move_Signal.trigger.connect(self.parent.Sketcher.currentSketcher.sketcher_capture.dynamics_point_highlight)
+					self.parent.Displayshape_core_dict[self.windownname].canva.mouse_move_Signal.trigger.connect(self.dynamics_drwa_line)
 					self.draw_point(self.point[0],self.point[1],self.point[2])
 					
 
@@ -146,35 +148,35 @@ class sketch_line(object):
 					p2=[x,y,z]
 					self.show_line_dict[self.line_id].reset_endpoints(p1,p2)
 					self.show_line_dict[self.line_id].rebuild_line()
-					self.parent.Displayshape_core.canva._display.Context.Redisplay(self.show_line_dict[self.line_id].ais_shape, True,False)  # 重新计算更新已经显示的物体
+					self.parent.Displayshape_core_dict[self.windownname].canva._display.Context.Redisplay(self.show_line_dict[self.line_id].ais_shape, True,False)  # 重新计算更新已经显示的物体
 					
 					self.draw_point(p2[0], 	p2[1], 	p2[2])
 					self.parent.InteractiveOperate.Setting()
 					self.line_id+=1
 					self.point_count.clear()
-					self.show_element = self.parent.Sketcher.get_all_sketcher_element()
-					self.parent.Displayshape_core.canva.mouse_move_Signal.trigger.disconnect(self.dynamics_drwa_line)
-					self.parent.Displayshape_core.canva.mouse_move_Signal.trigger.disconnect(self.parent.Sketcher.dynamics_draw_trance)
-					self.parent.Displayshape_core.canva.mouse_move_Signal.trigger.disconnect()
+					self.show_element = self.parent.Sketcher.currentSketcher.get_all_sketcher_element()
+					self.parent.Displayshape_core_dict[self.windownname].canva.mouse_move_Signal.trigger.disconnect(self.dynamics_drwa_line)
+					self.parent.Displayshape_core_dict[self.windownname].canva.mouse_move_Signal.trigger.disconnect(self.parent.Sketcher.currentSketcher.dynamics_draw_trance)
+					self.parent.Displayshape_core_dict[self.windownname].canva.mouse_move_Signal.trigger.disconnect()
 
 	#@timer_decorator
 	def dynamics_drwa_line(self):
-			_dragStartPosY = self.parent.Displayshape_core.canva.dragStartPosY
-			_dragStartPosX = self.parent.Displayshape_core.canva.dragStartPosX
+			_dragStartPosY = self.parent.Displayshape_core_dict[self.windownname].canva.dragStartPosY
+			_dragStartPosX = self.parent.Displayshape_core_dict[self.windownname].canva.dragStartPosX
 			if self.dragStartPosY != _dragStartPosY or self.dragStartPosX != _dragStartPosX:
 				
-				(x, y, z, vx, vy, vz) = self.parent.Displayshape_core.ProjReferenceAxe()
+				(x, y, z, vx, vy, vz) = self.parent.Displayshape_core_dict[self.windownname].ProjReferenceAxe()
 				try:
 					p1 = self.point
 					p2 = [x, y, z]
 					
 					if self.show_line_dict[self.line_id] == None:
 						self.show_line_dict[self.line_id]=Brep_line(self,p1,p2)
-						self.parent.Displayshape_core.canva._display.Context.Display(self.show_line_dict[self.line_id].ais_shape, False)  # 显示的物体
+						self.parent.Displayshape_core_dict[self.windownname].canva._display.Context.Display(self.show_line_dict[self.line_id].ais_shape, False)  # 显示的物体
 					else:
 						self.show_line_dict[self.line_id].reset_endpoints(p1,p2)
 						self.show_line_dict[self.line_id].rebuild_line()
-						self.parent.Displayshape_core.canva._display.Context.Redisplay(self.show_line_dict[self.line_id].ais_shape, True,False)  # 重新计算更新已经显示的物体
+						self.parent.Displayshape_core_dict[self.windownname].canva._display.Context.Redisplay(self.show_line_dict[self.line_id].ais_shape, True,False)  # 重新计算更新已经显示的物体
 						pass
 				
 				except Exception as e:
@@ -226,13 +228,13 @@ class sketch_line(object):
 	
 			
 
-			self.parent.Displayshape_core.canva._display.Context.Display(ais_point,
+			self.parent.Displayshape_core_dict[self.windownname].canva._display.Context.Display(ais_point,
 																				 False)  # 重新计算更新已经显示的物
 		else:
-			self.parent.Displayshape_core.canva._display.DisplayShape(gp_Pnt(x,y,z),color="YELLOW",
+			self.parent.Displayshape_core_dict[self.windownname].canva._display.DisplayShape(gp_Pnt(x,y,z),color="YELLOW",
 																			update=False	 )  # 重新计算更新已经显示的物
-			self.parent.Displayshape_core.canva._display.Context.UpdateCurrentViewer()
-			self.parent.Displayshape_core.canva._display.Repaint()
+			self.parent.Displayshape_core_dict[self.windownname].canva._display.Context.UpdateCurrentViewer()
+			self.parent.Displayshape_core_dict[self.windownname].canva._display.Repaint()
 
 
 
